@@ -19,7 +19,9 @@
 
 typedef struct srt_event
   {
-    unsigned long int number;
+    /* Usually, this id is a number. But sometimes, it can be random string *
+     * As it don't used nowhere, i suppose, that i can generate this value  */
+    unsigned long int id;
     double start;
     double end;
     char text[MAXLINE];

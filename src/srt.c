@@ -20,11 +20,11 @@
 extern verbosity msglevel;
 extern unsigned long int line_num;
 
-enum { unknown, number, timing, text, blank } prev_line, curr_line;
+enum { unknown, id, timing, text, blank } prev_line, curr_line;
 
 /*
  Standart behaviour:
-   if malformed or missing subtitle number - calculate, continue.
+   if malformed or missing subtitle id - calculate, continue.
    if malformer or missing timing - skip event competely, text without timing is useless.
    if missing text - skip event, empty event also useless.
  */
@@ -42,7 +42,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
     if (!infile) return false;
 
-    curr_line = blank;
+    curr_line = unknown;
 
     while(true)
       {
@@ -75,31 +75,35 @@ parse_srt_file(FILE *infile, srt_file * const file)
           break;
         }
 
-        if      (s_len == 0)          curr_line = blank, skip_event = false;
+        if      (s_len == 0)          curr_line = blank;
         else if (strstr(line, "-->")) curr_line = timing;
-        else if (prev_line == blank)  curr_line = number; /* at least, expected */
-        else /* prev_line == timing*/ curr_line = text;   /* also expected */
+        else if (prev_line == blank ||
+                 prev_line == unknown) curr_line = id;  /* at least, expected */
+        else /* prev_line == timing*/ curr_line = text; /* also expected */
 
         log_msg(debug, "D: Line type: %i\n", curr_line);
 
-        if (skip_event == true) continue;
-
-        if (curr_line == number || (curr_line == timing && prev_line == blank))
+        if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
-            *alloc_ptr = calloc(1, sizeof(srt_event));
-            chars_remain = MAXLINE - 1;
-            if (!*alloc_ptr)
+            if (!skip_event)
               {
-                log_msg(error, _("E: Can't allocate memory. Exiting...\n"));
-                exit(EXIT_FAILURE);
-              }
-            memset(*alloc_ptr, 0, sizeof(srt_event));
-            event = *alloc_ptr;
-            alloc_ptr = &(*alloc_ptr)->next;
-            if (curr_line != number)
+                *alloc_ptr = calloc(1, sizeof(srt_event));
+                chars_remain = MAXLINE - 1;
+                if (!*alloc_ptr)
+                  {
+                    log_msg(error, _("E: Can't allocate memory. Exiting...\n"));
+                    exit(EXIT_FAILURE);
+                  }
+                memset(*alloc_ptr, 0, sizeof(srt_event));
+                event = *alloc_ptr;
+                alloc_ptr = &(*alloc_ptr)->next;
+              } else
+                skip_event = false;
+
+            if (curr_line != id)
               {
-                log_msg(warn, _("W: Missing subtitle number at line %u.\n"), line_num);
-                event->number = ++parsed;
+                log_msg(warn, _("W: Missing subtitle id at line '%u'.\n"), line_num);
+                event->id = ++parsed;
               }
           }
 
@@ -110,10 +114,18 @@ parse_srt_file(FILE *infile, srt_file * const file)
             skip_event = true;
           }
 
+        if (prev_line == id && curr_line == blank)
+          {
+            log_msg(warn, _("W: Lonely subtitle id without timing or text. :-(\n"));
+            skip_event = true;
+          }
+
         switch (curr_line)
           {
-            case number :
-              if ((event->number = atoi(line)) != 0) parsed++;
+            case id     :
+              /* See header for comments */
+              event->id = ++parsed;
+              /* if ((event->id = atoi(line)) != 0) parsed++; */
               break;
             case timing :
               if (t_detect-- && !(file->flags & SRT_E_STRICT))
@@ -140,7 +152,11 @@ parse_srt_file(FILE *infile, srt_file * const file)
           }
 
         if (skip_event == true)
-          memset(event, 0, sizeof(srt_event));/* clean parsed stuff & skip calloc() next time */
+          {
+            /* clean parsed stuff & skip calloc() next time */
+            memset(event, 0, sizeof(srt_event));
+            parsed--;
+          }
      }
 
     return true; /* if we reach this line, no error happens */
@@ -251,8 +267,8 @@ write_srt_event(FILE *outfile, srt_event *event)
     struct subtime t;
     const char *t_format = "%02u:%02u:%02u,%03u";
 
-    /* number line */
-    fprintf(outfile, "%lu\n", event->number);
+    /* id line */
+    fprintf(outfile, "%lu\n", event->id);
 
     /* timing & extensions */
     double2subtime(event->start, &t);
