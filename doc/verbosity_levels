@@ -1,0 +1,10 @@
+[verbosity levels]
+   |       |   log prefixes    |
+ # | level | E | W | I | D | R | comment
+---|-------|---|---|---|---|---|-------------------------------
+ 0 |quiet  | - | - | - | - | - | print nothing
+ 1 |error  | + | - | - | - | - | errors (fatal, can't continue)
+ 2 |warn   | + | + | - | - | - | errors (non fatal)
+ 3 |info   | + | + | + | - | - | messages, changes output (default)
+ 4 |debug  | + | + | + | + | - | messages, not changes output
+ 5 |raw    | + | + | + | + | + | raw readed input data

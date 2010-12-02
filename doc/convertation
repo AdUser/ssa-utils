@@ -1,0 +1,21 @@
+Subtitle formats convertation matrix
+
+from        | ssa | ass |
+-------------------------
+xss         |  -  |  -  |
+ssa         |  -  |  -  |
+ass         |  -  |  -  |
+as5         |  -  |  -  |
+srt         |  -  |  -  |
+smi         |  -  |  -  |
+microsub    |  -  |  -  |
+ttxt        |  -  |  -  |
+jss         |  -  |  -  |
+sub(viewer) |  ?  |  ?  |
+
+legend:
+-   : no
++/- : partly
++   : yes
+*n  : see comment below
+n/a : not available due to some reasons
