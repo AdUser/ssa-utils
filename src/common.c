@@ -249,6 +249,27 @@ string_skip_chars(char *string, char *chars)
         *p1 = '\0';
       }
   }
+
+bool
+text_append(char *to, char  *from, uint16_t *chars_remain)
+  {
+    uint16_t s_len = strlen(from);
+
+    if (*chars_remain > s_len) /* why not '>=' - because extra space below */
+      {
+        strncat(to, " ", MAXLINE);
+        strncat(to, from, MAXLINE);
+      }
+    else
+      {
+        log_msg(warn, _("W: Too long text in event near line '%u'.\n"), line_num);
+        return false;
+      }
+
+    chars_remain -= (s_len + 1);
+    return true;
+  }
+
 /** various functions */
 /* why i use non-standart function:
  * 1. strtok can't correctly handle empty field

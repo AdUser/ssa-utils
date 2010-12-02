@@ -43,12 +43,11 @@ parse_srt_file(FILE *infile, srt_file * const file)
     if (!infile) return false;
 
     curr_line = blank;
-    memset(line, 0, sizeof(char) * MAXLINE);
 
     while(true)
       {
+        memset(line, 0, sizeof(char) * MAXLINE);
         fgets(line, MAXLINE, infile);
-        if (feof(infile)) break;
         line_num++;
         log_msg(raw, _("R: %s"), line);
 
@@ -62,6 +61,19 @@ parse_srt_file(FILE *infile, srt_file * const file)
         trim_newline(line);
         trim_spaces(line, LINE_START | LINE_END);
         s_len = strlen(line);
+
+        if (feof(infile))
+        {
+          if (s_len != 0)
+            {
+              log_msg(warn, _("W: Unexpected EOF at line '%u'\n"), line_num);
+              if (prev_line == text)
+                text_append(event->text, line, &chars_remain);
+              else
+                strncpy(event->text, line, MAXLINE),  chars_remain -= s_len;
+            }
+          break;
+        }
 
         if      (s_len == 0)          curr_line = blank, skip_event = false;
         else if (strstr(line, "-->")) curr_line = timing;
@@ -116,16 +128,10 @@ parse_srt_file(FILE *infile, srt_file * const file)
               break;
             case text :
               /* TODO: wrapping handling here   */
-              if (chars_remain > s_len) /* why not '>=' - because extra space below */
-                {
-                  if (event != (srt_event *) 0)
-                    {
-                      if (prev_line == text)
-                        strcat(event->text, " "), chars_remain--;
-                      strcat(event->text, line),  chars_remain -= s_len;
-                    }
-                }
-              else log_msg(warn, _("W: Too long text in event near line '%u'.\n"), line_num);
+              if (prev_line == text)
+                text_append(event->text, line, &chars_remain);
+              else
+                strncpy(event->text, line, MAXLINE);
             case blank :
             case unknown :
             default      :

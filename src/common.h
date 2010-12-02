@@ -102,6 +102,7 @@ bool text_replace(char *, int, char *, char *);
 bool strip_text(char *, char, char);
 void string_lowercase(char *, int);
 void string_skip_chars(char *, char *);
+bool text_append(char *, char *, uint16_t *);
 
 /* unicode-related functions */
 enum chs_type unicode_check(char *, struct unicode_test *);
