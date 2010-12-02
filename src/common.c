@@ -160,7 +160,7 @@ void trim_spaces(char *line, int dirs)
     if (dirs & LINE_END)
     {
       for (p = line; *p != '\0'; p++);
-      while (isblank(*p)) p--;
+      for (p--; isblank(*p); p--);
       *(p + 1) = '\0';
     }
 }
