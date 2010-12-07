@@ -32,7 +32,7 @@ void usage(int exit_code)
     usage_convert_input();
     /* specific options */
     fprintf(stderr, _("\
-  -s                Strict mode. Discard all 'srt' format extensions.\n"));
+  -e                Strict mode. Discard all 'srt' format extensions.\n"));
     fputc('\n', stderr);
 
     usage_convert_output();
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     opts.msglevel = warn;
 
     /* parsing options */
-    while ((opt = getopt(argc, argv, "hi:o:qvtsw:f:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "ehi:o:qvtsw:f:x:y:")) != -1)
       {
         switch (opt)
           {
@@ -92,9 +92,13 @@ int main(int argc, char *argv[])
                   opts.outfile = stdout;
                 }
               break;
-            case 's' :
+            case 'e' :
               log_msg(info, _("I: Strict mode. No mercy for malformed lines or uncommon extensions!\n"));
               target.flags |= SRT_E_STRICT;
+              break;
+            case 's' :
+              opts.i_sort = true;
+              log_msg(info, _("I: Events in output file will be sorted by timing.\n"));
               break;
             case 't' :
               log_msg(info, _("I: Only test will be performed.\n"));

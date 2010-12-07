@@ -19,8 +19,9 @@
 
 typedef struct microsub_event
   {
-     uint32_t frame_start;
-     uint32_t frame_end;
+     /* start & end in frames, not seconds! */
+     uint32_t start;
+     uint32_t end;
      char     text[MAXLINE];
      struct microsub_event *next;
   } microsub_event;
@@ -33,5 +34,7 @@ typedef struct microsub_file
 
 /** function prototypes */
 bool parse_microsub_file(FILE *, microsub_file * const);
+void microsub_event_append(microsub_event **, microsub_event ***,
+                           microsub_event * const, bool);
 
 #endif /* _MICROSUB_H */

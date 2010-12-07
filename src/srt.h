@@ -61,5 +61,7 @@ bool parse_srt_timing(srt_event *, char *, const uint8_t *);
 int  get_srt_event(FILE *, srt_event *);
 bool get_srt_timing(double *, char *h);
 bool write_srt_event(FILE *, srt_event *);
+void srt_event_append(srt_event **, srt_event ***,
+                      srt_event * const, bool);
 
 #endif /* _SRT_H */

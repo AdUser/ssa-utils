@@ -415,6 +415,7 @@ usage_convert_input(void)
   {
     fprintf(stderr, _("\
 Input options:\n\
+  -s                Sort events by timing during parsing input file.\n\
   -t                Only parse input file. Use for testing.\n"));
   }
 

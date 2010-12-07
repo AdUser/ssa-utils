@@ -140,10 +140,12 @@ init_ssa_file(ssa_file * const file)
   }
 
 bool
-parse_ssa_file(FILE *infile,  ssa_file *file)
+parse_ssa_file(FILE *infile, ssa_file *file)
   {
     bool get_styles = true; /* skip or not styles in file */
     char line[MAXLINE] = "";
+    ssa_event *e = NULL;
+    ssa_event **elist_tail  = &file->events;
 
     ssa_section section = NONE;
 
@@ -189,7 +191,16 @@ parse_ssa_file(FILE *infile,  ssa_file *file)
                 set_event_fields_order(line,
                     file->type, file->event_fields_order);
               else if (*line == 'D' || *line == 'd')
-                get_ssa_event(line, &file->events, file->event_fields_order);
+                {
+                  if ((e = calloc(1, sizeof(ssa_event))) == NULL)
+                    {
+                      log_msg(error, _("E: Out of memory. Exiting.\n"));
+                      exit(EXIT_FAILURE);
+                    }
+                  if (get_ssa_event(line, e, file->event_fields_order) != false)
+                    ssa_event_append(&file->events, &elist_tail, e, opts.i_sort);
+                  else free(e);
+                }
               break;
             case FONTS :
               log_msg(debug, _("D: Line %i: fonts section.\n"), line_num);
@@ -807,33 +818,21 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
   }
 
 bool
-get_ssa_event(char * const line, ssa_event **event, int8_t *fieldlist)
+get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
   {
     int8_t *field = fieldlist;
-    ssa_event *ptr = *event, **ptr_alloc;
     subtime st = { 0, 0, 0, 0.0 };
     char *p = line, *delim = ",";
     char token[MAXLINE];
     int len = -1;
     double *t;
 
-    if (ptr != (ssa_event *) 0) /* list has no entries */
-      {
-        while (ptr->next != (ssa_event *) 0)
-          ptr = ptr->next;
-        ptr_alloc = &ptr->next;
-      }
-    else
-      ptr_alloc = event;
+    if (event == NULL)
+      return false;
 
     if ((p = strchr(line, ':')) == NULL)
       return false;
-    else if ((*ptr_alloc = calloc(1, sizeof(ssa_event))) != NULL)
-      memcpy(*ptr_alloc, &event_fields_normal_order, sizeof(ssa_event));
-    else
-      return false;
 
-    ptr = *ptr_alloc;
     p = p + 1; /* "Dialogie:|" */
 
     while (*field != 0)
@@ -853,11 +852,11 @@ get_ssa_event(char * const line, ssa_event **event, int8_t *fieldlist)
         switch (*field)
           {
             case EVENT_LAYER :
-              ptr->layer = atoi(token); /* little hack */
+              event->layer = atoi(token); /* little hack */
               break;
             case EVENT_START :
             case EVENT_END :
-              t = (*field == EVENT_START) ? &ptr->start : &ptr->end;
+              t = (*field == EVENT_START) ? &event->start : &event->end;
               if (!str2subtime(token, &st))
                 {
                   log_msg(error, _("E: Can't get timing at line %u.\n"), line_num);
@@ -867,25 +866,25 @@ get_ssa_event(char * const line, ssa_event **event, int8_t *fieldlist)
                 subtime2double(&st, t);
               break;
             case EVENT_STYLE :
-              strncpy(ptr->style, token, MAX_EVENT_NAME);
+              strncpy(event->style, token, MAX_EVENT_NAME);
               break;
             case EVENT_NAME :
-              strncpy(ptr->name, token, MAX_EVENT_NAME);
+              strncpy(event->name, token, MAX_EVENT_NAME);
               break;
             case EVENT_MARGINL :
-              ptr->margin_l = atoi(token);
+              event->margin_l = atoi(token);
               break;
             case EVENT_MARGINR :
-              ptr->margin_r = atoi(token);
+              event->margin_r = atoi(token);
               break;
             case EVENT_MARGINV :
-              ptr->margin_v = atoi(token);
+              event->margin_v = atoi(token);
               break;
             case EVENT_EFFECT :
-              strncpy(ptr->effect, token, MAX_EVENT_NAME);
+              strncpy(event->effect, token, MAX_EVENT_NAME);
               break;
             case EVENT_TEXT :
-              strncpy(ptr->text, token, MAXLINE);
+              strncpy(event->text, token, MAXLINE);
               break;
             default :
               break;
@@ -1207,4 +1206,24 @@ ssa_section_switch(enum ssa_section *section, char *line)
       result = false;
 
     return result;
+  }
+
+void
+ssa_event_append(ssa_event **head, ssa_event ***tail,
+                 ssa_event * const e, bool sort)
+  {
+    ssa_event *t = NULL;
+
+    if (*head == NULL)
+      *head = e;
+    else if (**tail != NULL && (!sort || e->start > (**tail)->start))
+      (**tail)->next = e, *tail = &(**tail)->next;
+    else /* *tail == NULL || (tail != NULL && e->start <= (*tail)->start) */
+      for (t = *head; t != NULL && t->next != NULL; t = t->next)
+        if (t->next->start > e->start)
+          {
+            e->next = t->next, t->next = e;
+            break;
+          }
+
   }

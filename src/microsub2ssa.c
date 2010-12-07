@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     init_ssa_file(&target);
 
     /* parsing options */
-    while ((opt = getopt(argc, argv, "hi:o:qvtsw:f:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "hi:o:qvstsw:f:x:y:")) != -1)
       {
         switch (opt)
           {
@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
                 }
               break;
             case 's' :
-              log_msg(info, _("I: Strict mode. No mercy for malformed lines or uncommon extensions!\n"));
-              target.flags |= SRT_E_STRICT;
+              log_msg(info, _("I: Events in output file will be sorted by timing.\n"));
+              opts.i_sort = true;
               break;
             case 't' :
               log_msg(info, _("I: Only test will be performed.\n"));

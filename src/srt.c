@@ -38,13 +38,13 @@ parse_srt_file(FILE *infile, srt_file * const file)
     uint8_t t_detect = 3; /* number of first timing strings to analyze */
     uint16_t chars_remain; /* remaining size in text buffer */
     srt_event *event = (srt_event *) 0;
-    srt_event **alloc_ptr = &file->events;
+    srt_event **elist_tail = &file->events;
 
     if (!infile) return false;
 
     curr_line = unknown;
 
-    while(true)
+    while(!feof(infile))
       {
         memset(line, 0, sizeof(char) * MAXLINE);
         fgets(line, MAXLINE, infile);
@@ -67,12 +67,12 @@ parse_srt_file(FILE *infile, srt_file * const file)
           if (s_len != 0)
             {
               log_msg(warn, _("W: Unexpected EOF at line '%u'\n"), line_num);
-              if (prev_line == text)
+              if      (prev_line == text)
                 text_append(event->text, line, &chars_remain);
-              else
-                strncpy(event->text, line, MAXLINE),  chars_remain -= s_len;
+              else if (prev_line == timing)
+                strncpy(event->text, line, MAXLINE), chars_remain -= s_len;
             }
-          break;
+          curr_line = blank;
         }
 
         if      (s_len == 0)          curr_line = blank;
@@ -85,20 +85,13 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
         if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
-            if (!skip_event)
+            event = calloc(1, sizeof(srt_event));
+            chars_remain = MAXLINE - 1;
+            if (!event)
               {
-                *alloc_ptr = calloc(1, sizeof(srt_event));
-                chars_remain = MAXLINE - 1;
-                if (!*alloc_ptr)
-                  {
-                    log_msg(error, _("E: Can't allocate memory. Exiting...\n"));
-                    exit(EXIT_FAILURE);
-                  }
-                memset(*alloc_ptr, 0, sizeof(srt_event));
-                event = *alloc_ptr;
-                alloc_ptr = &(*alloc_ptr)->next;
-              } else
-                skip_event = false;
+                log_msg(error, _("E: Can't allocate memory. Exiting...\n"));
+                exit(EXIT_FAILURE);
+              }
 
             if (curr_line != id)
               {
@@ -144,14 +137,17 @@ parse_srt_file(FILE *infile, srt_file * const file)
                 text_append(event->text, line, &chars_remain);
               else
                 strncpy(event->text, line, MAXLINE);
+              break;
             case blank :
+              if (!skip_event)
+                srt_event_append(&file->events, &elist_tail, event, opts.i_sort);
             case unknown :
             default      :
               continue;
               break;
           }
 
-        if (skip_event == true)
+        if (skip_event)
           {
             /* clean parsed stuff & skip calloc() next time */
             memset(event, 0, sizeof(srt_event));
@@ -304,3 +300,23 @@ write_srt_event(FILE *outfile, srt_event *event)
     /* empty line */
     return (fputc('\n', outfile) == EOF) ? false : true;
 }
+
+void
+srt_event_append(srt_event **head, srt_event ***tail,
+                 srt_event * const e, bool sort)
+  {
+    srt_event *t = NULL;
+
+    if (*head == NULL)
+      *head = e;
+    else if (**tail != NULL && (!sort || e->start > (**tail)->start))
+      (**tail)->next = e, *tail = &(**tail)->next;
+    else /* *tail == NULL || (tail != NULL && e->start <= (*tail)->start) */
+      for (t = *head; t != NULL && t->next != NULL; t = t->next)
+        if (t->next->start > e->start)
+          {
+            e->next = t->next, t->next = e;
+            break;
+          }
+
+  }

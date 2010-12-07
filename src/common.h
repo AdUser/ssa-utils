@@ -99,7 +99,7 @@ struct options
   /* common options */
   verbosity msglevel;
 
-  bool sort_events;
+  bool i_sort;
   bool i_test;
 
   FILE *infile;

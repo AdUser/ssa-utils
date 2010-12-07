@@ -37,16 +37,14 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
     char line[MAXLINE];
     char *p = line;
     uint8_t i = 0;
-    bool skip_event = false;
-    microsub_event **next = &file->events;
-    microsub_event *curr = file->events;
+    microsub_event *event;
+    microsub_event **elist_tail = &file->events;
 
     if (!infile || !file) return false;
 
-    memset(line, '\0', MAXLINE);
-
     while (true)
       {
+        memset(line, '\0', MAXLINE);
         fgets(line, MAXLINE, infile);
         if (feof(infile)) break;
         line_num++;
@@ -59,45 +57,59 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         trim_newline(line);
         trim_spaces(line, LINE_START | LINE_END);
 
-        if (!skip_event)
+        if ((event = calloc(1, sizeof(microsub_event))) == NULL)
           {
-            if ((*next = calloc(1, sizeof(microsub_event))) == NULL)
-              {
-                log_msg(error, _("E: Can't allocate memory."));
-                return false;
-              }
-            memset(*next, 0, sizeof(microsub_event));
-            curr = *next;
-            next = &(*next)->next;
+            log_msg(error, _("E: Can't allocate memory.\n"));
+            return false;
           }
-        else skip_event = false;
 
         if (strncmp(line, "{1}{1}", 6) == 0)
           {
             file->framerate = atof(line + 6);
             log_msg(info, _("I: Detected framerate: %f\n"), file->framerate);
-            skip_event = true;
+            free(event);
             continue;
           }
 
-        if (sscanf(line, "{%u}{%u}", &curr->frame_start, &curr->frame_end) != 2)
+        if (sscanf(line, "{%u}{%u}", &event->start, &event->end) != 2)
           {
-            log_msg(warn, _("W: Can't detect timing in event at line %u.\n"), line_num);
-            skip_event = true;
+            log_msg(warn, _("W: Can't detect timing in event at line %u. Event will be skipped.\n"), line_num);
+            free(event);
             continue;
           }
 
         for (i = 0, p = line; (p = strchr(p, '}')) != NULL;)
           {
             p++, i++;
-            if (i == 2)
-              {
-                strncpy(curr->text, p, MAXLINE);
-                while ((p = strchr(curr->text, '|')) != NULL) *p = '\n';
+            if (i == 2) /* "{123}{234} Some text." */
+              {         /*            ^- '*p'      */
+                strncpy(event->text, p, MAXLINE);
+                while ((p = strchr(event->text, '|')) != NULL) *p = '\n';
                 break;
               }
           }
-     }
+        microsub_event_append(&file->events, &elist_tail, event, opts.i_sort);
+      }
 
     return true;
+  }
+
+void
+microsub_event_append(microsub_event **head, microsub_event ***tail,
+                      microsub_event * const e, bool sort)
+  {
+    microsub_event *t = NULL;
+
+    if (*head == NULL)
+      *head = e;
+    else if (**tail != NULL && (!sort || e->start > (**tail)->start))
+      (**tail)->next = e, *tail = &(**tail)->next;
+    else /* *tail == NULL || (tail != NULL && e->start <= (*tail)->start) */
+      for (t = *head; t != NULL && t->next != NULL; t = t->next)
+        if (t->next->start > e->start)
+          {
+            e->next = t->next, t->next = e;
+            break;
+          }
+
   }

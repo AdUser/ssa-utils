@@ -208,8 +208,7 @@ bool get_ssa_style(char * const, ssa_style **, int8_t *);
 /** events section */
 bool set_event_fields_order(char * const, ssa_version, int8_t *);
 bool detect_event_fields_order(char * const, int8_t *);
-bool get_ssa_event (char * const, ssa_event **, int8_t *);
-
+bool get_ssa_event (char * const, ssa_event * const, int8_t *);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);
@@ -224,5 +223,7 @@ bool write_ssa_event (FILE *, ssa_event  * const, ssa_version);
 uint32_t ssa_color(char * const);
 char *ssa_version_tos(ssa_version);
 bool  ssa_section_switch(enum ssa_section *, char *);
+void ssa_event_append(ssa_event **, ssa_event ***,
+                      ssa_event * const, bool);
 
 #endif /* _SSA_H */
