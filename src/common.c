@@ -195,10 +195,7 @@ bool text_replace(char *haystack, int haystack_max, char *needle, char *replace)
 
     temp = (char *) calloc(1, haystack_max / len_n * len_r); *//* it should be enough *//*
     if (temp == NULL)
-    {
-       log_msg(error, _("E: Can't allocate memory.\n"));
-       return false;
-    }
+     log_msg(error, _("E: Can't allocate memory."));
 
     p = haystack;
     while ((p = strstr(p, needle)) != NULL)
@@ -323,7 +320,7 @@ enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {
     struct unicode_test *b;
-    const char *wrong_unicode = _("E: %s not supported. Please, convert file in singlebyte charset or UTF-8.\n");
+    const char *wrong_unicode = _("E: %s not supported. Please, convert file in singlebyte charset or UTF-8.");
 
     for (b = BOMs; b->charset_type != SINGLE; b++)
       if (memcmp(s, b->sample, sizeof(char) * b->sample_len) == 0)
@@ -349,7 +346,6 @@ unicode_check(char *s, struct unicode_test *aux_tests)
         case UTF16LE :
         case UTF16BE :
           log_msg(error, wrong_unicode, charset_type_tos(charset_type));
-          exit(EXIT_FAILURE);
           break;
         case UTF8    :
           memset(s, ' ', unicode_bom_len(UTF8));
@@ -457,4 +453,11 @@ log_msg(uint8_t level, const char *format, ...)
     va_start(ap, format);
     if (opts.msglevel >= level) vfprintf(stderr, format, ap);
     va_end(ap);
+
+    if (level < warn)
+     {
+       if (opts.msglevel > quiet)
+         fprintf(stderr, _("Exiting...\n"));
+       exit(EXIT_FAILURE);
+     }
   }

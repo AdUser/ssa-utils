@@ -8,3 +8,5 @@
  3 |info   | + | + | + | - | - | messages, changes output (default)
  4 |debug  | + | + | + | + | - | messages, not changes output
  5 |raw    | + | + | + | + | + | raw readed input data
+
+Events 'error' level causes program termination. Also, error messages shouldn't have trailing '\n' char.

@@ -58,10 +58,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         trim_spaces(line, LINE_START | LINE_END);
 
         if ((event = calloc(1, sizeof(microsub_event))) == NULL)
-          {
-            log_msg(error, _("E: Can't allocate memory.\n"));
-            return false;
-          }
+          log_msg(error, _("E: Can't allocate memory."));
 
         if (strncmp(line, "{1}{1}", 6) == 0)
           {

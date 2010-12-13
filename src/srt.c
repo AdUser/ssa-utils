@@ -88,10 +88,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
             event = calloc(1, sizeof(srt_event));
             chars_remain = MAXLINE - 1;
             if (!event)
-              {
-                log_msg(error, _("E: Can't allocate memory. Exiting...\n"));
-                exit(EXIT_FAILURE);
-              }
+              log_msg(error, _("E: Can't allocate memory."));
 
             if (curr_line != id)
               {
@@ -182,7 +179,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
     char token[MAXLINE];
     uint16_t i = 0;
     int *j;
-    char *err = _("E: Can't get %s timing from this token: '%s' at line '%u'.\n");
+    char *w_token = _("W: Can't get %s timing from this token: '%s' at line '%u'.\n");
     char *p = s, *v;
     bool result = true;
     struct point *xy;
@@ -195,7 +192,10 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
     trim_spaces(token, LINE_START | LINE_END);
 
     if (!get_srt_timing(&e->start, token))
-      log_msg(error, err, "start", token), result = false;
+      {
+        log_msg(warn, w_token, "start", token);
+        return false;
+      }
 
     p = p + i + 3;         /* " 00:00:00,000   " + "-->" */
     while (*p == ' ') p++; /* " 00:00:00,000   --> |00:00:00,000" */
@@ -205,7 +205,10 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
     strncpy(token, p, i);
 
     if (!get_srt_timing(&e->end, token))
-      log_msg(error, err, "end", token), result = false;
+      {
+        log_msg(warn, w_token, "end", token);
+        return false;
+      }
 
     if (result && flags)
     {
@@ -231,9 +234,8 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
       else if (*flags & SRT_E_HAVE_STYLE)
         {
           delim = ",";
-          log_msg(error, "E: Unimplemented feature.\n");
           /* TODO: make it "implemented" */
-          exit(EXIT_FAILURE);
+          log_msg(error, "E: Unimplemented feature.");
         }
     }
 

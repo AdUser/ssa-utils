@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
 {
   char opt;
   char line[MAXLINE] = "";
-  uint8_t errs = 0;
   uint8_t i = 0;
   struct res src = { 0, 0 };
   struct res dst = { 0, 0 };
@@ -98,7 +97,7 @@ int main(int argc, char *argv[])
         {
         case 'i':
           if ((opts.infile = fopen(optarg, "r")) == NULL)
-            log_msg(error, _("E: Input file '%s' isn't readable.\n"), optarg);
+            log_msg(error, _("E: Input file '%s' isn't readable."), optarg);
           break;
         case 'o':
           if (strncmp(optarg, "-", 1) == 0)
@@ -111,15 +110,15 @@ int main(int argc, char *argv[])
           break;
         case 'f':
           if (sscanf(optarg, "%u%*c%u", &src.width, &src.height) != 2)
-            log_msg(error, _("E: '-f': wrong resolution.\n")), errs++;
+            log_msg(error, _("E: '-f': wrong resolution."));
           break;
         case 't':
           if (sscanf(optarg, "%u%*c%u", &dst.width, &dst.height) != 2)
-            log_msg(error, _("E: '-t': wrong resolution.\n")), errs++;
+            log_msg(error, _("E: '-t': wrong resolution."));
           break;
         case 'p':
           if ((i = sscanf(optarg, "%u%*c%u", &pct_w, &pct_h)) == 0)
-            log_msg(error, _("E: '-p': integer value(s) required.\n")), errs++;
+            log_msg(error, _("E: '-p': integer value(s) required."));
           if (i == 1) /* pct_w also acts as pct_h, if specified only 1 value */
             pct_h = pct_w;
           break;
@@ -134,17 +133,15 @@ int main(int argc, char *argv[])
   if (mode == percents)
     {
       if (pct_w == 0)
-        log_msg(error, _("E: '-p' option required in this mode.\n")), errs++;
+        log_msg(error, _("E: '-p' option required in this mode."));
       else if (pct_w > MAX_PCT || pct_h > MAX_PCT)
-        log_msg(error, _("E: '-p': value(s) out of acceptable range.\n")), errs++;
+        log_msg(error, _("E: '-p': value(s) out of acceptable range."));
     }
   else if (mode == resolution)
     {
       if (src.width == 0 || dst.width == 0)
-        log_msg(error, _("E: '-f' and '-t' options required in this mode.\n")), errs++;
+        log_msg(error, _("E: '-f' and '-t' options required in this mode."));
     }
-
-  if (errs) exit(EXIT_FAILURE);
 
   /* init */
   init_ssa_file(&file);

@@ -74,10 +74,7 @@ int main(int argc, char *argv[])
               break;
             case 'i' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
-                {
-                  log_msg(error, _("E: Input file '%s' isn't readable.\n"), optarg);
-                  exit(EXIT_FAILURE);
-                }
+                log_msg(error, _("E: Input file '%s' isn't readable."), optarg);
               break;
             case 'o' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
@@ -122,16 +119,10 @@ int main(int argc, char *argv[])
       usage(EXIT_SUCCESS);
 
     if (target.type == unknown)
-      {
-        log_msg(error, _("E: '-f' option is mandatory. Exiting.\n"));
-        exit(EXIT_FAILURE);
-      }
+      log_msg(error, _("E: '-f' option is mandatory."));
 
     if (!parse_srt_file(opts.infile, &source))
-      {
-        log_msg(error, _("E: Something went wrong, see errors above.\n"));
-        exit(EXIT_FAILURE);
-      }
+      log_msg(error, _("E: Something went wrong, see errors above."));
 
     if (opts.i_test)
       {
@@ -143,19 +134,15 @@ int main(int argc, char *argv[])
     src = source.events;
     dst = &target.events;
     if ((target.styles = calloc(1, sizeof(ssa_style))) == NULL)
-      {
-        log_msg(error, _("E: Can't allocate memory, exiting.\n"));
-        exit(EXIT_FAILURE);
-      } /* else */
+      log_msg(error, _("E: Can't allocate memory."));
+
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
 
     while (src != (srt_event *) 0)
       {
         if ((*dst = (ssa_event *) calloc(1, sizeof(ssa_event))) == NULL)
-          {
-            log_msg(error, _("E: Can't allocate memory, exiting.\n"));
-            exit(EXIT_FAILURE);
-          }
+          log_msg(error, _("E: Can't allocate memory."));
+
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 
         /* copy data */
