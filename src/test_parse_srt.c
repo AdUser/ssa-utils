@@ -19,7 +19,7 @@
 
 #define PROG_NAME "test_parse_srt"
 
-extern verbosity msglevel;
+extern struct options opts;
 uint32_t line_num = 0;
 
 int main(int argc, char *argv[])
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     srt_file file;
 
     memset(&file, 0, sizeof(srt_file));
-    msglevel = info;
+    opts.msglevel = info;
 
     if (argc < 1)
       exit(EXIT_FAILURE);

@@ -19,12 +19,11 @@
 
 #define PROG_NAME "test_parse_microsub"
 
-extern verbosity msglevel;
+extern struct options opts;
 uint32_t line_num = 0;
 
 int main(int argc, char *argv[])
   {
-    FILE *infile = (FILE *) 0;
     microsub_file file;
 
     memset(&file, 0, sizeof(microsub_file));
@@ -32,13 +31,13 @@ int main(int argc, char *argv[])
     if (argc < 1)
       exit(EXIT_FAILURE);
 
-    if ((infile = fopen(argv[1], "r")) == (FILE *) 0)
+    if ((opts.infile = fopen(argv[1], "r")) == (FILE *) 0)
       {
         printf("Can't open input file.\n");
         exit(EXIT_FAILURE);
       }
 
-    if (parse_microsub_file(infile, &file) == false)
+    if (parse_microsub_file(opts.infile, &file) == false)
       exit(EXIT_FAILURE);
     else
       printf("Success!\n");

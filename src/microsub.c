@@ -18,7 +18,7 @@
 #include "microsub.h"
 
 /* variables */
-extern verbosity msglevel;
+extern struct options opts;
 extern uint32_t line_num;
 
 /* order is important */

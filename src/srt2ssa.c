@@ -42,7 +42,7 @@ void usage(int exit_code)
  }
 
 /* import some usefull stuff */
-extern verbosity msglevel;
+extern struct options opts;
 extern ssa_style ssa_style_template;
 extern ssa_event ssa_event_template;
 
@@ -52,20 +52,16 @@ unsigned long parsed = 0;
 
 int main(int argc, char *argv[])
   {
-    bool dry_run = false;
     srt_file source;
     ssa_file target;
     srt_event *src;
     ssa_event **dst;
     char opt;
-    FILE  *infile = (FILE *) 0;
-    FILE *outfile = stdout;
-    enum { keep, merge, split } wrap_mode = keep;
 
     /* init, stage 1 */
     memset(&source, 0, sizeof(srt_file));
     init_ssa_file(&target);
-    msglevel = warn;
+    opts.msglevel = warn;
 
     /* parsing options */
     while ((opt = getopt(argc, argv, "hi:o:qvtsw:f:x:y:")) != -1)
@@ -78,13 +74,23 @@ int main(int argc, char *argv[])
               break;
             case 'q' :
             case 'v' :
-              msglevel_change(&msglevel, (opt == 'q') ? '-' : '+');
+              msglevel_change(&opts.msglevel, (opt == 'q') ? '-' : '+');
               break;
             case 'i' :
-              infile = fopen(optarg, "r");
+              opts.infile = fopen(optarg, "r");
+              if (!opts.infile)
+                {
+                  log_msg(error, _("E: Can't open file '%s'. Exiting.\n"), optarg);
+                  exit(EXIT_FAILURE);
+                }
               break;
             case 'o' :
-              outfile = fopen(optarg, "w");
+              opts.outfile = fopen(optarg, "w");
+              if (!opts.outfile)
+                {
+                  log_msg(warn, _("W: File '%s' isn't writable, stdout will be used.\n"), optarg);
+                  opts.outfile = stdout;
+                }
               break;
             case 's' :
               log_msg(info, _("I: Strict mode. No mercy for malformed lines or uncommon extensions!\n"));
@@ -92,7 +98,7 @@ int main(int argc, char *argv[])
               break;
             case 't' :
               log_msg(info, _("I: Only test will be performed.\n"));
-              dry_run = true;
+              opts.i_test = true;
               break;
             case 'x' :
               target.res_x = atoi(optarg);
@@ -101,7 +107,7 @@ int main(int argc, char *argv[])
               target.res_y = atoi(optarg);
               break;
             case 'w' :
-              wrap_mode = keep;
+              opts.o_wrap = keep;
               /* TODO: enable, when i finish this feature
               if      (strcmp(optarg, "keep")  == 0) wrap_mode = keep;
               else if (strcmp(optarg, "merge") == 0) wrap_mode = merge;
@@ -121,31 +127,19 @@ int main(int argc, char *argv[])
     if (argc < 3)
       usage(EXIT_SUCCESS);
 
-    if (!infile)
-      {
-        log_msg(error, _("E: Input file isn't readable.\n"), optarg);
-        exit(EXIT_FAILURE);
-      }
-
-    if (!outfile)
-      {
-        log_msg(warn, _("W: File '%s' isn't writable, stdout will be used.\n"), optarg);
-        outfile = stdout;
-      }
-
     if (target.type == unknown)
       {
         log_msg(error, _("E: '-f' option is mandatory. Exiting.\n"));
         exit(EXIT_FAILURE);
       }
 
-    if (!parse_srt_file(infile, &source))
+    if (!parse_srt_file(opts.infile, &source))
       {
         log_msg(error, _("E: Something went wrong, see errors above.\n"));
         exit(EXIT_FAILURE);
       }
 
-    if (dry_run)
+    if (opts.i_test)
       {
          log_msg(warn, _("W: Test of input file completed. See warnings above, if any.\n"));
          exit(EXIT_SUCCESS);
@@ -182,11 +176,12 @@ int main(int argc, char *argv[])
         src = source.events;
       }
 
-    write_ssa_file(outfile, &target, true);
+    write_ssa_file(opts.outfile, &target, true);
 
     /* prepare to exit */
-    if (infile)  fclose(infile);
-    if (outfile) fclose(outfile);
+    if (opts.infile  != NULL)   fclose(opts.infile);
+    if (opts.outfile != NULL &&
+        opts.outfile != stdout) fclose(opts.outfile);
 
     return 0;
   }

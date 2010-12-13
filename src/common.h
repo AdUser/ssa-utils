@@ -66,6 +66,17 @@ struct res
   unsigned int height;
 };
 
+/* enum's */
+typedef enum verbosity
+{
+  quiet,
+  error,
+  warn,
+  info,
+  debug,
+  raw
+} verbosity;
+
 enum chs_type
 {
   SINGLE  = 0,
@@ -83,8 +94,20 @@ struct unicode_test
   uint8_t       sample_len;
 };
 
-/* enum's */
-typedef enum verbosity { quiet, error, warn, info, debug, raw } verbosity;
+struct options
+{ /* "i_" - input, "o_" - output specific options */
+  /* common options */
+  verbosity msglevel;
+
+  bool sort_events;
+  bool i_test;
+
+  FILE *infile;
+  FILE *outfile;
+
+  enum { keep /*, merge, split */ } o_wrap;
+  enum chs_type i_chs_type;
+};
 
 /** functions prototypes */
 /* subtime functions */

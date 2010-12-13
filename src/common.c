@@ -17,8 +17,6 @@
 #include "common.h"
 
 /* variables */
-verbosity msglevel = info;
-
 extern unsigned long int line_num;
 
 /* sorted in order of test */
@@ -32,6 +30,18 @@ struct unicode_test BOMs[6] =
   { SINGLE,  { 0x00, 0x00, 0x00, 0x00 }, 0 } /* this entry acts as list-terminator */
 };
 
+struct options opts = {
+  warn,       /* msglevel    */
+  false,      /* sort_events */
+  false,      /* test        */
+  (FILE *) 0, /* infile      */
+  (FILE *) 0, /* outfile     */
+  keep,       /* o_wrap      */
+  SINGLE      /* i_chs_type  */
+};
+
+/** functions */
+
 uint16_t
 char_count(char * const s, char c)
 {
@@ -44,7 +54,6 @@ char_count(char * const s, char c)
   return count;
 }
 
-/* functions */
 bool
 is_empty_line(char *line)
 {
@@ -406,8 +415,7 @@ usage_convert_input(void)
   {
     fprintf(stderr, _("\
 Input options:\n\
-  -t                Only parse input file. Use for testing.\n\
-  -s                Strict mode. Discard all 'srt' format extensions.\n"));
+  -t                Only parse input file. Use for testing.\n"));
   }
 
 void
@@ -446,6 +454,6 @@ log_msg(uint8_t level, const char *format, ...)
     va_list ap;
 
     va_start(ap, format);
-    if (msglevel >= level) vfprintf(stderr, format, ap);
+    if (opts.msglevel >= level) vfprintf(stderr, format, ap);
     va_end(ap);
   }

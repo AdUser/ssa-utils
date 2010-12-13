@@ -17,7 +17,7 @@
 #include "common.h"
 #include "srt.h"
 
-extern verbosity msglevel;
+extern struct options opts;
 extern unsigned long int line_num;
 
 enum { unknown, id, timing, text, blank } prev_line, curr_line;

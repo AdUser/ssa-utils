@@ -64,21 +64,20 @@ Specific options for 'percents' mode:\n\
 
 enum { not_set, resolution, percents } mode;
 
-extern verbosity msglevel;
+extern struct options opts;
 
 uint32_t line_num = 0;
 
 int main(int argc, char *argv[])
 {
   char opt;
-  FILE *infile  = (FILE *) 0;
-  FILE *outfile = (FILE *) 0;
   char line[MAXLINE] = "";
   uint8_t errs = 0;
   uint8_t i = 0;
   struct res src = { 0, 0 };
   struct res dst = { 0, 0 };
-  unsigned int pct_w = 0, pct_h = 0;
+  unsigned int pct_w = 0;
+  unsigned int pct_h = 0;
   ssa_file file;
 
   mode = unknown;
@@ -98,16 +97,16 @@ int main(int argc, char *argv[])
       switch(opt)
         {
         case 'i':
-          if ((infile = fopen(optarg, "r")) == NULL)
-            log_msg(error, _("E: Input file '%s' isn't readable.\n"), optarg), errs++;
+          if ((opts.infile = fopen(optarg, "r")) == NULL)
+            log_msg(error, _("E: Input file '%s' isn't readable.\n"), optarg);
           break;
         case 'o':
           if (strncmp(optarg, "-", 1) == 0)
-            outfile = stdout;
-          if ((outfile = fopen(optarg, "w")) == NULL)
+            opts.outfile = stdout;
+          if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
               log_msg(warn, _("W: Output file '%s' isn't writable, stdout will be used.\n"), optarg);
-              outfile = stdout;
+              opts.outfile = stdout;
             }
           break;
         case 'f':
@@ -149,7 +148,7 @@ int main(int argc, char *argv[])
 
   /* init */
   init_ssa_file(&file);
-  parse_ssa_file(infile, &file);
+  parse_ssa_file(opts.infile, &file);
 
   printf("%s\n", line);
   while(true) break;

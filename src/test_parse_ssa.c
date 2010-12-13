@@ -19,12 +19,11 @@
 
 #define PROG_NAME "test_parse_ssa"
 
-extern verbosity msglevel;
 uint32_t line_num = 0;
+extern struct options opts;
 
 int main(int argc, char *argv[])
   {
-    FILE *infile = (FILE *) 0;
     ssa_file file;
 
     memset(&file, 0, sizeof(ssa_file));
@@ -33,13 +32,13 @@ int main(int argc, char *argv[])
     if (argc < 1)
       exit(EXIT_FAILURE);
 
-    if ((infile = fopen(argv[1], "r")) == (FILE *) 0)
+    if ((opts.infile = fopen(argv[1], "r")) == (FILE *) 0)
       {
         printf("Can't open input file.\n");
         exit(EXIT_FAILURE);
       }
 
-    if (parse_ssa_file(infile, &file) == false)
+    if (parse_ssa_file(opts.infile, &file) == false)
       exit(EXIT_FAILURE);
 
     write_ssa_file(stdout, &file, true);

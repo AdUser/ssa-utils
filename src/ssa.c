@@ -18,10 +18,9 @@
 #include "ssa.h"
 
 /* variables */
-extern verbosity msglevel;
-extern enum chs_type charset_type;
 extern uint32_t line_num;
 extern struct unicode_test BOMs[6];
+extern struct options opts;
 
 /* to use from outer space :-) */
   int8_t fields_order[MAX_FIELDS] = { 0 };
@@ -159,7 +158,7 @@ parse_ssa_file(FILE *infile,  ssa_file *file)
 
         /* unicode handle */
         if (line_num == 1)
-          charset_type = unicode_check(line, uc_t_ssa);
+          opts.i_chs_type = unicode_check(line, uc_t_ssa);
 
         trim_newline(line);
         trim_spaces(line, LINE_START | LINE_END);
