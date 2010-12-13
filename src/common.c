@@ -320,7 +320,7 @@ enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {
     struct unicode_test *b;
-    const char *wrong_unicode = _("E: %s not supported. Please, convert file in singlebyte charset or UTF-8.");
+    const char *wrong_unicode = _("E: %s not supported. Please, convert file to singlebyte charset or UTF-8.");
 
     for (b = BOMs; b->charset_type != SINGLE; b++)
       if (memcmp(s, b->sample, sizeof(char) * b->sample_len) == 0)
@@ -457,7 +457,7 @@ log_msg(uint8_t level, const char *format, ...)
     if (level < warn)
      {
        if (opts.msglevel > quiet)
-         fprintf(stderr, _("Exiting...\n"));
+         fprintf(stderr, _(" Exiting...\n"));
        exit(EXIT_FAILURE);
      }
   }
