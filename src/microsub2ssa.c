@@ -49,14 +49,14 @@ unsigned long parsed = 0;
 
 int main(int argc, char *argv[])
   {
-    srt_file source;
-    ssa_file target;
-    srt_event *src;
-    ssa_event **dst;
+    microsub_file   source;
+    ssa_file        target;
+    microsub_event *src;
+    ssa_event     **dst;
     char opt;
 
     /* init, stage 1 */
-    memset(&source, 0, sizeof(srt_file));
+    memset(&source, 0, sizeof(microsub_file));
     init_ssa_file(&target);
 
     /* parsing options */
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
 
-    while (src != (srt_event *) 0)
+    while (src != (microsub_event *) 0)
       {
         if ((*dst = (ssa_event *) calloc(1, sizeof(ssa_event))) == NULL)
           log_msg(error, _("E: Can't allocate memory."));
