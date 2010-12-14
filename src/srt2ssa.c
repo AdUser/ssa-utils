@@ -125,8 +125,8 @@ int main(int argc, char *argv[])
       }
 
     /* checks */
-    if (argc < 3)
-      usage(EXIT_SUCCESS);
+    if (opts.infile == NULL)
+      log_msg(error, _("E: Input file not specified."));
 
     if (target.type == unknown)
       log_msg(error, _("E: '-f' option is mandatory."));
@@ -136,8 +136,8 @@ int main(int argc, char *argv[])
 
     if (opts.i_test)
       {
-         log_msg(warn, _("W: Test of input file completed. See warnings above, if any.\n"));
-         exit(EXIT_SUCCESS);
+        log_msg(warn, _("W: Test of input file completed. See warnings above, if any.\n"));
+        exit(EXIT_SUCCESS);
       }
 
     /* init, stage 2 */
