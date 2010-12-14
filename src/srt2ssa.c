@@ -125,6 +125,9 @@ int main(int argc, char *argv[])
       }
 
     /* checks */
+    if (opts.i_test == true && opts.msglevel < warn)
+      opts.msglevel = warn;
+
     if (opts.infile == NULL)
       log_msg(error, _("E: Input file not specified."));
 
