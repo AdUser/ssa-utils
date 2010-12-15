@@ -48,29 +48,29 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         fgets(line, MAXLINE, infile);
         if (feof(infile)) break;
         line_num++;
-        log_msg(raw, _("R: %s"), line);
 
         /* unicode handle */
         if (line_num == 1)
           charset_type = unicode_check(line, uc_t_microsub);
 
         trim_newline(line);
+        log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 
         if ((event = calloc(1, sizeof(microsub_event))) == NULL)
-          log_msg(error, _("E: Can't allocate memory."));
+          log_msg(error, _("Can't allocate memory."));
 
         if (strncmp(line, "{1}{1}", 6) == 0)
           {
             file->framerate = atof(line + 6);
-            log_msg(info, _("I: Detected framerate: %f\n"), file->framerate);
+            log_msg(info, _("Detected framerate: %f"), file->framerate);
             free(event);
             continue;
           }
 
         if (sscanf(line, "{%u}{%u}", &event->start, &event->end) != 2)
           {
-            log_msg(warn, _("W: Can't detect timing in event at line %u. Event will be skipped.\n"), line_num);
+            log_msg(warn, _("Can't detect timing in event at line %u. Event will be skipped."), line_num);
             free(event);
             continue;
           }

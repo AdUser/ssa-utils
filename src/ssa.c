@@ -156,13 +156,13 @@ parse_ssa_file(FILE *infile, ssa_file *file)
 
         fgets(line, MAXLINE, infile);
         line_num++;
-        log_msg(raw, _("R: %s"), line);
 
         /* unicode handle */
         if (line_num == 1)
           opts.i_chs_type = unicode_check(line, uc_t_ssa);
 
         trim_newline(line);
+        log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 
         if (line[0] == ';' || is_empty_line(line))
@@ -174,11 +174,11 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         switch (section)
           {
             case HEADER :
-              log_msg(debug, _("D: Line %i: header section.\n"), line_num);
+              log_msg(debug, _("Line %i: header section."), line_num);
               get_ssa_option(line, file);
               break;
             case STYLES :
-              log_msg(debug, _("D: Line %i: styles section.\n"), line_num);
+              log_msg(debug, _("Line %i: styles section."), line_num);
               if      (*line == 'F' || *line == 'f')
                 get_styles = set_style_fields_order(line,
                     file->type, file->style_fields_order);
@@ -186,48 +186,48 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                 get_ssa_style(line, &file->styles, file->style_fields_order);
               break;
             case EVENTS :
-              log_msg(debug, _("D: Line %i: events section.\n"), line_num);
+              log_msg(debug, _("Line %i: events section."), line_num);
               if      (*line == 'F' || *line == 'f')
                 set_event_fields_order(line,
                     file->type, file->event_fields_order);
               else if (*line == 'D' || *line == 'd')
                 {
                   if ((e = calloc(1, sizeof(ssa_event))) == NULL)
-                    log_msg(error, _("E: Out of memory."));
+                    log_msg(error, _("Out of memory."));
                   if (get_ssa_event(line, e, file->event_fields_order) != false)
                     ssa_event_append(&file->events, &elist_tail, e, opts.i_sort);
                   else free(e);
                 }
               break;
             case FONTS :
-              log_msg(debug, _("D: Line %i: fonts section.\n"), line_num);
+              log_msg(debug, _("Line %i: fonts section."), line_num);
               break;
             case GRAPHICS :
-              log_msg(debug, _("D: Line %i: graphics section.\n"), line_num);
+              log_msg(debug, _("Line %i: graphics section."), line_num);
               break;
             case UNKNOWN :
-              log_msg(debug, _("D: Line %i: unknown section.\n"), line_num);
+              log_msg(debug, _("Line %i: unknown section."), line_num);
               break;
             case NONE :
             default :
-              log_msg(warn, _("W: Skipping line %i: not in any ssa section.\n"), line_num);
+              log_msg(warn, _("Skipping line %i: not in any ssa section."), line_num);
               break;
           }
         }
 
       /* some checks and fixes */
       if (file->type == unknown)
-        log_msg(error, _("E: Missing 'Script Type' line in input file."));
+        log_msg(error, _("Missing 'Script Type' line in input file."));
 
       if (file->timer == 0)
         {
-          log_msg(warn, _("W: Undefined or zero 'Timer' value. Default value assumed.\n"));
+          log_msg(warn, _("Undefined or zero 'Timer' value. Default value assumed."));
           file->timer = 100;
         }
 
       if ((get_styles && file->styles == (ssa_style *) 0) || !get_styles)
         {
-          log_msg(warn, _("W: No styles was defined. Default style assumed.\n"));
+          log_msg(warn, _("No styles was defined. Default style assumed."));
           file->styles = calloc(1, sizeof(ssa_style));
           if (file->styles)
             memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
@@ -249,14 +249,14 @@ get_ssa_option(char * const line, ssa_file * const h)
     char first_char; /* for optimize blocks of strcmp */
     char *value;
     char param[MAX_HEADER_LINE];
-    char *warn_skip = _("W: Unrecognized parameter '%s' at line %u.\n");
-    char *info_skip = _("I: Skipping parameter '%s' with empty value at line %u.\n");
+    char *warn_skip = _("Unrecognized parameter '%s' at line %u.");
+    char *info_skip = _("Skipping parameter '%s' with empty value at line %u.");
     int v_len = 0;
     int param_len = 0;
 
     if ((value = strchr(line, ':')) == NULL)
       {
-        log_msg(warn, _("W: Can't get parameter value at line %u.\n"), line_num);
+        log_msg(warn, _("Can't get parameter value at line %u."), line_num);
         return false;
       } /* else -> "Param|: Value" */
 
@@ -394,10 +394,10 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
     if (strcmp(compare,  format) == 0)
       memcpy(fieldlist, fields_order, sizeof(uint8_t) * MAX_FIELDS);
     else if ((result = detect_style_fields_order(format, fieldlist)) == true)
-      log_msg(warn, _("W: Wrong fields order in styles.\n"));
+      log_msg(warn, _("Wrong fields order in styles."));
     else
       {
-        log_msg(warn, _("W: Can't detect fields order for styles. Default order assumed.\n"));
+        log_msg(warn, _("Can't detect fields order for styles. Default order assumed."));
         memcpy(fieldlist, fields_order, sizeof(uint8_t) * MAX_FIELDS);
       }
 
@@ -414,7 +414,7 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
 
     if ((p = strchr(format, ':')) == 0)
       {
-        log_msg(error, _("E: Malformed 'Format:' line."));
+        log_msg(error, _("Malformed 'Format:' line."));
         return false;
       }
 
@@ -531,7 +531,7 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
               break;
             default :
             unknown :
-              log_msg(warn, _("W: Unrecognized field '%s'.\n"), token);
+              log_msg(warn, _("Unrecognized field '%s'."), token);
             result = false;
               break;
           }
@@ -540,7 +540,7 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
 
     if (*field == 0)
-      log_msg(error, _("E: Too many fields in styles."));
+      log_msg(error, _("Too many fields in styles."));
     else
       *field = 0; /* set new list terminator after last param */
 
@@ -709,10 +709,10 @@ set_event_fields_order(char * const format, ssa_version v, int8_t * fieldlist)
     if (strcmp(compare,  format) == 0)
       memcpy(fieldlist, event_fields_normal_order, sizeof(uint8_t) * MAX_FIELDS);
     else if ((result = detect_event_fields_order(format, fieldlist)) == true)
-      log_msg(warn, _("W: Wrong fields order for events.\n"));
+      log_msg(warn, _("Wrong fields order for events."));
     else
       {
-        log_msg(warn, _("W: Can't detect fields order for events. Default order assumed\n"));
+        log_msg(warn, _("Can't detect fields order for events. Default order assumed"));
         memcpy(fieldlist, event_fields_normal_order, sizeof(uint8_t) * MAX_FIELDS);
       }
 
@@ -728,7 +728,7 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
     int8_t *field = fieldlist;
 
     if ((p = strchr(format, ':')) == 0)
-      log_msg(error, _("E: Malformed 'Format:' line."));
+      log_msg(error, _("Malformed 'Format:' line."));
 
     /* this saves from of duplicate code below *
      * possible, i should do it with memset()?  */
@@ -789,7 +789,7 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
               break;
             default :
             unknown :
-              log_msg(warn, _("W: Unrecognized field '%s'.\n"), token);
+              log_msg(warn, _("Unrecognized field '%s'."), token);
             result = false;
               break;
           }
@@ -798,7 +798,7 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
 
     if (*field == 0)
-      log_msg(error, _("E: Too many fields in events."));
+      log_msg(error, _("Too many fields in events."));
     else
       *field = 0; /* set new list terminator after last param */
 
@@ -847,7 +847,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
               t = (*field == EVENT_START) ? &event->start : &event->end;
               if (!str2subtime(token, &st))
                 {
-                  log_msg(warn, _("W: Can't get timing at line '%u'.\n"), line_num);
+                  log_msg(warn, _("Can't get timing at line '%u'."), line_num);
                   return false;
                 }
               else
@@ -894,7 +894,7 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
     if (!outfile) return false;
 
     if (fprintf(outfile, "%s\n", "[Script Info]") < 0)
-      log_msg(error, _("E: Write error."));
+      log_msg(error, _("Write error."));
 
     fprintf(outfile, "%s: %s %.2f\n", "; Generated by",
               COMMON_PROG_NAME, VERSION);
@@ -976,7 +976,7 @@ write_ssa_styles(FILE * outfile, ssa_style  * const style, ssa_version v, bool m
       write = fprintf(outfile, format);
 
     if (write < 0)
-      log_msg(error, _("E: Write error."));
+      log_msg(error, _("Write error."));
 
     putc('\n', outfile);
 
@@ -1079,7 +1079,7 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
       write = fprintf(outfile, "%s\n", format);
 
     if (write < 0)
-      log_msg(error, _("E: Write error."));
+      log_msg(error, _("Write error."));
 
     while (ptr != NULL)
       {
@@ -1176,7 +1176,7 @@ ssa_section_switch(enum ssa_section *section, char *line)
           *section = STYLES;
         else
           {
-            log_msg(warn, _("W: Unknown ssa section '%s' at line '%u'.\n"), line, line_num);
+            log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), line, line_num);
 
             *section = UNKNOWN;
           }

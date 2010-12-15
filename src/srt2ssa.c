@@ -79,26 +79,26 @@ int main(int argc, char *argv[])
             case 'i' :
               opts.infile = fopen(optarg, "r");
               if (!opts.infile)
-                log_msg(error, _("E: Can't open file '%s'."), optarg);
+                log_msg(error, _("Can't open file '%s'."), optarg);
               break;
             case 'o' :
               opts.outfile = fopen(optarg, "w");
               if (!opts.outfile)
                 {
-                  log_msg(warn, _("W: File '%s' isn't writable, stdout will be used.\n"), optarg);
+                  log_msg(warn, _("File '%s' isn't writable, stdout will be used."), optarg);
                   opts.outfile = stdout;
                 }
               break;
             case 'e' :
-              log_msg(info, _("I: Strict mode. No mercy for malformed lines or uncommon extensions!\n"));
+              log_msg(info, _("Strict mode. No mercy for malformed lines or uncommon extensions!"));
               target.flags |= SRT_E_STRICT;
               break;
             case 's' :
               opts.i_sort = true;
-              log_msg(info, _("I: Events in output file will be sorted by timing.\n"));
+              log_msg(info, _("Events in output file will be sorted by timing."));
               break;
             case 't' :
-              log_msg(info, _("I: Only test will be performed.\n"));
+              log_msg(info, _("Only test will be performed."));
               opts.i_test = true;
               break;
             case 'x' :
@@ -129,17 +129,17 @@ int main(int argc, char *argv[])
       opts.msglevel = warn;
 
     if (opts.infile == NULL)
-      log_msg(error, _("E: Input file not specified."));
+      log_msg(error, _("Input file not specified."));
 
     if (target.type == unknown)
-      log_msg(error, _("E: '-f' option is mandatory."));
+      log_msg(error, _("'-f' option is mandatory."));
 
     if (!parse_srt_file(opts.infile, &source))
-      log_msg(error, _("E: Something went wrong, see errors above."));
+      log_msg(error, _("Something went wrong, see errors above."));
 
     if (opts.i_test)
       {
-        log_msg(warn, _("W: Test of input file completed. See warnings above, if any.\n"));
+        log_msg(warn, _("Test of input file completed. See warnings above, if any."));
         exit(EXIT_SUCCESS);
       }
 
@@ -147,14 +147,14 @@ int main(int argc, char *argv[])
     src = source.events;
     dst = &target.events;
     if ((target.styles = calloc(1, sizeof(ssa_style))) == NULL)
-      log_msg(error, _("E: Can't allocate memory."));
+      log_msg(error, _("Can't allocate memory."));
 
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
 
     while (src != (srt_event *) 0)
       {
         if ((*dst = (ssa_event *) calloc(1, sizeof(ssa_event))) == NULL)
-          log_msg(error, _("E: Can't allocate memory."));
+          log_msg(error, _("Can't allocate memory."));
 
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 

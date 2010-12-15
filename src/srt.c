@@ -49,7 +49,6 @@ parse_srt_file(FILE *infile, srt_file * const file)
         memset(line, 0, sizeof(char) * MAXLINE);
         fgets(line, MAXLINE, infile);
         line_num++;
-        log_msg(raw, _("R: %s"), line);
 
         /* unicode handle */
         if (line_num == 1)
@@ -59,6 +58,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
         curr_line = unknown;
 
         trim_newline(line);
+        log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
         s_len = strlen(line);
 
@@ -66,7 +66,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
         {
           if (s_len != 0)
             {
-              log_msg(warn, _("W: Unexpected EOF at line '%u'\n"), line_num);
+              log_msg(warn, _("Unexpected EOF at line '%u'"), line_num);
               if      (prev_line == text)
                 text_append(event->text, line, &chars_remain);
               else if (prev_line == timing)
@@ -81,32 +81,31 @@ parse_srt_file(FILE *infile, srt_file * const file)
                  prev_line == unknown) curr_line = id;  /* at least, expected */
         else /* prev_line == timing*/ curr_line = text; /* also expected */
 
-        log_msg(debug, "D: Line type: %i\n", curr_line);
+        log_msg(debug, "Line type: %i", curr_line);
 
         if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
             event = calloc(1, sizeof(srt_event));
             chars_remain = MAXLINE - 1;
             if (!event)
-              log_msg(error, _("E: Can't allocate memory."));
+              log_msg(error, _("Can't allocate memory."));
 
             if (curr_line != id)
               {
-                log_msg(warn, _("W: Missing subtitle id at line '%u'.\n"), line_num);
+                log_msg(warn, _("Missing subtitle id at line '%u'."), line_num);
                 event->id = ++parsed;
               }
           }
 
         if (prev_line == timing && curr_line == blank)
           {
-            log_msg(warn,
-              _("W: Empty subtitle text at line %u. Event will be skipped.\n"), line_num);
+            log_msg(warn, _("Empty subtitle text at line %u. Event will be skipped."), line_num);
             skip_event = true;
           }
 
         if (prev_line == id && curr_line == blank)
           {
-            log_msg(warn, _("W: Lonely subtitle id without timing or text. :-(\n"));
+            log_msg(warn, _("Lonely subtitle id without timing or text. :-("));
             skip_event = true;
           }
 
@@ -123,7 +122,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
               skip_event = !parse_srt_timing(event, line, &file->flags);
               if (event->start > event->end)
                 {
-                  log_msg(warn, _("W: Negative duration of event at line '%u'. Event will be skipped.\n"), line_num);
+                  log_msg(warn, _("Negative duration of event at line '%u'. Event will be skipped."), line_num);
                   skip_event = true;
                 }
               /*printf("%f --> %f\n", event->start, event->end);*/
@@ -179,7 +178,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
     char token[MAXLINE];
     uint16_t i = 0;
     int *j;
-    char *w_token = _("W: Can't get %s timing from this token: '%s' at line '%u'.\n");
+    char *w_token = _("Can't get %s timing from this token: '%s' at line '%u'.");
     char *p = s, *v;
     bool result = true;
     struct point *xy;
@@ -235,7 +234,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
         {
           delim = ",";
           /* TODO: make it "implemented" */
-          log_msg(error, "E: Unimplemented feature.");
+          log_msg(error, "Unimplemented feature.");
         }
     }
 

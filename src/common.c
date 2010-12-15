@@ -188,14 +188,14 @@ bool text_replace(char *haystack, int haystack_max, char *needle, char *replace)
 
     if (((len_a / len_n) * len_r) > haystack_max)
     {
-        log_msg(warn, _("W: String size after text replace bigger than size of buf.\n"));
-        log_msg(warn, _("W: Text replace will be skipped near line '%lu'.\n"), line_num);
+        log_msg(warn, _("String size after text replace bigger than size of buf."));
+        log_msg(warn, _("Text replace will be skipped near line '%lu'."), line_num);
         return false;
     }
 
     temp = (char *) calloc(1, haystack_max / len_n * len_r); *//* it should be enough *//*
     if (temp == NULL)
-     log_msg(error, _("E: Can't allocate memory."));
+     log_msg(error, _("Can't allocate memory."));
 
     p = haystack;
     while ((p = strstr(p, needle)) != NULL)
@@ -268,7 +268,7 @@ text_append(char *to, char  *from, uint16_t *chars_remain)
       }
     else
       {
-        log_msg(warn, _("W: Too long text in event near line '%u'.\n"), line_num);
+        log_msg(warn, _("Too long text in event near line '%u'."), line_num);
         return false;
       }
 
@@ -320,7 +320,7 @@ enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {
     struct unicode_test *b;
-    const char *wrong_unicode = _("E: %s not supported. Please, convert file to singlebyte charset or UTF-8.");
+    const char *wrong_unicode = _("%s not supported. Please, convert file to singlebyte charset or UTF-8.");
 
     for (b = BOMs; b->charset_type != SINGLE; b++)
       if (memcmp(s, b->sample, sizeof(char) * b->sample_len) == 0)
@@ -448,16 +448,35 @@ msglevel_change(verbosity *level, char sign)
 void
 log_msg(uint8_t level, const char *format, ...)
   {
+    char p;
+    char *f = "%c: %s%s\n";
+    char *m = _(" Exiting...");
+    bool quit = false;
+    char buf[MAXLINE];
     va_list ap;
 
-    va_start(ap, format);
-    if (opts.msglevel >= level) vfprintf(stderr, format, ap);
-    va_end(ap);
+    if (level < warn && level > quiet) quit = true;
 
-    if (level < warn)
-     {
-       if (opts.msglevel > quiet)
-         fprintf(stderr, _(" Exiting...\n"));
-       exit(EXIT_FAILURE);
-     }
+    switch (level)
+      {
+        case error : p = 'E'; break;
+        case warn  : p = 'W'; break;
+        case info  : p = 'I'; break;
+        case debug : p = 'D'; break;
+        case raw   : p = 'R'; break;
+        case quiet :
+        default    :
+          p = 'U';
+          break;
+      }
+
+    if (opts.msglevel >= level)
+      {
+        va_start(ap, format);
+        vsnprintf(buf, MAXLINE, format, ap);
+        va_end(ap);
+        fprintf(stderr, f, p, buf, (quit) ? m : "");
+      }
+
+    if (quit) exit(EXIT_FAILURE);
   }
