@@ -29,14 +29,10 @@ Usage: %s <mode> [<options>] -i <input_file> [-o <output_file>]\n\
 Modes are: \n\
   * percents        Zoom resolution in subtitle for that ratio(s).\n\
   * resolution      If you are too lazy to calculate exact percents,\n\
-                    simply specify source and target resolutions.\n"), PROG_NAME);
+                    simply specify target resolutions.\n"), PROG_NAME);
   fputc('\n', stderr);
 
-  fprintf(stderr, _("\
-Common options:\n\
-  -i <file>         Input file.                   (required)\n\
-  -o <file>         Output file.                  (optional)\n\
-  -h                This help.\n"));
+  usage_common_opts();
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
@@ -50,7 +46,10 @@ Options, selects what to change:\n\
   fprintf(stderr, _("\
 Specific options for 'resolution' mode:\n\
   -f <int>x<int>    Width and height of source video (in pixels)\n\
-  -t <int>x<int>    Width and height of target video (in pixels)\n"));
+                    Default: use values, specified in input file.\n\
+                    Exit, if not found.\n\
+  -t <int>x<int>    Width and height of target video (in pixels)\n\
+                    This option is mandatory in this mode."));
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
