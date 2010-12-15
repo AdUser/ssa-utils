@@ -320,7 +320,6 @@ enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {
     struct unicode_test *b;
-    const char *wrong_unicode = _("%s not supported. Please, convert file to singlebyte charset or UTF-8.");
 
     for (b = BOMs; b->charset_type != SINGLE; b++)
       if (memcmp(s, b->sample, sizeof(char) * b->sample_len) == 0)
@@ -345,7 +344,7 @@ unicode_check(char *s, struct unicode_test *aux_tests)
         case UTF32BE :
         case UTF16LE :
         case UTF16BE :
-          log_msg(error, wrong_unicode, charset_type_tos(charset_type));
+          log_msg(error, MSG_W_WRONGUNI, charset_type_tos(charset_type));
           break;
         case UTF8    :
           memset(s, ' ', unicode_bom_len(UTF8));

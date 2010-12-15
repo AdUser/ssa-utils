@@ -97,14 +97,15 @@ int main(int argc, char *argv[])
         {
         case 'i':
           if ((opts.infile = fopen(optarg, "r")) == NULL)
-            log_msg(error, _("Input file '%s' isn't readable."), optarg);
+            log_msg(error, MSG_F_ORDFAIL, optarg);
           break;
         case 'o':
-          if (strncmp(optarg, "-", 1) == 0)
+          if (strcmp(optarg, "-") == 0)
             opts.outfile = stdout;
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
-              log_msg(warn, _("Output file '%s' isn't writable, stdout will be used."), optarg);
+              log_msg(warn, MSG_F_OWRFAIL, optarg);
+              log_msg(warn, MSG_F_OFSTDOUT);
               opts.outfile = stdout;
             }
           break;
@@ -118,7 +119,7 @@ int main(int argc, char *argv[])
           break;
         case 'p':
           if ((i = sscanf(optarg, "%u%*c%u", &pct_w, &pct_h)) == 0)
-            log_msg(error, _("'-p': integer value(s) required."));
+            log_msg(error, MSG_O_OVREQUIRED, "-p");
           if (i == 1) /* pct_w also acts as pct_h, if specified only 1 value */
             pct_h = pct_w;
           break;
@@ -133,14 +134,16 @@ int main(int argc, char *argv[])
   if (mode == percents)
     {
       if (pct_w == 0)
-        log_msg(error, _("'-p' option required in this mode."));
+        log_msg(error, MSG_O_OREQUIRED, "-p");
       else if (pct_w > MAX_PCT || pct_h > MAX_PCT)
-        log_msg(error, _("'-p': value(s) out of acceptable range."));
+        log_msg(error, MSG_O_OOR, "-p");
     }
   else if (mode == resolution)
     {
-      if (src.width == 0 || dst.width == 0)
-        log_msg(error, _("'-f' and '-t' options required in this mode."));
+      if (src.width == 0)
+        log_msg(error, MSG_O_OREQUIRED, "-f");
+      if (dst.width == 0)
+        log_msg(error, MSG_O_OREQUIRED, "-t");
     }
 
   /* init */

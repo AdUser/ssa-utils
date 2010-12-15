@@ -66,7 +66,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
         {
           if (s_len != 0)
             {
-              log_msg(warn, _("Unexpected EOF at line '%u'"), line_num);
+              log_msg(warn, MSG_F_UNEXPEOF, line_num);
               if      (prev_line == text)
                 text_append(event->text, line, &chars_remain);
               else if (prev_line == timing)
@@ -88,7 +88,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
             event = calloc(1, sizeof(srt_event));
             chars_remain = MAXLINE - 1;
             if (!event)
-              log_msg(error, _("Can't allocate memory."));
+              log_msg(error, MSG_M_OOM);
 
             if (curr_line != id)
               {
@@ -234,7 +234,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
         {
           delim = ",";
           /* TODO: make it "implemented" */
-          log_msg(error, "Unimplemented feature.");
+          log_msg(error, MSG_W_UNIMPL);
         }
     }
 

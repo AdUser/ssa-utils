@@ -28,6 +28,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "msg.h"
+
 #ifndef _COMMON_H
 #define _COMMON_H
 

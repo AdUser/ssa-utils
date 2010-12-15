@@ -17,6 +17,14 @@
 #include "common.h"
 #include "ssa.h"
 
+#define MSG_W_WRONGFORDER   _("Wrong fields order in %s.")
+#define MSG_W_UNRECFIELD    _("Unrecognized field '%s'.")
+#define MSG_W_UNRECPARAM    _("Unrecognized parameter '%s' at line '%u'.")
+#define MSG_W_CANTDETECT    _("Can't detect fields order for %s. Default order assumed.")
+#define MSG_W_TOOMANYFIELDS _("Too many fields in %s.")
+#define MSG_W_CURRSECTION   _("Line %i: %s section.")
+#define MSG_W_SKIPEPARAM    _("Skipping parameter '%s' with empty value at line '%u'.")
+
 /* variables */
 extern uint32_t line_num;
 extern struct unicode_test BOMs[6];
@@ -174,11 +182,11 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         switch (section)
           {
             case HEADER :
-              log_msg(debug, _("Line %i: header section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("header"));
               get_ssa_option(line, file);
               break;
             case STYLES :
-              log_msg(debug, _("Line %i: styles section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("styles"));
               if      (*line == 'F' || *line == 'f')
                 get_styles = set_style_fields_order(line,
                     file->type, file->style_fields_order);
@@ -186,27 +194,27 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                 get_ssa_style(line, &file->styles, file->style_fields_order);
               break;
             case EVENTS :
-              log_msg(debug, _("Line %i: events section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("events"));
               if      (*line == 'F' || *line == 'f')
                 set_event_fields_order(line,
                     file->type, file->event_fields_order);
               else if (*line == 'D' || *line == 'd')
                 {
                   if ((e = calloc(1, sizeof(ssa_event))) == NULL)
-                    log_msg(error, _("Out of memory."));
+                    log_msg(error, MSG_M_OOM);
                   if (get_ssa_event(line, e, file->event_fields_order) != false)
                     ssa_event_append(&file->events, &elist_tail, e, opts.i_sort);
                   else free(e);
                 }
               break;
             case FONTS :
-              log_msg(debug, _("Line %i: fonts section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("fonts"));
               break;
             case GRAPHICS :
-              log_msg(debug, _("Line %i: graphics section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("graphics"));
               break;
             case UNKNOWN :
-              log_msg(debug, _("Line %i: unknown section."), line_num);
+              log_msg(debug, MSG_W_CURRSECTION, line_num, _("unknown"));
               break;
             case NONE :
             default :
@@ -249,14 +257,12 @@ get_ssa_option(char * const line, ssa_file * const h)
     char first_char; /* for optimize blocks of strcmp */
     char *value;
     char param[MAX_HEADER_LINE];
-    char *warn_skip = _("Unrecognized parameter '%s' at line %u.");
-    char *info_skip = _("Skipping parameter '%s' with empty value at line %u.");
     int v_len = 0;
     int param_len = 0;
 
     if ((value = strchr(line, ':')) == NULL)
       {
-        log_msg(warn, _("Can't get parameter value at line %u."), line_num);
+        log_msg(warn, _("Can't get parameter value at line '%u'."), line_num);
         return false;
       } /* else -> "Param|: Value" */
 
@@ -282,25 +288,25 @@ get_ssa_option(char * const line, ssa_file * const h)
             {
               if (v_len)
                 strncpy(h->o_script, value, v_len), h->flags |= SSA_H_HAVE_OSCRIPT;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
           else if (strncmp("original translation", line, param_len) == 0)
             {
               if (v_len)
                 strncpy(h->o_trans, value, v_len), h->flags |= SSA_H_HAVE_OTRANS;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
           else if (strncmp("original editing", line, param_len) == 0)
             {
               if (v_len)
                 strncpy(h->o_edit, value, v_len), h->flags |= SSA_H_HAVE_OEDIT;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
           else if (strncmp("original timing", line, param_len) == 0)
             {
               if (v_len)
                 strncpy(h->o_timing, value, v_len), h->flags |= SSA_H_HAVE_OTIMING;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
           break;
         case 'p' : /* all 'Play*' lines */
@@ -310,14 +316,14 @@ get_ssa_option(char * const line, ssa_file * const h)
             h->res_y = atoi(value);
           else if (strncmp("playdepth", line, param_len) == 0)
             h->depth = atoi(value);
-          else log_msg(warn, warn_skip, param, line_num);
+          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
           break;
         case 's' :
           if      (strncmp("script updated by", line, param_len) == 0)
             {
               if (v_len)
                 strncpy(h->updated, value, v_len), h->flags |= SSA_H_HAVE_UPDATED;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
           else if (strncmp("scripttype", line, param_len) == 0)
             {
@@ -335,9 +341,9 @@ get_ssa_option(char * const line, ssa_file * const h)
           else if (strncmp("synch point", line, param_len) == 0)
             {
               if (v_len) h->sync = atof(value);
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
-          else log_msg(warn, warn_skip, param, line_num);
+          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
           break;
         case 't' :
           if      (strncmp("timer", line, param_len) == 0)
@@ -346,16 +352,16 @@ get_ssa_option(char * const line, ssa_file * const h)
             {
               if (v_len)
                 strncpy(h->title, value, v_len), h->flags |= SSA_H_HAVE_TITLE;
-              else log_msg(info, info_skip, line, line_num);
+              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
             }
-          else log_msg(warn, warn_skip, param, line_num);
+          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
           break;
         case 'w' :
           if (strncmp("wrapstyle", line, param_len) == 0)
             h->wrap = atoi(value);
           break;
         default :
-          log_msg(warn, warn_skip, param, line_num);
+          log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
       }
     return true;
   }
@@ -394,10 +400,10 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
     if (strcmp(compare,  format) == 0)
       memcpy(fieldlist, fields_order, sizeof(uint8_t) * MAX_FIELDS);
     else if ((result = detect_style_fields_order(format, fieldlist)) == true)
-      log_msg(warn, _("Wrong fields order in styles."));
+      log_msg(warn, MSG_W_WRONGFORDER, _("styles"));
     else
       {
-        log_msg(warn, _("Can't detect fields order for styles. Default order assumed."));
+        log_msg(warn, MSG_W_CANTDETECT, _("styles"));
         memcpy(fieldlist, fields_order, sizeof(uint8_t) * MAX_FIELDS);
       }
 
@@ -531,7 +537,7 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
               break;
             default :
             unknown :
-              log_msg(warn, _("Unrecognized field '%s'."), token);
+              log_msg(warn, MSG_W_UNRECFIELD, token);
             result = false;
               break;
           }
@@ -540,7 +546,7 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
 
     if (*field == 0)
-      log_msg(error, _("Too many fields in styles."));
+      log_msg(error, MSG_W_TOOMANYFIELDS, _("styles"));
     else
       *field = 0; /* set new list terminator after last param */
 
@@ -709,10 +715,10 @@ set_event_fields_order(char * const format, ssa_version v, int8_t * fieldlist)
     if (strcmp(compare,  format) == 0)
       memcpy(fieldlist, event_fields_normal_order, sizeof(uint8_t) * MAX_FIELDS);
     else if ((result = detect_event_fields_order(format, fieldlist)) == true)
-      log_msg(warn, _("Wrong fields order for events."));
+      log_msg(warn, MSG_W_WRONGFORDER, _("events"));
     else
       {
-        log_msg(warn, _("Can't detect fields order for events. Default order assumed"));
+        log_msg(warn, MSG_W_CANTDETECT, _("events"));
         memcpy(fieldlist, event_fields_normal_order, sizeof(uint8_t) * MAX_FIELDS);
       }
 
@@ -789,7 +795,7 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
               break;
             default :
             unknown :
-              log_msg(warn, _("Unrecognized field '%s'."), token);
+              log_msg(warn, MSG_W_UNRECFIELD, token);
             result = false;
               break;
           }
@@ -798,7 +804,7 @@ detect_event_fields_order(char *format, int8_t *fieldlist)
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
 
     if (*field == 0)
-      log_msg(error, _("Too many fields in events."));
+      log_msg(error, MSG_W_TOOMANYFIELDS, _("events"));
     else
       *field = 0; /* set new list terminator after last param */
 
@@ -894,7 +900,7 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
     if (!outfile) return false;
 
     if (fprintf(outfile, "%s\n", "[Script Info]") < 0)
-      log_msg(error, _("Write error."));
+      log_msg(error, MSG_F_WRFAIL);
 
     fprintf(outfile, "%s: %s %.2f\n", "; Generated by",
               COMMON_PROG_NAME, VERSION);
@@ -976,7 +982,7 @@ write_ssa_styles(FILE * outfile, ssa_style  * const style, ssa_version v, bool m
       write = fprintf(outfile, format);
 
     if (write < 0)
-      log_msg(error, _("Write error."));
+      log_msg(error, MSG_F_WRFAIL);
 
     putc('\n', outfile);
 
@@ -1079,7 +1085,7 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
       write = fprintf(outfile, "%s\n", format);
 
     if (write < 0)
-      log_msg(error, _("Write error."));
+      log_msg(error, MSG_F_WRFAIL);
 
     while (ptr != NULL)
       {

@@ -15,7 +15,6 @@
  */
 
 #include "common.h"
-
 #include "microsub.h"
 #include "ssa.h"
 
@@ -74,21 +73,21 @@ int main(int argc, char *argv[])
               break;
             case 'i' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
-                log_msg(error, _("Input file '%s' isn't readable."), optarg);
+                log_msg(error, MSG_F_ORDFAIL, optarg);
               break;
             case 'o' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
-                  log_msg(warn, _("File '%s' isn't writable, stdout will be used."), optarg);
+                  log_msg(warn, MSG_F_OWRFAIL, optarg);
                   opts.outfile = stdout;
                 }
               break;
             case 's' :
-              log_msg(info, _("Events in output file will be sorted by timing."));
+              log_msg(info, MSG_I_EVSORTED);
               opts.i_sort = true;
               break;
             case 't' :
-              log_msg(info, _("Only test will be performed."));
+              log_msg(info, MSG_W_TESTONLY);
               opts.i_test = true;
               break;
             case 'x' :
@@ -119,17 +118,17 @@ int main(int argc, char *argv[])
       opts.msglevel = warn;
 
     if (opts.infile == NULL)
-      log_msg(error, _("Input file not specified."));
+      log_msg(error, MSG_F_IFMISSING);
 
     if (target.type == unknown)
-      log_msg(error, _("'-f' option is mandatory."));
+      log_msg(error, MSG_O_OREQUIRED, "-f");
 
     if (!parse_microsub_file(opts.infile, &source))
-      log_msg(error, _("Something went wrong, see errors above."));
+      log_msg(error, MSG_U_UNKNOWN);
 
     if (opts.i_test)
       {
-        log_msg(warn, _("Test of input file completed. See warnings above, if any."));
+        log_msg(warn, MSG_W_TESTDONE);
         exit(EXIT_SUCCESS);
       }
 
@@ -137,14 +136,14 @@ int main(int argc, char *argv[])
     src = source.events;
     dst = &target.events;
     if ((target.styles = calloc(1, sizeof(ssa_style))) == NULL)
-      log_msg(error, _("Can't allocate memory."));
+      log_msg(error, MSG_M_OOM);
 
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
 
     while (src != (microsub_event *) 0)
       {
         if ((*dst = (ssa_event *) calloc(1, sizeof(ssa_event))) == NULL)
-          log_msg(error, _("Can't allocate memory."));
+          log_msg(error, MSG_M_OOM);
 
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 

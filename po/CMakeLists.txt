@@ -1,9 +1,10 @@
 SET(LINGUAS ru)
 SET(POTFILE "${CNAME}.pot")
+SET(MSG_FILES ../src/*.c ../src/msg.h)
 
 ADD_CUSTOM_TARGET(translation ALL DEPENDS)
 ADD_CUSTOM_COMMAND(TARGET translation
-                   COMMAND xgettext -k_ ../src/*.c -o ${POTFILE})
+                   COMMAND xgettext -k_ ${MSG_FILES} -o ${POTFILE})
 
 FOREACH    (LANG ${LINGUAS})
   SET (TRANS "translations/${LANG}.po")
