@@ -16,6 +16,8 @@
 
 #include "common.h"
 
+#define MSG_W_WRONGTIMEF _("Incorrect time '%s'. Should be like '[+/-][[h:]m:]s[.ms]'")
+
 /* variables */
 extern unsigned long int line_num;
 
@@ -101,6 +103,84 @@ str2subtime(char *line, subtime *st)
               break;
           }
       }
+    return true;
+  }
+
+/* next function does almost the same that str2subtime, but this:
+   * slower
+   * allows negative time
+   * allows incomplete (and more flexible) time specification
+   * returns double instead of subtime
+ */
+bool
+parse_time(char *token, double *d, bool exit)
+  {
+    char *p = token;
+    subtime t = { 0, 0, 0, 0 };
+    bool negative = false;
+    int8_t count = -1;
+    verbosity level = warn;
+    int8_t scan  = 0;
+    uint32_t len = 0;
+
+    if (token == NULL || d == NULL) return false;
+
+    while (isspace(*p) && *p != '\0') p++;
+
+    len = strlen(p);
+    *d = 0.0;
+    if (exit) level = error;
+
+    if (len <= 0)
+      return false;
+
+    if (*p == '+' || *p == '-')
+      negative = (*p++ == '-') ? true : false ;
+
+    count = char_count(p, ':');
+
+    switch (count)
+      {
+        case 2 :
+           scan = sscanf(p, "%u:%u:%u", &t.hrs, &t.min, &t.sec);
+          break;
+        case 1 :
+           scan = sscanf(p, "%u:%u", &t.min, &t.sec);
+          break;
+        case 0 :
+           scan = sscanf(p, "%u", &t.sec);
+          break;
+        default:
+          return false;
+          break;
+      }
+
+    if (scan != (count + 1))
+      {
+        log_msg(level, MSG_W_WRONGTIMEF, token);
+        return false;
+      }
+
+    if ((p = strchr(p, '.')) != NULL)
+      {
+        len = 0;
+        while (isdigit(*(p + len + 1))) len++;
+        if (sscanf(p, ".%3u", &t.msec) != 1)
+          {
+            log_msg(level, MSG_W_WRONGTIMEF, token);
+            return false;
+          }
+          switch (len)
+           {
+             case 1 :    t.msec *= 100;  break;
+             case 2 :    t.msec *= 10;   break;
+             default: /* t.msec *= 1; */ break;
+           }
+      }
+
+    subtime2double(&t, d);
+    if (negative) *d = -(*d);
+
     return true;
   }
 
