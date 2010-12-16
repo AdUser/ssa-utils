@@ -48,7 +48,7 @@ char_count(char * const s, char c)
   uint16_t count = 0;
   char *p = s;
 
-  while (p++ != '\0')
+  while (*p++ != '\0')
     if (*p == c) count++;
 
   return count;
