@@ -18,6 +18,7 @@
 #include "ssa.h"
 
 #define PROG_NAME "ssa_retime"
+#define DEFAULT_FPS 25.0
 
 #define MSG_O_NOTNEGATIVE _("%s can't be negative.")
 #define MSG_O_NOTTOGETHER _("Options '%s' and '%s' can't be used together.")
@@ -32,22 +33,22 @@ void usage(int exit_code)
 
   fprintf(stderr, _("\
 Modes are: \n\
+  * framerate       Retime whole file from one fps to another.\n\
   * shift           Shift whole file or it's part for given time.\n"));
 /*
-  * framerate       Retime whole file from one fps to another.\n\
   * points          Retime file specifying point(s) & time shift for it.\n\
 */
   fputc('\n', stderr);
 
   usage_common_opts();
   fputc('\n', stderr);
-/*
+
   fprintf(stderr, _("\
 Specific options for 'framerate' mode:\n\
-  -f <float>        Source framerate.\n\
-  -F <float>        Target framerate.\n"));
+  -f <float>        Source framerate. Default: %2.2f fps.\n\
+  -F <float>        Target framerate.\n"), DEFAULT_FPS);
   fputc('\n', stderr);
-
+/*
   fprintf(stderr, _("\
 Specific options for 'points' mode:\n\
   -p <time>::<shift>\n\
@@ -95,12 +96,18 @@ uint32_t line_num = 0;
 int main(int argc, char *argv[])
 {
   char opt;
+  char *m;
   ssa_file file;
   ssa_event *e;
+
   double shift_start  = 0.0;
   double shift_end    = 0.0;
   double shift_lenght = 0.0;
   double s = 0.0; /* used in all modes */
+
+  double src_fps = 0.0;
+  double dst_fps = 0.0;
+  double multiplier = 0.0;
 
   mode = unset;
 
@@ -136,8 +143,10 @@ int main(int argc, char *argv[])
             break;
 
           case 'f':
+            src_fps = atof(optarg);
             break;
           case 'F':
+            dst_fps = atof(optarg);
             break;
 
           case 'p':
@@ -188,14 +197,28 @@ int main(int argc, char *argv[])
         shift_end = shift_start + shift_lenght;
       /* it's simple, isn't it? :) */
     }
-/*
   else if (mode == framerate)
     {
-      if (src.width == 0)
-        log_msg(error, MSG_O_OREQUIRED, "-f");
-      if (dst.width == 0)
-        log_msg(error, MSG_O_OREQUIRED, "-t");
+      /* checks */
+      if (src_fps == 0.0)
+        {
+          m = _("No option '-f' given. Assuming source framerate = %2.2f");
+          log_msg(warn, m, DEFAULT_FPS);
+          src_fps = DEFAULT_FPS;
+        }
+      if (dst_fps == 0.0)
+        log_msg(error, MSG_O_OREQUIRED, "-F");
+      if (src_fps < 0.0)
+        log_msg(error, MSG_O_NOTNEGATIVE, _("Source framerate"));
+      if (dst_fps < 0.0)
+        log_msg(error, MSG_O_NOTNEGATIVE, _("Target framerate"));
+      if (src_fps == dst_fps && src_fps != 0.0)
+        log_msg(error, _("Framerates are equal. Nothing to do."));
+
+      /* work */
+      multiplier = (double) src_fps / (double) dst_fps;
     }
+/*
   else if (mode == points)
     {
     }
@@ -223,8 +246,15 @@ int main(int argc, char *argv[])
                }
            }
        break;
-     default :
-       break;
+      case framerate :
+        for (; e != NULL; e = e->next)
+          {
+            e->start *= multiplier;
+            e->end   *= multiplier;
+          }
+        break;
+      default :
+        break;
     }
 
   write_ssa_file(opts.outfile, &file, true);
