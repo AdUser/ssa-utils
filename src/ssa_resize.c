@@ -99,8 +99,6 @@ int main(int argc, char *argv[])
             log_msg(error, MSG_F_ORDFAIL, optarg);
           break;
         case 'O':
-          if (strcmp(optarg, "-") == 0)
-            opts.outfile = stdout;
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
               log_msg(warn, MSG_F_OWRFAIL, optarg);
@@ -130,6 +128,9 @@ int main(int argc, char *argv[])
     }
 
   /* args checks */
+  if (opts.infile == NULL)
+    log_msg(error, MSG_F_IFMISSING);
+
   if (mode == percents)
     {
       if (pct_w == 0)

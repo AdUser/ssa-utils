@@ -79,6 +79,7 @@ int main(int argc, char *argv[])
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
                   log_msg(warn, MSG_F_OWRFAIL, optarg);
+                  log_msg(warn, MSG_F_OFSTDOUT);
                   opts.outfile = stdout;
                 }
               break;
