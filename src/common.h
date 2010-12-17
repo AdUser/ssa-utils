@@ -35,7 +35,7 @@
 
 #define MAXLINE 2048
 #define COMMON_PROG_NAME "ssa-utils"
-#define VERSION 0.01
+#define VERSION 0.02
 #define _(x) gettext((x))
 
 #define SEC_MAX     86399 /* 23h:59m:59s */
