@@ -1,13 +1,12 @@
 [features]
 - переконвертация между версиями ssa-формата
-- модуль ретайминга
 + переконвертация microsub -> ssa
 - переконвертация smi      -> ssa
 + сортировка по таймингу
 + увеличение уровня вывода сообщений при указании опции '-t'
 - параметр '-W' для обработки переноса линий
 ? параметр '-u' - принудительное включение режима юникода
-+ параметр '-s' - сортировка событий
++ параметр '-S' - сортировка событий
 - подстройка размера шрифта в стиле "по умолчанию" в зависимости от разрешения видео (опции '-x', '-y')
 - README: maintainers
 
@@ -19,37 +18,10 @@ srt_parse:
 
 [utils]
 ssa_resize
-ssa_retime
 ssa_version
 ?ssa_styles
 ?ssa_fonts
 ?ssa_effects
-
-[ssa_retime]
-ssa_retime <mode> <options> -i <infile> [-o <outfile>]
-Modes:
-      framerate:  Retime whole file from one fps to another.
-      points:     Retime file specifying point(s) & time shift for it.
-      shift:      Simply shift whole file or it's part for given time.
-
-Common options:
-      -i <file>   Input file. (- for stdin)     (mandatory)
-      -o <file>   Output file.                  (optional)
-
-Options for 'framerate' mode:
-      -s <float>  Source framerate.
-      -d <float>  Target framerate.
-
-Options for 'points' mode:
-      -p <time>::<shift>
-                  Point of fixup & time shift in it. Option can be
-                  specified more than once. (see man for details)
-              <time> & <shift> must be in form of [[h:]m:]s[.msec].
-
-Options for 'shift' mode:
-      -t <time>   Value of time shift.
-      -s <time>   Start time of shift position. (Default: 0.0)
-      -e <time>   End time of shift position.   (Default: latest time in file)
 
 [ssa_versions]
 ssa_version <options> -i <infile> [-o <outfile>]
