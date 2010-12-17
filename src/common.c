@@ -470,8 +470,8 @@ void usage_common_opts(void)
     fprintf(stderr, _("\
 Common options:\n\
   -h                This help.\n\
-  -i <file>         Input file. (mandatory)\n\
-  -o <file>         Output file. Default: write to stdout.\n\
+  -I <file>         Input file. (mandatory)\n\
+  -O <file>         Output file. Default: write to stdout.\n\
   -q                Decrease verbosity. Can be given more than once.\n\
   -v                Increase verbosity. Can be given more than once.\n"));
   }
@@ -490,8 +490,8 @@ usage_convert_input(void)
   {
     fprintf(stderr, _("\
 Input options:\n\
-  -s                Sort events by timing during parsing input file.\n\
-  -t                Only parse input file. Use for testing.\n"));
+  -S                Sort events by timing during parsing input file.\n\
+  -T                Only parse input file. Use for testing.\n"));
   }
 
 void

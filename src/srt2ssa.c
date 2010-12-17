@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     opts.msglevel = warn;
 
     /* parsing options */
-    while ((opt = getopt(argc, argv, "ehi:o:qvtsw:f:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "ehI:O:qvSTw:f:x:y:")) != -1)
       {
         switch (opt)
           {
@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
             case 'v' :
               msglevel_change(&opts.msglevel, (opt == 'q') ? '-' : '+');
               break;
-            case 'i' :
+            case 'I' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
                 log_msg(error, MSG_F_ORDFAIL, optarg);
               break;
-            case 'o' :
+            case 'O' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
                   log_msg(warn, MSG_F_OWRFAIL, optarg);
@@ -92,11 +92,11 @@ int main(int argc, char *argv[])
               log_msg(info, _("Strict mode. No mercy for malformed lines or uncommon extensions!"));
               target.flags |= SRT_E_STRICT;
               break;
-            case 's' :
+            case 'S' :
               opts.i_sort = true;
               log_msg(info, MSG_I_EVSORTED);
               break;
-            case 't' :
+            case 'T' :
               log_msg(info, MSG_W_TESTONLY);
               opts.i_test = true;
               break;

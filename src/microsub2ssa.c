@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     init_ssa_file(&target);
 
     /* parsing options */
-    while ((opt = getopt(argc, argv, "hi:o:qvstsw:f:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "hI:O:qvSTw:f:x:y:")) != -1)
       {
         switch (opt)
           {
@@ -71,22 +71,22 @@ int main(int argc, char *argv[])
             case 'v' :
               msglevel_change(&opts.msglevel, (opt == 'q') ? '-' : '+');
               break;
-            case 'i' :
+            case 'I' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
                 log_msg(error, MSG_F_ORDFAIL, optarg);
               break;
-            case 'o' :
+            case 'O' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
                   log_msg(warn, MSG_F_OWRFAIL, optarg);
                   opts.outfile = stdout;
                 }
               break;
-            case 's' :
+            case 'S' :
               log_msg(info, MSG_I_EVSORTED);
               opts.i_sort = true;
               break;
-            case 't' :
+            case 'T' :
               log_msg(info, MSG_W_TESTONLY);
               opts.i_test = true;
               break;

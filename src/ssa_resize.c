@@ -90,15 +90,15 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "hi:o:AFPMf:t:p:")) != -1)
+  while ((opt = getopt(argc, argv, "hI:O:AFPMf:t:p:")) != -1)
     {
       switch(opt)
         {
-        case 'i':
+        case 'I':
           if ((opts.infile = fopen(optarg, "r")) == NULL)
             log_msg(error, MSG_F_ORDFAIL, optarg);
           break;
-        case 'o':
+        case 'O':
           if (strcmp(optarg, "-") == 0)
             opts.outfile = stdout;
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
