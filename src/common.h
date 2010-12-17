@@ -146,5 +146,6 @@ void usage_convert_output(void);
 unsigned int _strtok(char *, char *);
 void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
+bool common_checks(struct options * const);
 
 #endif /* _COMMON_H */

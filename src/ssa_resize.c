@@ -101,8 +101,7 @@ int main(int argc, char *argv[])
         case 'O':
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
-              log_msg(warn, MSG_F_OWRFAIL, optarg);
-              log_msg(warn, MSG_F_OFSTDOUT);
+              log_msg(warn, MSG_F_OWRFAILSO, optarg);
               opts.outfile = stdout;
             }
           break;
@@ -128,8 +127,7 @@ int main(int argc, char *argv[])
     }
 
   /* args checks */
-  if (opts.infile == NULL)
-    log_msg(error, MSG_F_IFMISSING);
+  common_checks(&opts);
 
   if (mode == percents)
     {

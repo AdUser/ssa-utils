@@ -559,3 +559,23 @@ log_msg(uint8_t level, const char *format, ...)
 
     if (quit) exit(EXIT_FAILURE);
   }
+
+bool
+common_checks(struct options * const opts)
+  {
+    if (!opts) return false;
+
+    if (opts->infile  == NULL)
+      log_msg(error, MSG_F_IFMISSING);
+
+    if (opts->outfile == NULL)
+      {
+        log_msg(warn, MSG_F_OFMISSING);
+        opts->outfile = stdout;
+      }
+
+    if (opts->i_test == true && opts->msglevel < warn)
+      opts->msglevel = warn;
+
+    return true;
+  }

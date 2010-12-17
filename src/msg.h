@@ -26,10 +26,11 @@
 /* file operations */
 #define MSG_F_ORDFAIL    _("Can't open file '%s' for read.")
 #define MSG_F_OWRFAIL    _("Can't open file '%s' for write.")
+#define MSG_F_OWRFAILSO  _("Can't open file '%s' for write. stdout will be used.")
 #define MSG_F_WRFAIL     _("Write failed.")
 #define MSG_F_IFMISSING  _("Input file not specified.")
+#define MSG_F_OFMISSING  _("Output file not specified. stdout will be used.")
 #define MSG_F_UNEXPEOF   _("Unexpected EOF at line '%u'")
-#define MSG_F_OFSTDOUT   _("stdout will be used.")
 /* memory operations */
 #define MSG_M_OOM        _("Can't allocate memory.")
 /* workflow */

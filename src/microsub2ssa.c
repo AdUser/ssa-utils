@@ -78,8 +78,7 @@ int main(int argc, char *argv[])
             case 'O' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
-                  log_msg(warn, MSG_F_OWRFAIL, optarg);
-                  log_msg(warn, MSG_F_OFSTDOUT);
+                  log_msg(warn, MSG_F_OWRFAILSO, optarg);
                   opts.outfile = stdout;
                 }
               break;
@@ -115,11 +114,7 @@ int main(int argc, char *argv[])
       }
 
     /* checks */
-    if (opts.i_test == true && opts.msglevel < warn)
-      opts.msglevel = warn;
-
-    if (opts.infile == NULL)
-      log_msg(error, MSG_F_IFMISSING);
+    common_checks(&opts);
 
     if (target.type == unknown)
       log_msg(error, MSG_O_OREQUIRED, "-f");
