@@ -52,7 +52,7 @@ typedef struct ssa_style
     uint32_t outline_color;
     uint32_t background_color;
 
-    /* true as 0, false as -1 */
+    /* true as -1, false as 0 */
     int8_t bold;
     int8_t italic;
     int8_t underlined;

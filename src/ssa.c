@@ -100,10 +100,10 @@ ssa_style ssa_style_template =
     65535,     /* secondary  - 0000FFFF */
     3735552,   /* outline    - 00390000 */
     0,         /* background - 00000000 */
-    -1,        /* bold         */
-    -1,        /* italic       */
-    -1,        /* underlined   */
-    -1,        /* strikeout    */
+    0,         /* bold         */
+    0,         /* italic       */
+    0,         /* underlined   */
+    0,         /* strikeout    */
     100,       /* scale x      */
     100,       /* scale y      */
     0,         /* spacing (px) */
