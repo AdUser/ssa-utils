@@ -33,11 +33,8 @@ int main(int argc, char *argv[])
     if (argc < 1)
       exit(EXIT_FAILURE);
 
-    if ((infile = fopen(argv[1], "r")) == (FILE *) 0)
-      {
-        printf("Can't open input file.\n");
-        exit(EXIT_FAILURE);
-      }
+    if ((opts.infile = fopen(argv[1], "r")) == NULL)
+       log_msg(error, MSG_F_ORDFAIL, argv[1]);
 
     if (parse_srt_file(infile, &file) == false)
       exit(EXIT_FAILURE);
