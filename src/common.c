@@ -17,6 +17,7 @@
 #include "common.h"
 
 #define MSG_W_WRONGTIMEF _("Incorrect time '%s'. Should be like '[+/-][[h:]m:]s[.ms]'")
+#define MSG_W_TXTNOTFITS _("Text not fits in buffer. %s.")
 
 /* variables */
 extern unsigned long int line_num;
@@ -308,7 +309,7 @@ text_replace(char *haystack, char *needle, char *replace,
           {
             if (i > chars_remain)
               {
-                log_msg(warn, _("Text not fits in buffer. Text replace incompleted."));
+                log_msg(warn, MSG_W_TXTNOTFITS, _("Text replace incompleted."));
                 return false;
               }
             f = haystack + len_h;          /* [text needl text2\0...] */
@@ -359,22 +360,34 @@ string_skip_chars(char *string, char *chars)
   }
 
 bool
-text_append(char *to, char  *from, uint16_t *chars_remain)
+text_append(char *to, char *from, char *sep, unsigned int to_size)
   {
-    uint16_t s_len = strlen(from);
+    uint16_t len_f, len_t, len_s, chars_remain;
 
-    if (*chars_remain > s_len) /* why not '>=' - because extra space below */
+    if (!to || !from || !sep) return false;
+
+    len_f = strlen(from);
+    len_t = strlen(to);
+    len_s = strlen(sep);
+    chars_remain = to_size - len_t;
+
+    if (to_size < len_t)
       {
-        strncat(to, " ", MAXLINE);
-        strncat(to, from, MAXLINE);
-      }
-    else
-      {
-        log_msg(warn, _("Too long text in event near line '%u'."), line_num);
+        log_msg(warn, _("Incorrect parameters in text_append() call"));
         return false;
       }
 
-    chars_remain -= (s_len + 1);
+    if (chars_remain >= len_f + len_s)
+      {
+        strcat(to, sep);
+        strcat(to, from);
+      }
+    else
+      {
+        log_msg(warn, MSG_W_TXTNOTFITS, _("Append failed."));
+        return false;
+      }
+
     return true;
   }
 

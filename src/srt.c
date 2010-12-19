@@ -36,7 +36,6 @@ parse_srt_file(FILE *infile, srt_file * const file)
     bool skip_event = false;
     uint16_t parsed = 0; /* num events parsed */
     uint8_t t_detect = 3; /* number of first timing strings to analyze */
-    uint16_t chars_remain; /* remaining size in text buffer */
     srt_event *event = (srt_event *) 0;
     srt_event **elist_tail = &file->events;
 
@@ -68,9 +67,9 @@ parse_srt_file(FILE *infile, srt_file * const file)
             {
               log_msg(warn, MSG_F_UNEXPEOF, line_num);
               if      (prev_line == text)
-                text_append(event->text, line, &chars_remain);
+                text_append(event->text, line, "", MAXLINE);
               else if (prev_line == timing)
-                strncpy(event->text, line, MAXLINE), chars_remain -= s_len;
+                strncpy(event->text, line, MAXLINE);
             }
           curr_line = blank;
         }
@@ -86,7 +85,6 @@ parse_srt_file(FILE *infile, srt_file * const file)
         if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
             event = calloc(1, sizeof(srt_event));
-            chars_remain = MAXLINE - 1;
             if (!event)
               log_msg(error, MSG_M_OOM);
 
@@ -130,7 +128,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
             case text :
               /* TODO: wrapping handling here   */
               if (prev_line == text)
-                text_append(event->text, line, &chars_remain);
+                text_append(event->text, line, "", MAXLINE);
               else
                 strncpy(event->text, line, MAXLINE);
               break;
