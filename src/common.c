@@ -254,52 +254,74 @@ void trim_spaces(char *line, int dirs)
     }
 }
 
-/* TODO: broken function: text_replace */
-/*
-bool text_replace(char *haystack, int haystack_max, char *needle, char *replace)
-{
-    char *temp;
-    char *p, *r;
-    int len_a, len_n, len_r;
+/* remember, that 'count = 0' means ALL entries found in string will be replaced */
+bool
+text_replace(char *haystack, char *needle, char *replace,
+             unsigned int hs_size, unsigned int count)
+  {
+    uint16_t len_h = 0;
+    uint16_t len_n = 0;
+    uint16_t len_r = 0;
+    uint16_t chars_remain = 0;
+    uint16_t i = 0;
+    char *p = haystack;
+    char *f = NULL, *t = NULL; /* f(rom), t(o) */
 
-    len_a = strlen(haystack);
+    if (!haystack || !needle || !replace)
+      return false;
+
+    len_h = strlen(haystack);
     len_n = strlen(needle);
     len_r = strlen(replace);
 
-    if (((len_a / len_n) * len_r) > haystack_max)
-    {
-        log_msg(warn, _("String size after text replace bigger than size of buf."));
-        log_msg(warn, _("Text replace will be skipped near line '%lu'."), line_num);
+    chars_remain = hs_size - len_h;
+    if (count == 0) /* zero means "replace all" */
+      count = -1; /* street magic. small negative value... wait, oh shi--! */
+    if (len_n == 0)
+      {
+        log_msg(warn, _("Search token is empty."));
         return false;
-    }
+      }
 
-    temp = (char *) calloc(1, haystack_max / len_n * len_r); *//* it should be enough *//*
-    if (temp == NULL)
-     log_msg(error, _("Can't allocate memory."));
+    if (len_n == len_r) /* bingo! */
+      {
+        while ((p = strstr(haystack, needle)) != NULL && count --> 0)
+          strncpy(p, replace, len_r); /* '\0' not included in len_r */
+      }                               /* that makes it possible     */
+    /* Yep, life isn't perfect. */
+    else if (len_n > len_r)
+      {
+        i = len_n - len_r;
+        while ((p = strstr(p, needle)) != NULL && count --> 0)
+         {                                /* [text needle text2\0.] */
+           strncpy(p, replace, len_r);    /* [text replle text2\0.] */
+           t = p + len_r;                 /* [text replle text2\0.] */
+           f = p + len_n;                 /*          t^f^ -->      */
+           while ((*t++ = *f++) != '\0'); /* [text repl text2\0...] */
+           chars_remain += i;
+         }
+      }
+    else /* (len_n < len_r) */
+      {
+        i = len_r - len_n;
+        while ((p = strstr(p, needle)) != NULL && count --> 0)
+          {
+            if (i > chars_remain)
+              {
+                log_msg(warn, _("Text not fits in buffer. Text replace incompleted."));
+                return false;
+              }
+            f = haystack + len_h;          /* [text needl text2\0...] */
+            t = haystack + len_h + i;      /*      p^      <-- f^t^   */
+            while (f != p) *t-- = *f--;    /* [text neneedl text2\0.] */
+            chars_remain -= i, len_h += i; /*      f^t^               */
+            strncpy(p, replace, len_r);    /* [text replace text2\0.] */
+/* debug:   printf("i: %i, hs: %i, rem: %i\n", i, len_h, chars_remain); */
+          }
+      }
 
-    p = haystack;
-    while ((p = strstr(p, needle)) != NULL)
-    {
-        *//* do street magic *//*
-        if (len_r == len_n)
-        {
-            r = replace;
-            while ((*p++ = *r++) != '\0');
-        } else if (len_r < len_n)    {
-            r = replace;
-            while ((*p++ = *r++) != '\0');
-            while ((*(p + len_r) = *(p + len_n)) != '\0');
-        } else *//* (len_r > len_n) *//* {
-            strcpy(temp, p);
-            strncpy(p, replace, len_r);
-            strcpy(p + len_r, temp + len_n);
-        }
-    }
-
-    free(temp);
     return true;
-}
-*/
+  }
 
 bool
 strip_text(char *where, char from, char to)
