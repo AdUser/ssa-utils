@@ -19,13 +19,14 @@
 
 typedef struct srt_event
   {
-    /* Usually, this id is a number. But sometimes, it can be random string *
-     * As it don't used nowhere, i suppose, that i can generate this value  */
+    /* Usually, this id is a number. But sometimes,       *
+     * it can be random string. As it don't used nowhere, *
+     * i suppose, that i can generate this value          */
+    struct srt_event *next;
     unsigned long int id;
     double start;
     double end;
     char text[MAXLINE];
-    struct srt_event *next;
 
     /** extensions */
     /* #1: position */

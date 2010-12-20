@@ -92,6 +92,7 @@ ssa_file ssa_file_template =
 
 ssa_style ssa_style_template =
   {
+    (ssa_style *) 0, /* pointer to next style */
     "Default", /* style name   */
     "Arial",   /* font name    */
     24.0,      /* font size    */
@@ -117,12 +118,12 @@ ssa_style ssa_style_template =
     10,        /* margin right  */
     20,        /* margin bottom */
     0,         /* alpha level */
-    204,       /* 0 - ansi, 204 - russian */
-    (ssa_style *) 0 /* pointer to next style */
+    204        /* 0 - ansi, 204 - russian */
   };
 
 ssa_event ssa_event_template =
 {
+    (ssa_event *) 0,
     0,         /* layer    */
     0.0,       /* start    */
     0.0,       /* end      */
@@ -132,8 +133,7 @@ ssa_event ssa_event_template =
     0,         /* margin_l */
     0,         /* margin_l */
     "",        /* effect   */
-    "",        /* text     */
-    (ssa_event *) 0
+    ""         /* text     */
 };
 
 /* top-level functions */

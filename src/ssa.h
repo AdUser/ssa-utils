@@ -43,6 +43,7 @@ typedef enum ssa_version
 
 typedef struct ssa_style
   {
+    struct ssa_style *next;
     char name[MAX_STYLE_NAME];
     char fontname[MAX_STYLE_NAME];
     float fontsize;
@@ -79,7 +80,6 @@ typedef struct ssa_style
     uint16_t margin_v;  /*  `------------'  */
     uint8_t alpha_level;/* not used neither in ssa, nor in ass */
     uint8_t codepage;   /* 204 - russian */
-    struct ssa_style *next;
   } ssa_style;
 
 /* Defined order & names below matches ssa_v4+ *
@@ -117,6 +117,7 @@ typedef struct ssa_style
 
 typedef struct ssa_event
   {
+    struct ssa_event *next;
     uint32_t layer;
     double start;
     double end;
@@ -127,7 +128,6 @@ typedef struct ssa_event
     int margin_v;
     char effect[MAX_EVENT_NAME];
     char text[MAXLINE];
-    struct ssa_event *next;
   } ssa_event;
 
 /* Defined order & names below matches ssa_v4+ *

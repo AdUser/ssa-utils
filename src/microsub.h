@@ -19,11 +19,11 @@
 
 typedef struct microsub_event
   {
+     struct microsub_event *next;
      /* start & end in frames, not seconds! */
      uint32_t start;
      uint32_t end;
      char     text[MAXLINE];
-     struct microsub_event *next;
   } microsub_event;
 
 typedef struct microsub_file
