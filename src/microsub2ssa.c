@@ -148,6 +148,7 @@ int main(int argc, char *argv[])
         (*dst)->end   = src->end;
         strncpy((*dst)->text, src->text, MAXLINE);
         /* text wrapping here */
+        text_replace((*dst)->text, "|", "\\n", MAXLINE, 0);
 
         dst = &((*dst)->next);
         source.events = src->next;
