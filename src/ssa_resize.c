@@ -73,7 +73,6 @@ int main(int argc, char *argv[])
   char line[MAXLINE] = "";
   uint8_t i = 0;
   struct res src = { 0, 0 };
-  struct res dst = { 0, 0 };
   unsigned int pct_w = 0;
   unsigned int pct_h = 0;
   ssa_file file;
@@ -110,7 +109,8 @@ int main(int argc, char *argv[])
             log_msg(error, _("'-f': wrong resolution."));
           break;
         case 't':
-          if (sscanf(optarg, "%u%*c%u", &dst.width, &dst.height) != 2)
+          if (sscanf(optarg, "%u%*c%u",
+                &file.res.width, &file.res.height) != 2)
             log_msg(error, _("'-t': wrong resolution."));
           break;
         case 'p':
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
     {
       if (src.width == 0)
         log_msg(error, MSG_O_OREQUIRED, "-f");
-      if (dst.width == 0)
+      if (file.res.width == 0)
         log_msg(error, MSG_O_OREQUIRED, "-t");
     }
 

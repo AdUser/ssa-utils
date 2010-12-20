@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
               opts.i_test = true;
               break;
             case 'x' :
-              target.res_x = atoi(optarg);
+              target.res.width  = atoi(optarg);
               break;
             case 'y' :
-              target.res_y = atoi(optarg);
+              target.res.height = atoi(optarg);
               break;
             case 'w' :
               set_wrap(&opts.o_wrap, optarg);

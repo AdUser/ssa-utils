@@ -68,8 +68,7 @@ ssa_file ssa_file_template =
     "Normal", /* Collisions           */
 
     /* numeric fields */
-    0,        /* PlayResX             */
-    0,        /* PlayResY             */
+    { 0, 0 }, /* PlayResX & PlayResY  */
     0,        /* PlayDepth            */
     100.0,    /* Timer                */
     0,        /* Synch Point          */
@@ -311,9 +310,9 @@ get_ssa_option(char * const line, ssa_file * const h)
           break;
         case 'p' : /* all 'Play*' lines */
           if      (strncmp("playresx",  line, param_len) == 0)
-            h->res_x = atoi(value);
+            h->res.width  = atoi(value);
           else if (strncmp("playresy",  line, param_len) == 0)
-            h->res_y = atoi(value);
+            h->res.height = atoi(value);
           else if (strncmp("playdepth", line, param_len) == 0)
             h->depth = atoi(value);
           else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
@@ -923,10 +922,10 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
     if (f->sync != 0)
       fprintf(outfile, "%s: %.0f\n", "Synch Point", f->sync);
 
-    fprintf(outfile, "%s%s: %i\n", (f->res_x) ? "" : ";",
-                        "PlayResX", f->res_x);
-    fprintf(outfile, "%s%s: %i\n", (f->res_y) ? "" : ";",
-                        "PlayResY", f->res_y);
+    fprintf(outfile, "%s%s: %i\n", (f->res.width) ? "" : ";",
+                        "PlayResX", f->res.width);
+    fprintf(outfile, "%s%s: %i\n", (f->res.height) ? "" : ";",
+                        "PlayResY", f->res.height);
     fprintf(outfile, "%s%s: %i\n", (f->depth) ? "" : ";",
                         "PlayDepth", f->depth);
 

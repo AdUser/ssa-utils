@@ -171,8 +171,7 @@ typedef struct ssa_file
     char collisions [MAX_HEADER_LINE]; /* Collisions          */
 
     /* numeric fields */
-    uint16_t res_x;                 /* PlayResX               */
-    uint16_t res_y;                 /* PlayResY               */
+    struct res res;
     uint16_t depth;                 /* PlayDepth              */
     float    timer;                 /* Timer                  */
     float    sync;                  /* Synch Point (WTF?)     */
