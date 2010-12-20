@@ -97,12 +97,7 @@ int main(int argc, char *argv[])
               target.res_y = atoi(optarg);
               break;
             case 'w' :
-              opts.o_wrap = keep;
-              /* TODO: enable, when i finish this feature
-              if      (strcmp(optarg, "keep")  == 0) wrap_mode = keep;
-              else if (strcmp(optarg, "merge") == 0) wrap_mode = merge;
-              else if (strcmp(optarg, "split") == 0) wrap_mode = split;
-              */
+              set_wrap(&opts.o_wrap, optarg);
               break;
             case 'h' :
               usage(EXIT_SUCCESS);
@@ -148,7 +143,10 @@ int main(int argc, char *argv[])
         (*dst)->end   = src->end;
         strncpy((*dst)->text, src->text, MAXLINE);
         /* text wrapping here */
-        text_replace((*dst)->text, "|", "\\n", MAXLINE, 0);
+        if      (opts.o_wrap == keep)
+          text_replace((*dst)->text, "|", "\\n", MAXLINE, 0);
+        else if (opts.o_wrap == merge)
+          text_replace((*dst)->text, "|", " ",   MAXLINE, 0);
 
         dst = &((*dst)->next);
         source.events = src->next;

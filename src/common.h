@@ -89,6 +89,17 @@ enum chs_type
   UTF32LE = 5
 } charset_type;
 
+enum wrapping_mode
+{
+  keep,
+/*
+  split,
+  lowerwide,
+  upperwide,
+*/
+  merge
+} wrapping_mode;
+
 struct unicode_test
 {
   enum chs_type charset_type;
@@ -107,7 +118,7 @@ struct options
   FILE *infile;
   FILE *outfile;
 
-  enum { keep /*, merge, split */ } o_wrap;
+  enum wrapping_mode o_wrap;
   enum chs_type i_chs_type;
 };
 
@@ -147,5 +158,6 @@ unsigned int _strtok(char *, char *);
 void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);
+bool set_wrap(enum wrapping_mode *, char *);
 
 #endif /* _COMMON_H */

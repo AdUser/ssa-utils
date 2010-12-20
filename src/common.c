@@ -543,9 +543,9 @@ Output options:\n\
   -x <int>          Specify video width.\n\
   -y <int>          Specify video height.\n\
   -w <string>       Line wrapping mode. Can be:\n\
-                    'keep'  : Don't change line breaks. (default)\n"));
-/*                  'merge' : Merge to single line.\n\ *
- *                  'split' : Split long lines.\n\     */
+                    'keep'  : Don't change line breaks. (default)\n\
+                    'merge' : Merge multiple lines to one.\n"));
+/*                  'split' : Split long lines.\n\     */
   }
 
 void
@@ -611,6 +611,23 @@ common_checks(struct options * const opts)
 
     if (opts->i_test == true && opts->msglevel < warn)
       opts->msglevel = warn;
+
+    return true;
+  }
+
+bool
+set_wrap(enum wrapping_mode *o_wrap, char *mode)
+  {
+    if (!mode)
+      return false;
+
+    if (strcmp(mode, _("merge")) == 0)
+      *o_wrap = merge;
+    else
+      *o_wrap = keep; /* default */
+
+    if (*o_wrap != keep)
+      log_msg(info, _("Wrapping mode set to '%s'"), mode);
 
     return true;
   }
