@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     init_ssa_file(&target);
 
     /* parsing options */
-    while ((opt = getopt(argc, argv, "ehI:O:qvSTw:f:x:y:")) != -1)
+    while ((opt = getopt(argc, argv, "qvhI:O:" "e" "ST" "f:x:y:Fw:")) != -1)
       {
         switch (opt)
           {
@@ -107,6 +107,9 @@ int main(int argc, char *argv[])
             case 'w' :
               set_wrap(&opts.o_wrap, optarg);
               break;
+            case 'F' :
+              opts.o_fsize_tune = true;
+              break;
             case 'h' :
               usage(EXIT_SUCCESS);
               break;
@@ -121,6 +124,9 @@ int main(int argc, char *argv[])
 
     if (target.type == unknown)
       log_msg(error, MSG_O_OREQUIRED, "-f");
+
+    if (opts.o_fsize_tune && !target.res.width && !target.res.height)
+      log_msg(error, _("'-F' option requires '-x' and/or '-y'."));
 
     if (!parse_srt_file(opts.infile, &source))
       log_msg(error, MSG_U_UNKNOWN);
@@ -162,6 +168,8 @@ int main(int argc, char *argv[])
         free(src); /* decreases memory consumption */
         src = source.events;
       }
+
+    font_size_normalize(&target.res, &target.styles->fontsize);
 
     write_ssa_file(opts.outfile, &target, true);
 

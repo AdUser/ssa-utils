@@ -46,6 +46,16 @@
 #define LINE_START 0x1
 #define LINE_END   0x2
 
+/* this specifies ratio (resolution pixels / font points)
+ * for example: (res -> font size)
+ * width:  1280px -> 40pt, 448px -> 14pt, etc.
+ * height: 720px  -> 40pt, 384px -> 16pt, etc.
+ */
+#define PX_PER_PT_X 32
+#define PX_PER_PT_Y 24
+
+#define FSIZE_MIN 6
+
 /* typedef */
 typedef struct subtime
 {
@@ -114,6 +124,7 @@ struct options
 
   bool i_sort;
   bool i_test;
+  bool o_fsize_tune;
 
   FILE *infile;
   FILE *outfile;
@@ -159,5 +170,6 @@ void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);
 bool set_wrap(enum wrapping_mode *, char *);
+bool font_size_normalize(struct res const * const, float * const);
 
 #endif /* _COMMON_H */

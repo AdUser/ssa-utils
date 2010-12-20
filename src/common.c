@@ -37,6 +37,7 @@ struct options opts = {
   warn,       /* msglevel    */
   false,      /* sort_events */
   false,      /* test        */
+  false,      /* font tune   */
   (FILE *) 0, /* infile      */
   (FILE *) 0, /* outfile     */
   keep,       /* o_wrap      */
@@ -542,6 +543,8 @@ Output options:\n\
     fprintf(stderr, _("\
   -x <int>          Specify video width.\n\
   -y <int>          Specify video height.\n\
+  -F                Adjust font size proportional to video resolution.\n\
+                    This option requires '-x' or '-y' or both.\n\
   -w <string>       Line wrapping mode. Can be:\n\
                     'keep'  : Don't change line breaks. (default)\n\
                     'merge' : Merge multiple lines to one.\n"));
@@ -628,6 +631,26 @@ set_wrap(enum wrapping_mode *o_wrap, char *mode)
 
     if (*o_wrap != keep)
       log_msg(info, _("Wrapping mode set to '%s'"), mode);
+
+    return true;
+  }
+
+bool
+font_size_normalize(struct res const * const res, float * const fsize)
+  {
+    if (!res || !fsize) return false;
+
+    if      (res->width != 0 && res->height != 0)
+      *fsize = (res->width / PX_PER_PT_X + res->height / PX_PER_PT_Y) / 2;
+    else if (res->width != 0)
+      *fsize = res->width  / PX_PER_PT_X;
+    else if (res->height != 0)
+      *fsize = res->height / PX_PER_PT_Y;
+
+    if (*fsize > 10 && (int) *fsize % 2 == 1)
+      *fsize -= *fsize - (int) *fsize - 1; /* make font size even */
+
+    if (*fsize < FSIZE_MIN) *fsize = FSIZE_MIN;
 
     return true;
   }
