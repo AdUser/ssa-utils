@@ -229,32 +229,28 @@ void trim_newline(char *line)
     *p = '\0';
 }
 
-void trim_spaces(char *line, int dirs)
-{
+bool trim_spaces(char *line, int dirs)
+  {
     /** dirs: 1 - start, 2 - end, 3 - both */
-    char *p;
-    unsigned int shift = 0;
+    char *f, *t;
 
-    p = line;
+    if (!line) return false;
+
     if (dirs & LINE_START)
-    {
-        while (isblank(*p)) p++;
-        if (p != line)
-        {
-            shift = p - line;
-            do {
-                *(p - shift) = *p;
-            } while (*p++ != '\0');
-        }
-    }
+      {
+        for (t = f = line; isblank(*f); f++);      /* [...text...\0] */
+        if (t != f) while ((*t++ = *f++) != '\0'); /* t^ f^ -->   |  */
+      }
 
     if (dirs & LINE_END)
     {
-      for (p = line; *p != '\0'; p++);
-      for (p--; isblank(*p); p--);
-      *(p + 1) = '\0';
+      for (t = line; *t != '\0';) t++;             /* [text...\0.\0] */
+      for (t--; t > line && isblank(*t); t--);     /*     |<-- ^t    */
+      *(++t) = '\0';                               /* [text\0.\0.\0] */
     }
-}
+
+    return true;
+  }
 
 /* remember, that 'count = 0' means ALL entries found in string will be replaced */
 bool

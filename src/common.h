@@ -145,7 +145,7 @@ bool check_subtime(subtime);
 uint16_t char_count(char * const, char);
 bool is_empty_line(char *);
 void trim_newline(char *);
-void trim_spaces(char *, int);
+bool trim_spaces(char *, int);
 bool text_replace(char *, char *, char *, unsigned int, unsigned int);
 bool strip_text(char *, char, char);
 void string_lowercase(char *, int);
