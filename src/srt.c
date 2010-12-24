@@ -133,7 +133,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
                 strncpy(event->text, line, MAXLINE);
               break;
             case blank :
-              if (!skip_event)
+              if (!skip_event && prev_line != blank)
                 srt_event_append(&file->events, &elist_tail, event, opts.i_sort);
             case unknown :
             default      :
