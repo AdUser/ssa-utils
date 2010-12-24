@@ -35,7 +35,7 @@
 #define MSG_M_OOM        _("Can't allocate memory.")
 /* workflow */
 #define MSG_W_TESTONLY   _("Only test will be performed.")
-#define MSG_W_TESTDONE   _("Input file test completed. See warnings above, if any.\n")
+#define MSG_W_TESTDONE   _("Input file test completed. See warnings above, if any.")
 #define MSG_W_TESTFAIL   _("Input file test failed. See messages above.")
 #define MSG_W_UNIMPL     _("Unimplemented feature.")
 #define MSG_W_WRONGUNI   _("%s not supported. Please, convert file to singlebyte charset or UTF-8.")
