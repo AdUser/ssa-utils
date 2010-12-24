@@ -1091,6 +1091,9 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
         ptr = ptr->next;
         if (memfree) free(prev);
       }
+
+    fputc('\n', outfile);
+
     return true;
   }
 
