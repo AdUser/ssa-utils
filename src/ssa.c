@@ -156,11 +156,9 @@ parse_ssa_file(FILE *infile, ssa_file *file)
 
     ssa_section section = NONE;
 
-    while (true)
+    while (!feof(infile))
       {
-        if (feof(infile))
-          break;
-
+        memset(line, 0, MAXLINE);
         fgets(line, MAXLINE, infile);
         line_num++;
 
