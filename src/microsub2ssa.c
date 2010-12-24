@@ -83,11 +83,9 @@ int main(int argc, char *argv[])
                 }
               break;
             case 'S' :
-              log_msg(info, MSG_I_EVSORTED);
               opts.i_sort = true;
               break;
             case 'T' :
-              log_msg(info, MSG_W_TESTONLY);
               opts.i_test = true;
               break;
             case 'x' :

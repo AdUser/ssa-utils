@@ -608,8 +608,15 @@ common_checks(struct options * const opts)
         opts->outfile = stdout;
       }
 
-    if (opts->i_test == true && opts->msglevel < warn)
-      opts->msglevel = warn;
+    if (opts->i_test == true)
+      {
+        if (opts->msglevel < warn)
+          opts->msglevel = warn;
+        log_msg(info, MSG_W_TESTONLY);
+      }
+
+    if (opts->i_sort == true)
+      log_msg(info, MSG_I_EVSORTED);
 
     return true;
   }
