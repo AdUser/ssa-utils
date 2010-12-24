@@ -33,7 +33,7 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#define MAXLINE 2048
+#define MAXLINE 3072 * sizeof(char)
 #define COMMON_PROG_NAME "ssa-utils"
 #define VERSION 0.02
 #define _(x) gettext((x))
