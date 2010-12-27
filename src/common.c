@@ -17,7 +17,6 @@
 #include "common.h"
 
 #define MSG_W_WRONGTIMEF _("Incorrect time '%s'. Should be like '[+/-][[h:]m:]s[.ms]'")
-#define MSG_W_TXTNOTFITS _("Text not fits in buffer. %s.")
 
 /* variables */
 extern unsigned long int line_num;

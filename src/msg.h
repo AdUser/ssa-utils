@@ -39,6 +39,7 @@
 #define MSG_W_TESTFAIL   _("Input file test failed. See messages above.")
 #define MSG_W_UNIMPL     _("Unimplemented feature.")
 #define MSG_W_WRONGUNI   _("%s not supported. Please, convert file to singlebyte charset or UTF-8.")
+#define MSG_W_TXTNOTFITS _("Text not fits in buffer. %s.")
 /* options handling */
 #define MSG_O_OREQUIRED  _("'%s' option required.")
 #define MSG_O_OVREQUIRED _("'%s' option: value required.")
