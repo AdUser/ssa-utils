@@ -11,3 +11,5 @@ po/Makefile
 ssa-utils.cbp
 ssa-utils.depend
 ssa-utils.layout
+
+dist-clean.sh
