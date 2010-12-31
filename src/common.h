@@ -72,6 +72,13 @@ struct point
   signed int y;
 };
 
+struct time_pt
+{
+  bool used;
+  double pos;
+  double shift;
+};
+
 struct res
 {
   unsigned int width;
