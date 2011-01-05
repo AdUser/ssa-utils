@@ -104,7 +104,8 @@ str2subtime(char *line, subtime *st)
               break;
           }
       }
-    return true;
+
+    return (check_subtime(st)) ? true : false ;
   }
 
 /* next function does almost the same that str2subtime, but this:
@@ -210,15 +211,12 @@ double2subtime(double d, subtime * const st)
   }
 
 bool
-check_subtime(subtime time)
+check_subtime(subtime const * const time)
   {
-    bool result = true;
+    if (!time) return false;
 
-    if (time.hrs > 23 || time.min > 59 ||
-        time.sec > 59 || time.msec > 999)
-          result = false;
-
-    return false;
+    return (time->hrs > 23 || time->min > 59 ||
+            time->sec > 59 || time->msec > 999) ? false : true ;
   }
 
 void trim_newline(char *line)

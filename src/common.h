@@ -146,7 +146,7 @@ bool str2subtime(char *, subtime *); /* + bool subtime2str(char *, subtime *); ?
 bool parse_time(char *, double *, bool);
 void subtime2double(subtime const * const, double *);
 void double2subtime(double, subtime * const);
-bool check_subtime(subtime);
+bool check_subtime(subtime const * const);
 
 /* string functions */
 uint16_t char_count(char * const, char);
