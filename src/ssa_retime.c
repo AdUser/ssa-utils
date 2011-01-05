@@ -57,7 +57,7 @@ Specific options for 'points' mode:\n\
   -p <time>::<shift>\n\
                     Point of fixup & time shift in it. Option can be\n\
                     specified more than once. (see man for details)\n\
-            <time> & <shift> must be in form of [[h:]m:]s[.ms].\n"));
+                    Both args must be in form of [[h:]m:]s[.ms].\n"));
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
