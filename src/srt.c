@@ -190,7 +190,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 
     if (!get_srt_timing(&e->start, token))
       {
-        log_msg(warn, w_token, "start", token);
+        log_msg(warn, w_token, "start", token, line_num);
         return false;
       }
 
@@ -203,7 +203,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 
     if (!get_srt_timing(&e->end, token))
       {
-        log_msg(warn, w_token, "end", token);
+        log_msg(warn, w_token, "end", token, line_num);
         return false;
       }
 
