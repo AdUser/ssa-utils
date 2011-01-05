@@ -58,6 +58,8 @@ int main(int argc, char *argv[])
     ssa_event **dst;
     char opt;
 
+    if (argc < 2) usage(EXIT_SUCCESS);
+
     /* init, stage 1 */
     memset(&source, 0, sizeof(srt_file));
     init_ssa_file(&target);
