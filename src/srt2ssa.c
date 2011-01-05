@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     /* init, stage 1 */
     memset(&source, 0, sizeof(srt_file));
     init_ssa_file(&target);
+    fesetround(1); /* no nearest integer */
 
     /* parsing options */
     while ((opt = getopt(argc, argv, "qvhI:O:" "e" "ST" "f:x:y:Fw:")) != -1)
