@@ -242,30 +242,15 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 bool
 get_srt_timing(double *d, char *token)
   {
-    char *timing_format = "%u:%u:%u%*c%u";
-    char *p = 0;
-    uint8_t msec_precision = 0;
-    subtime t;
+    subtime st = { 0, 0, 0, 0 };
 
-    memset(&t, 0, sizeof(subtime));
     /* saves, if some idiot made timing with ''negative'' values */
     string_skip_chars(token, "-");
     trim_spaces(token, LINE_START | LINE_END);
 
-    if (((p = strrchr(token, ','))) != NULL ||
-        ((p = strrchr(token, '.')) != NULL))
-        msec_precision = strlen(p) - 1;
-    if (sscanf(token, timing_format, &t.hrs, &t.min, &t.sec, &t.msec) == 4)
+    if (str2subtime(token, &st))
       {
-        /* fix various msec precision */
-        switch (msec_precision)
-          {
-            case 1  : t.msec *= 100;   break;
-            case 2  : t.msec *= 10;    break;
-            case 3  : /* do nothing */ break;
-            default : /* do nothing */ break;
-          }
-        subtime2double(&t, d);
+        subtime2double(&st, d);
         return true;
       }
 
