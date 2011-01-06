@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "qvhI:O:" "f:F:" "p:" "t:s:e:l:")) != -1)
+  while ((opt = getopt(argc, argv, "qvhi:o:" "f:F:" "p:" "t:s:e:l:")) != -1)
     {
       switch(opt)
         {
@@ -244,11 +244,11 @@ int main(int argc, char *argv[])
           case 'v':
             msglevel_change(&opts.msglevel, (opt == 'q') ? '-' : '+');
             break;
-          case 'I':
+          case 'i':
             if ((opts.infile = fopen(optarg, "r")) == NULL)
               log_msg(error, MSG_F_ORDFAIL, optarg);
             break;
-          case 'O':
+          case 'o':
             if ((opts.outfile = fopen(optarg, "w")) == NULL)
               {
                 log_msg(warn, MSG_F_OWRFAILSO, optarg);

@@ -49,7 +49,7 @@ Specific options for 'resolution' mode:\n\
                     Default: use values, specified in input file.\n\
                     Exit, if not found.\n\
   -t <int>x<int>    Width and height of target video (in pixels)\n\
-                    This option is mandatory in this mode."));
+                    This option mandatory for this mode.\n"));
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
@@ -89,15 +89,15 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "hI:O:AFPMf:t:p:")) != -1)
+  while ((opt = getopt(argc, argv, "hi:o:AFPMf:t:p:")) != -1)
     {
       switch(opt)
         {
-        case 'I':
+        case 'i':
           if ((opts.infile = fopen(optarg, "r")) == NULL)
             log_msg(error, MSG_F_ORDFAIL, optarg);
           break;
-        case 'O':
+        case 'o':
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
               log_msg(warn, MSG_F_OWRFAILSO, optarg);
