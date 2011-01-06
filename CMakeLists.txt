@@ -16,6 +16,8 @@ ENDIF (NOT CMAKE_BUILD_TYPE)
 
 # set paths
 SET(CMAKE_INSTALL_PREFIX "/usr")
+SET(INSTALL_BIN "${CMAKE_INSTALL_PREFIX}/bin")
+SET(INSTALL_LIB "${CMAKE_INSTALL_PREFIX}/lib")
 
 IF (NOT LIBDIR)
   SET (LIBDIR "lib")
@@ -55,10 +57,10 @@ ELSE  (NOT GETTEXT_FOUND)
 ENDIF (NOT GETTEXT_FOUND)
 
 MESSAGE (STATUS "------------------------------------------")
-MESSAGE (STATUS "Build type is:     ${CMAKE_BUILD_TYPE}")
+MESSAGE (STATUS "Build type is:        ${CMAKE_BUILD_TYPE}")
 MESSAGE (STATUS "")
-MESSAGE (STATUS "Install prefix:    ${CMAKE_INSTALL_PREFIX}")
-MESSAGE (STATUS "Lib directory:     ${CMAKE_INSTALL_PREFIX}/${LIBDIR}")
+MESSAGE (STATUS "Install prefix:       ${CMAKE_INSTALL_PREFIX}")
+MESSAGE (STATUS "Binaries directory:   ${INSTALL_BIN}")
 MESSAGE (STATUS "")
 MESSAGE (STATUS "Required libraries:")
 MESSAGE (STATUS "  libmath: ${MATH_FOUND}")
