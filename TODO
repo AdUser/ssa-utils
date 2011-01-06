@@ -7,8 +7,13 @@
 - параметр '-W' для обработки переноса линий
 ? параметр '-u' - принудительное включение режима юникода
 + параметр '-S' - сортировка событий
-- подстройка размера шрифта в стиле "по умолчанию" в зависимости от разрешения видео (опции '-x', '-y')
++ подстройка размера шрифта в стиле "по умолчанию" в зависимости от разрешения видео (опции '-x', '-y')
 - README: maintainers
+- ssa_retime: подстройка длительности для текстовых событий (-D ?).
+  * set           Set subtitle duration proportionally subtitle lenght.
+  * extend-only   Same as 'set', but don't change duration, if calculated value less than existing.
+  * reduce-only   Same as 'set', but don't change duration, if calculated value greater than existing.
+- ssa_retime: опция усреднения значения при подстройке длительности. (-d ?)
 
 [bugs]
 srt_parse:
@@ -19,9 +24,7 @@ srt_parse:
 [utils]
 ssa_resize
 ssa_version
-?ssa_styles
-?ssa_fonts
-?ssa_effects
+ssa_resources
 
 [ssa_versions]
 ssa_version <options> -i <infile> [-o <outfile>]
@@ -38,3 +41,8 @@ Options:
       -f <str>    Specify ssa-format version for output file.
       -u          Upgrade file to latest version (Currently: v4+ (ass)).
                   (Don't use this option in scripts, use '-f' instead)
+
+[ssa_resources]
+Usage: 
+    - ssa_resources show    
+    - ssa_resources extract
