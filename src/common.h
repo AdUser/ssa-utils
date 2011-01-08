@@ -157,7 +157,7 @@ bool text_replace(char *, char *, char *, unsigned int, unsigned int);
 bool strip_text(char *, char, char);
 void string_lowercase(char *, int);
 void string_skip_chars(char *, char *);
-bool text_append(char *, char *, char *, unsigned int);
+bool text_append(char *, char *, char *, unsigned int, unsigned int);
 
 /* unicode-related functions */
 enum chs_type unicode_check(char *, struct unicode_test *);

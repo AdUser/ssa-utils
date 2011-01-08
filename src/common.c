@@ -353,17 +353,21 @@ string_skip_chars(char *string, char *chars)
       }
   }
 
+/* copies text 'from' 'to' buffer size 'to_size' *
+ * with 'sep' between old and new content, but   *
+ * no more than 'len' chars                      */
 bool
-text_append(char *to, char *from, char *sep, unsigned int to_size)
+text_append(char *to, char *from, char *sep,
+            unsigned int to_size, unsigned int len)
   {
-    uint16_t len_f, len_t, len_s, chars_remain;
+    uint16_t len_f, len_t, len_s;
 
     if (!to || !from || !sep) return false;
 
     len_f = strlen(from);
     len_t = strlen(to);
     len_s = strlen(sep);
-    chars_remain = to_size - len_t;
+    if (len != 0 && len < len_f) len_f = len;
 
     if (to_size < len_t)
       {
@@ -371,10 +375,10 @@ text_append(char *to, char *from, char *sep, unsigned int to_size)
         return false;
       }
 
-    if (chars_remain >= len_f + len_s)
+    if ((to_size - len_t) >= len_f + len_s)
       {
         strcat(to, sep);
-        strcat(to, from);
+        strncat(to, from, len_f);
       }
     else
       {
