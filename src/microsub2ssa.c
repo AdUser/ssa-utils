@@ -145,6 +145,7 @@ int main(int argc, char *argv[])
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 
         /* copy data */
+        (*dst)->type  = DIALOGUE;
         (*dst)->start = src->start;
         (*dst)->end   = src->end;
         strncpy((*dst)->text, src->text, MAXLINE);

@@ -115,9 +115,20 @@ typedef struct ssa_style
 #define SSA_STYLE_V4_FORMAT  "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding"
 #define SSA_STYLE_V4P_FORMAT "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding"
 
+typedef enum ssa_event_type
+  {
+    DIALOGUE = 1,
+    COMMENT,
+    COMMAND,
+    MOVIE,
+    PICTURE,
+    SOUND
+  } ssa_event_type;
+
 typedef struct ssa_event
   {
     struct ssa_event *next;
+    ssa_event_type type;
     uint32_t layer;
     double start;
     double end;

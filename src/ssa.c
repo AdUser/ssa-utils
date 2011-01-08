@@ -124,6 +124,7 @@ ssa_style ssa_style_template =
 ssa_event ssa_event_template =
 {
     (ssa_event *) 0,
+    DIALOGUE,  /* event type */
     0,         /* layer    */
     0.0,       /* start    */
     0.0,       /* end      */
@@ -195,10 +196,24 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               if      (*line == 'F' || *line == 'f')
                 set_event_fields_order(line,
                     file->type, file->event_fields_order);
-              else if (*line == 'D' || *line == 'd')
+              else
                 {
                   if ((e = calloc(1, sizeof(ssa_event))) == NULL)
                     log_msg(error, MSG_M_OOM);
+                  switch (toupper(*line))
+                    {
+                      case 'D' : e->type = DIALOGUE; break;
+                      case 'M' : e->type = MOVIE;    break;
+                      case 'P' : e->type = PICTURE;  break;
+                      case 'S' : e->type = SOUND;    break;
+                      case 'C' :
+                        e->type = (strncmp(line, "Comment", 7) == 0) ? COMMENT : COMMAND ;
+                        break;
+                      default  :
+                        log_msg(warn, _("W: Unknown event type at line '%lu': %s"), line_num, line);
+                        continue; /* main loop */
+                        break;
+                    }
                   if (get_ssa_event(line, e, file->event_fields_order) != false)
                     ssa_event_append(&file->events, &elist_tail, e, opts.i_sort);
                   else free(e);
@@ -824,7 +839,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
     if ((p = strchr(line, ':')) == NULL)
       return false;
 
-    p = p + 1; /* "Dialogie:|" */
+    p = p + 1; /* "EventType:|" */
 
     while (*field != 0)
       {
@@ -1101,11 +1116,19 @@ bool
 write_ssa_event(FILE *outfile, ssa_event * const event, ssa_version v)
   {
     struct subtime st;
-    char *s = "";
+    char *type = "";
 
-    if (v == ssa_v4) s = "Marked=";
-
-    fprintf(outfile, "Dialogue: %s%i,", s, event->layer);
+    switch (event->type)
+      {
+        case COMMAND  :
+        case DIALOGUE : type = "Dialogue"; break;
+        case COMMENT  : type = "Comment";  break;
+        case MOVIE    : type = "Movie";    break;
+        case PICTURE  : type = "Picture";  break;
+        case SOUND    : type = "Sound";    break;
+        default       : type = "";         break;
+      }
+    fprintf(outfile, "%s: %s%i,", type, (v == ssa_v4) ? "Marked=" : "", event->layer);
 
     double2subtime(event->start, &st);
     fprintf(outfile, "%i:%02i:%02i.%02i,",
