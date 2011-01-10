@@ -332,7 +332,7 @@ strip_text(char *where, char from, char to)
   }
 
 void
-string_lowercase(char *s, int length)
+string_lowercase(char * const s, unsigned int length)
   {
     char *p;
     if (length == 0 || length > MAXLINE) length = MAXLINE;
