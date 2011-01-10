@@ -303,7 +303,7 @@ text_replace(char *haystack, char *needle, char *replace,
           {
             if (i > chars_remain)
               {
-                log_msg(warn, MSG_W_TXTNOTFITS, _("Text replace incompleted."));
+                log_msg(warn, MSG_W_TXTNOTFITS, chars_remain, i, _("Replace incompleted."));
                 return false;
               }
             f = haystack + len_h;          /* [text needl text2\0...] */
@@ -382,7 +382,8 @@ text_append(char *to, char *from, char *sep,
       }
     else
       {
-        log_msg(warn, MSG_W_TXTNOTFITS, _("Append failed."));
+        log_msg(warn, MSG_W_TXTNOTFITS, to_size - len_t,
+                 len_f + len_s, _("Append failed."));
         return false;
       }
 
