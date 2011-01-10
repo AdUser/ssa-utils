@@ -390,6 +390,40 @@ text_append(char *to, char *from, char *sep,
     return true;
   }
 
+/** stack functions */
+
+void
+stack_init(STACK_ELEM *st)
+  {
+    memset(st, 0, STACK_ELEM_SIZE * STACK_MAX);
+  }
+
+bool
+stack_push(STACK_ELEM *st, STACK_ELEM *top, STACK_ELEM val)
+  {
+    if ((top - st) < STACK_MAX)
+      {
+        *top = val, top++;
+        return true;
+      }
+    else
+      {
+        log_msg(warn, _("Stack is full! Increase STACK_MAX and recompile."));
+        return false;
+      }
+  }
+
+bool
+stack_pop(STACK_ELEM *st, STACK_ELEM *top)
+  {
+    if (top > st)
+      {
+        top = '\0', top--;
+        return true;
+      }
+    return false;
+  }
+
 /** various functions */
 /* why i use non-standart function:
  * 1. strtok can't correctly handle empty field

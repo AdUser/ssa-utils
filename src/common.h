@@ -56,6 +56,10 @@
 
 #define FSIZE_MIN 6
 
+#define STACK_MAX 100
+#define STACK_ELEM int
+#define STACK_ELEM_SIZE sizeof(int)
+
 /* typedef */
 typedef struct subtime
 {
@@ -170,6 +174,11 @@ void usage_common_opts(void);
 void usage_convert(char *);
 void usage_convert_input(void);
 void usage_convert_output(void);
+
+/* stack functions */
+void stack_init(STACK_ELEM *);
+bool stack_push(STACK_ELEM *, STACK_ELEM *, STACK_ELEM);
+bool stack_pop(STACK_ELEM *,  STACK_ELEM *);
 
 /* various functions */
 unsigned int _strtok(char *, char *);
