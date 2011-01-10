@@ -693,3 +693,110 @@ font_size_normalize(struct res const * const res, float * const fsize)
 
     return true;
   }
+
+/** tags functions */
+/* html-like tags */
+
+/*  typical html-like tag: (attention to various quotes):      *
+ * <name param1=value1 param2='value2' param3="value3">        *
+ * but handles also tags like <name param = 'one " two' />     *
+ * name/param always becomes lowercase, value procssed "as is" *
+ * known limitations: <name param=value.p1 value.p2> becomes   *
+ * 'name => { "param" => "value.p1", "value.p2" }'             */
+int16_t
+process_html_tag(char const * const s, struct html_tag * const tag)
+  {
+    char buf[MAXLINE];
+    char const *w = s; /* worker poiner */
+    char l = '\0'; /* one char to save */
+    char test = '\0';
+    char *b = buf;
+    char *e;
+    bool blind_copy = false;
+    bool cont = true;
+    bool shift = false;
+    uint8_t offset = 0; /* offset of pointer to param || value */
+    uint16_t len = 0;
+    enum { name, param, value } now = name;
+
+    if (!s || !tag) return 0;
+    memset(tag, 0, sizeof(struct html_tag));
+    memset(buf, 0, MAXLINE);
+
+    while (*w != '<' && *w != '\0') w++;
+
+    /* if not, we expecting one or more parameters */
+    for (b = buf, e = tag->params[0]; cont == true; w++)
+      {
+        /* little hack to avoid switch limitation */
+        test = (isspace(*w)) ? ' ' : *w ;
+
+        switch (test)
+          {
+            case '=' :
+              if (blind_copy == false) now = value;
+              break;
+            case '/' :
+              if (blind_copy == false && strncmp(w, "/>", 2) == 0)
+                tag->type = standalone;
+              break;
+            case '<' :
+              if (strncmp(w, "</", 2) == 0) w++,   tag->type = closing;
+              else /* opening or standalone tag */ tag->type = opening;
+              break;
+            case '\0':
+              blind_copy = false;
+            /* break; */
+            case '>' :
+              if (blind_copy == false) cont = false;
+            /* break; */
+            case ' ' :
+              if (b != buf && (cont == false || blind_copy == false))
+                {
+                  *b = '\0';
+                  switch (now)
+                    {
+                      case param :
+                        if (shift == true && offset < TAG_PARAMS) offset++;
+                        else if (offset == TAG_PARAMS) log_msg(warn, MSG_W_TAGPARMMAX);
+                        e = tag->params[offset];
+                        /* break; */
+                      case name :
+                        len = TAG_PARAM_LEN;
+                        string_lowercase(buf, len);
+                        if (now == name) e = tag->name;
+                        break;
+                      case value :
+                      default :
+                        shift = false;
+                        len = TAG_VALUE_LEN;
+                        e = tag->values[offset];
+                        break;
+                    }
+                  if (strlen(buf) > len)
+                    log_msg(warn, _(MSG_W_TXTNOTFITS), len, strlen(buf), \
+                            _("Will be truncated."));
+                  if (offset < TAG_PARAMS) strncpy(e, buf, len);
+                  if (now != name) shift = true;
+                  now = param, b = buf;
+                }
+              else *b++ = *w;
+              break;
+            case '\'':
+            /* break; */
+            case '\"':
+              if (l == '\0' || l == *w)
+                {
+                  if (l == *w) blind_copy = false, l = '\0';
+                  else l = *w, blind_copy = true;
+                  break;
+                } /* else - copy as usial text */
+            /* break; */
+            default :
+              *b++ = *w;
+              break;
+          }
+      }
+
+    return w - s;
+  }

@@ -89,6 +89,26 @@ struct res
   unsigned int height;
 };
 
+#define TAG_PARAMS 21
+#define TAG_PARAM_LEN 20
+#define TAG_VALUE_LEN 60
+
+/* why not char *: this struct is highly reusable,       *
+ * i don't build trees from them, so i prefer to use     *
+ * 1 x memset() rather than 43 x (malloc() + free()) */
+struct html_tag
+  {
+    enum {
+        opening    = 0, /* "<....>"  */
+        closing    = 1, /* "</....>" */
+        standalone = 2  /* xml-like "<..../>" */
+      } type;
+    char name[TAG_PARAM_LEN + 1];
+    char params[TAG_PARAMS][TAG_PARAM_LEN + 1];
+    char values[TAG_PARAMS][TAG_VALUE_LEN + 1];
+    /* last byte always reserved for '\0' */
+  };
+
 /* enum's */
 typedef enum verbosity
 {
@@ -187,5 +207,9 @@ void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);
 bool set_wrap(enum wrapping_mode *, char *);
 bool font_size_normalize(struct res const * const, float * const);
+
+/* tags functions */
+/* html-like tags */
+int16_t process_html_tag(char const * const, struct html_tag * const);
 
 #endif /* _COMMON_H */
