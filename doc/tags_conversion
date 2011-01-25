@@ -1,0 +1,21 @@
+[srt2ssa]
+tags examples:
+  1. "<b>text</b>"
+  2. "<name param></name>"
+  3. "<name param='value'></name>"
+  4. "<name param1="value" param2></name>"
+  5. "<name param1 param2="value"></name>"
+
+conversion map (srt -> ssa):
+<b> -> {\b1}, </b> -> {\b0}
+<i> -> {\i1}, </i> -> {\i0}
+<s> -> {\s1}, </s> -> {\s0} (v4.00+ only)
+<u> -> {\u1}, </u> -> {\u0} (v4.00+ only)
+<font> -> '', </font> -> ''
+  face='Name'     -> \fnName
+  color="#112233" -> \c&H112233&  (v4.00)
+  color="#000033" -> \c&H33&      (v4.00)
+  color="#112233" -> \1c&H112233& (v4.00+)
+  color="#000033" -> \1c&H33&     (v4.00+)
+  size="23"       -> \fs23
+

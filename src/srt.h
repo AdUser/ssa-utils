@@ -55,6 +55,19 @@ typedef struct srt_file
 #define SRT_E_HAVE_STYLE     4 /* i saw this only once, don't think that you meet such file */
 /* MOAR! */
 
+/** tags definitions */
+/* tags for .srt format (all known by me) */
+#define SRT_T_BOLD       0x42 /* 'B' 0x42 66 */
+#define SRT_T_ITALIC     0x49 /* 'I' 0x49 73 */
+#define SRT_T_STRIKEOUT  0x53 /* 'S' 0x53 83 */
+#define SRT_T_UNDERLINE  0x55 /* 'U' 0x55 85 */
+#define SRT_T_FONT       0x46 /* 'F' 0x46 70 */
+/* tag <font> has no effect by itself  *\
+\* but it's parameters - yes           */
+#define SRT_T_FONT_FACE   0x01
+#define SRT_T_FONT_SIZE   0x02
+#define SRT_T_FONT_COLOR  0x04
+
 /** function prototypes */
 bool parse_srt_file(FILE *, srt_file * const);
 bool analyze_srt_timing(char *, uint8_t * const);
