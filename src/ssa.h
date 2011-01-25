@@ -235,5 +235,6 @@ char *ssa_version_tos(ssa_version);
 bool  ssa_section_switch(enum ssa_section *, char *);
 void ssa_event_append(ssa_event **, ssa_event ***,
                       ssa_event * const, bool);
+ssa_style *find_ssa_style_by_name(ssa_file *, char *);
 
 #endif /* _SSA_H */

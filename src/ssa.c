@@ -1235,3 +1235,19 @@ ssa_event_append(ssa_event **head, ssa_event ***tail,
           }
 
   }
+
+ssa_style *
+find_ssa_style_by_name(ssa_file *f, char *name)
+  {
+    ssa_style *s = NULL;
+
+    if (!f || !name) return &ssa_style_template;
+
+    /* else */
+    for (s = f->styles; s != NULL; s = s->next)
+      if (strcmp(name, s->name) == 0)
+        return s;
+
+    /* if this not works */
+    return &ssa_style_template;
+  }
