@@ -694,6 +694,34 @@ font_size_normalize(struct res const * const res, float * const fsize)
     return true;
   }
 
+/** gets custom string, returns A+RGB color in integer */
+uint32_t
+parse_color(char const * const s)
+  {
+    uint8_t  i = 0;
+    uint32_t color = WHITE;
+
+    if (!s) return color;
+
+    if      (*s == '#')
+      i = sscanf(s, "#%X", &color);
+    else if (isxdigit(*s))
+      i = sscanf(s, "%X", &color);
+    else if (isalpha(*s)) /* possible need to set locale to "C" here */
+      {
+        if      (strcmp(s, "red")    == 0) color = RED;
+        else if (strcmp(s, "green")  == 0) color = GREEN;
+        else if (strcmp(s, "blue")   == 0) color = BLUE;
+        else if (strcmp(s, "yellow") == 0) color = YELLOW;
+        else if (strcmp(s, "white")  == 0) color = WHITE;
+        else log_msg(warn, MSG_W_UNKNCOLOR, s);
+      }
+    else
+      log_msg(warn, MSG_W_HOWTOCOLOR, s);
+
+    return color;
+  }
+
 /** tags functions */
 /* html-like tags */
 

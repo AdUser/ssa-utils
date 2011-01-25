@@ -56,6 +56,16 @@
 
 #define FSIZE_MIN 6
 
+/* colors */
+#define RED     (0xFF << 16)
+#define GREEN   (0xFF << 8)
+#define BLUE    (0xFF << 0)
+#define YELLOW  RED + GREEN
+#define CYAN          GREEN + BLUE
+#define MAGENTA RED +         BLUE
+#define WHITE   RED + GREEN + BLUE
+
+/* some stack definitions */
 #define STACK_MAX 100
 #define STACK_ELEM int
 #define STACK_ELEM_SIZE sizeof(int)
@@ -207,6 +217,7 @@ void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);
 bool set_wrap(enum wrapping_mode *, char *);
 bool font_size_normalize(struct res const * const, float * const);
+uint32_t parse_color(char const * const);
 
 /* tags functions */
 /* html-like tags */

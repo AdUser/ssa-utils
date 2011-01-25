@@ -40,12 +40,16 @@
 #define MSG_W_UNIMPL     _("Unimplemented feature.")
 #define MSG_W_WRONGUNI   _("%s not supported. Please, convert file to singlebyte charset or UTF-8.")
 #define MSG_W_TXTNOTFITS _("Text not fits in buffer. Available: %i, needed: %i bytes. %s")
+/* messages related to work with tags */
 #define MSG_W_UNRECTAG   _("Unrecognized tag <%s> near here: %s")
 #define MSG_W_TAGNOTALL  _("Tag <%s> not allowed in this format version.")
 #define MSG_W_TAGTWICE   _("The same opening tag <%s> twice in row near here: %s")
 #define MSG_W_TAGPARMMAX _("Reached maximum for tag parameters. Next one(s) will be skipped.")
 #define MSG_W_TAGUNCL    _("Unclosed tag <%s> near here: %s")
 #define MSG_W_TAGXMLSRT  _("XML-like tags not allowed in srt format, but who cares?")
+/* messages related to work with colors */
+#define MSG_W_UNKNCOLOR  _("Hey! I don't know this color: '%s'")
+#define MSG_W_HOWTOCOLOR _("Don't know how to get color from this token: '%s'")
 /* options handling */
 #define MSG_O_OREQUIRED  _("'%s' option required.")
 #define MSG_O_OVREQUIRED _("'%s' option: value required.")
