@@ -697,12 +697,19 @@ font_size_normalize(struct res const * const res, float * const fsize)
 /** tags functions */
 /* html-like tags */
 
-/*  typical html-like tag: (attention to various quotes):      *
- * <name param1=value1 param2='value2' param3="value3">        *
- * but handles also tags like <name param = 'one " two' />     *
- * name/param always becomes lowercase, value procssed "as is" *
- * known limitations: <name param=value.p1 value.p2> becomes   *
- * 'name => { "param" => "value.p1", "value.p2" }'             */
+/*  typical html-like tag: (attention to various quotes):        *
+ * <name param1=value1 param2='value2' param3="value3">          *
+ * but handles also tags like <name param = 'one " two' />       *
+ * name/param always becomes lowercase, value procssed "as is"   *
+ * known limitations: <name param=value.part1 value.part2>       *
+ * becomes 'name => { "param" => "value.part1", "value.part2" }' */
+
+/* f() returns lenght of processed string *
+ * len > 0 if tag successfully processed  *
+ * len < 0 if text before tag found       *
+ * len = 0 if error occurs or end reached *
+ * if text found && end reached, return   *
+ * negated lenght of text, not zero       */
 int16_t
 process_html_tag(char const * const s, struct html_tag * const tag)
   {
@@ -720,12 +727,27 @@ process_html_tag(char const * const s, struct html_tag * const tag)
     enum { name, param, value } now = name;
 
     if (!s || !tag) return 0;
+
+    len = strlen(s);
+
+    if (*s == '\0') return 0; /* end of string reached */
+
+    /* expected - tag */
+    if (len < 3 || *s != '<') /* it's not tag, handle as text */
+      {
+        while (*w != '<' && *w != '\0') w++;
+        return -(w - s); /* negated len of text before tag */
+      }
+    else if (*s == '<' && len > 1 && strncmp("</", s, 2) == 0)
+      w += 2, tag->type = closing;
+    else /* (*s == '<') */
+      w++, tag->type = opening;
+
     memset(tag, 0, sizeof(struct html_tag));
     memset(buf, 0, MAXLINE);
 
-    while (*w != '<' && *w != '\0') w++;
-
-    /* if not, we expecting one or more parameters */
+    len = 0;
+    /* now, we expecting one or more parameters */
     for (b = buf, e = tag->params[0]; cont == true; w++)
       {
         /* little hack to avoid switch limitation */
@@ -739,10 +761,6 @@ process_html_tag(char const * const s, struct html_tag * const tag)
             case '/' :
               if (blind_copy == false && strncmp(w, "/>", 2) == 0)
                 tag->type = standalone;
-              break;
-            case '<' :
-              if (strncmp(w, "</", 2) == 0) w++,   tag->type = closing;
-              else /* opening or standalone tag */ tag->type = opening;
               break;
             case '\0':
               blind_copy = false;
@@ -758,7 +776,8 @@ process_html_tag(char const * const s, struct html_tag * const tag)
                     {
                       case param :
                         if (shift == true && offset < TAG_PARAMS) offset++;
-                        else if (offset == TAG_PARAMS) log_msg(warn, MSG_W_TAGPARMMAX);
+                        else if (offset == TAG_PARAMS)
+                          log_msg(warn, MSG_W_TAGPARMMAX);
                         e = tag->params[offset];
                         /* break; */
                       case name :
@@ -780,10 +799,16 @@ process_html_tag(char const * const s, struct html_tag * const tag)
                   if (now != name) shift = true;
                   now = param, b = buf;
                 }
-              else *b++ = *w;
+              else if (!(test == ' ' && blind_copy == false)) *b++ = *w;
               break;
+            case '<' : /* warning! another tag opening char */
+              if (blind_copy == false)
+                {
+                  /* consider all previous chars as text */
+                  return -(w - s);
+                }
+            /* break; */ /* else - copy in buffer */
             case '\'':
-            /* break; */
             case '\"':
               if (l == '\0' || l == *w)
                 {
@@ -795,8 +820,10 @@ process_html_tag(char const * const s, struct html_tag * const tag)
             default :
               *b++ = *w;
               break;
-          }
-      }
+          } /* 'switch' end */
+      } /* 'for' end */
 
-    return w - s;
+    /* if we reach this line, it means that
+     * tag (by some miracle) was handled */
+    return (strlen(tag->name) != 0) ? (w - s) : -(w - s);
   }
