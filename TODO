@@ -25,6 +25,14 @@ srt_parse:
 ssa_resize
 ssa_version
 ssa_resources
+ssa_stats
+
+[ssa_stats]
+* max/average/min event duration
+* events/media counts
+* used features
+* external dependencies
+* memory consumption during parsing
 
 [ssa_versions]
 ssa_version <options> -i <infile> [-o <outfile>]
