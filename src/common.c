@@ -780,7 +780,13 @@ dump_tag(struct tag const * const tag)
     return true;
   }
 
-/* html-like tags */
+/** parse functions *
+ * f() in this category should return lenght of processed string *
+ * len > 0 if tag successfully processed                         *
+ * len < 0 if text before tag found                              *
+ * len = 0 if error occurs or end reached                        *
+ * if text found and end of line reached, then return lenght of  *
+ * text, instead zero                                            */
 
 /*  typical html-like tag: (attention to various quotes):        *
  * <name param1=value1 param2='value2' param3="value3">          *
@@ -788,127 +794,124 @@ dump_tag(struct tag const * const tag)
  * name/param always becomes lowercase, value procssed "as is"   *
  * known limitations: <name param=value.part1 value.part2>       *
  * becomes 'name => { "param" => "value.part1", "value.part2" }' */
-
-/* f() returns lenght of processed string *
- * len > 0 if tag successfully processed  *
- * len < 0 if text before tag found       *
- * len = 0 if error occurs or end reached *
- * if text found && end reached, return   *
- * negated lenght of text, not zero       */
 int16_t
-process_html_tag(char const * const s, struct html_tag * const tag)
+parse_html_tag(char const * const s, struct tag * const tag)
   {
-    char buf[MAXLINE];
+    char buf[MAXLINE + 1];
     char const *w = s; /* worker poiner */
     char l = '\0'; /* one char to save */
     char test = '\0';
     char *b = buf;
-    char *e;
-    bool blind_copy = false;
+    /* flags */
+    enum { copy, bcopy, flush } buf_action = copy;
+    enum { name, param, value } get = name;
     bool cont = true;
-    bool shift = false;
-    uint8_t offset = 0; /* offset of pointer to param || value */
     uint16_t len = 0;
-    enum { name, param, value } now = name;
 
     if (!s || !tag) return 0;
 
-    len = strlen(s);
-
     if (*s == '\0') return 0; /* end of string reached */
 
-    /* expected - tag */
-    if (len < 3 || *s != '<') /* it's not tag, handle as text */
+    len = strlen(s);
+    memset(tag, 0x0, sizeof(struct tag));
+    memset(buf, 0x0, MAXLINE + 1);
+
+    if (len < 3 || *s != '<')
       {
+        /* it's not looks like tag, handle as text */
         while (*w != '<' && *w != '\0') w++;
-        return -(w - s); /* negated len of text before tag */
+        return -(w - s);
       }
     else if (*s == '<' && len > 1 && strncmp("</", s, 2) == 0)
       w += 2, tag->type = closing;
     else /* (*s == '<') */
       w++, tag->type = opening;
 
-    memset(tag, 0, sizeof(struct html_tag));
-    memset(buf, 0, MAXLINE);
-
-    len = 0;
-    /* now, we expecting one or more parameters */
-    for (b = buf, e = tag->params[0]; cont == true; w++)
+    /* now, we expecting tag name and one or more parameters */
+    for (b = buf, len = 0; cont == true; w++)
       {
         /* little hack to avoid switch limitation */
         test = (isspace(*w)) ? ' ' : *w ;
 
+        /* first - set flags */
+        if (buf_action == flush)
+          buf_action = copy;
+
         switch (test)
           {
             case '=' :
-              if (blind_copy == false) now = value;
-              break;
-            case '/' :
-              if (blind_copy == false && strncmp(w, "/>", 2) == 0)
-                tag->type = standalone;
+              if (buf_action != bcopy)
+                buf_action = flush;
+              /* only run buffer flush, set 'get' marker later */
               break;
             case '\0':
-              blind_copy = false;
-            /* break; */
-            case '>' :
-              if (blind_copy == false) cont = false;
-            /* break; */
-            case ' ' :
-              if (b != buf && (cont == false || blind_copy == false))
-                {
-                  *b = '\0';
-                  switch (now)
-                    {
-                      case param :
-                        if (shift == true && offset < TAG_PARAMS) offset++;
-                        else if (offset == TAG_PARAMS)
-                          log_msg(warn, MSG_W_TAGPARMMAX);
-                        e = tag->params[offset];
-                        /* break; */
-                      case name :
-                        len = TAG_PARAM_LEN;
-                        string_lowercase(buf, len);
-                        if (now == name) e = tag->name;
-                        break;
-                      case value :
-                      default :
-                        shift = false;
-                        len = TAG_VALUE_LEN;
-                        e = tag->values[offset];
-                        break;
-                    }
-                  if (strlen(buf) > len)
-                    log_msg(warn, _(MSG_W_TXTNOTFITS), len, strlen(buf), \
-                            _("Will be truncated."));
-                  if (offset < TAG_PARAMS) strncpy(e, buf, len);
-                  if (now != name) shift = true;
-                  now = param, b = buf;
-                }
-              else if (!(test == ' ' && blind_copy == false)) *b++ = *w;
+              /* if we meet this - it means, that tag was unclosed, *
+               * so, consiger that all chars before - text          */
+              log_msg(warn, MSG_W_TAGUNCL, tag->data, s);
+              return -(w - s);
               break;
-            case '<' : /* warning! another tag opening char */
-              if (blind_copy == false)
-                {
-                  /* consider all previous chars as text */
-                  return -(w - s);
-                }
-            /* break; */ /* else - copy in buffer */
+            case '>' :
+              if (buf_action != bcopy)
+                buf_action = flush, cont = false;
+              break;
+            case ' ' :
+              if (buf_action != bcopy)
+                buf_action = flush;
+              break;
+            case '<' : /* another tag opening char */
+              if (buf_action != bcopy)
+                return -(w - s);
+              /* consider, that all prev chars - text, not tag */
+              break;
             case '\'':
             case '\"':
-              if (l == '\0' || l == *w)
-                {
-                  if (l == *w) blind_copy = false, l = '\0';
-                  else l = *w, blind_copy = true;
-                  break;
-                } /* else - copy as usial text */
-            /* break; */
-            default :
-              *b++ = *w;
+              if      (l == '\0')
+                l = test, buf_action = bcopy;
+              else if (l == test)
+                l = '\0', buf_action = copy;
+
+              if (l == '\0' || l == test)
+                continue;
               break;
-          } /* 'switch' end */
+            case '/' :
+              if (buf_action != bcopy && strncmp(w, "/>", 2) == 0)
+                tag->type = standalone, buf_action = flush;
+              break;
+            default :
+              break;
+          }
+
+        /* second - do some actions */
+        if (buf_action == flush)
+          {
+            *b = '\0'; /* set line end in buffer */
+            switch (get)
+              {
+                case name :
+                  string_lowercase(buf, len);
+                  snprintf(tag->data, TAG_DATA_MAX, "%s%c%c",
+                     buf, '\0', TAG_DATA_END);
+                  break;
+                case param :
+                  string_lowercase(buf, len);
+                  add_tag_param(tag, TAG_PARAM, buf);
+                  break;
+                case value :
+                default :
+                  add_tag_param(tag, TAG_VALUE, buf);
+                  break;
+              }
+            b = buf;
+            /* second hack - we need to set marker to value only *
+             * AFTER we save current buffer content as parameter */
+            get = (*w == '=') ? value : param ;
+          }
+        else /* if (buf_action == copy || buf_action == bcopy) */
+          *b++ = *w;
+
       } /* 'for' end */
 
     /* if we reach this line, it means that
      * tag (by some miracle) was handled */
-    return (strlen(tag->name) != 0) ? (w - s) : -(w - s);
+    return (strlen(tag->data) != 0) ? (w - s) : -(w - s);
   }

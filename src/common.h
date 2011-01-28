@@ -223,6 +223,6 @@ uint32_t parse_color(char const * const);
 /* tags functions */
 bool dump_tag(struct tag const * const);
 bool add_tag_param(struct tag * const, char, char *);
-int16_t process_html_tag(char const * const, struct html_tag * const);
+int16_t parse_html_tag(char const * const, struct tag * const);
 
 #endif /* _COMMON_H */
