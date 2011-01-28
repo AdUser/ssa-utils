@@ -357,7 +357,7 @@ string_skip_chars(char *string, char *chars)
  * with 'sep' between old and new content, but   *
  * no more than 'len' chars                      */
 bool
-text_append(char *to, char *from, char *sep,
+append_string(char *to, char *from, char *sep,
             unsigned int to_size, unsigned int len)
   {
     uint16_t len_f, len_t, len_s;
@@ -371,7 +371,7 @@ text_append(char *to, char *from, char *sep,
 
     if (to_size < len_t)
       {
-        log_msg(warn, _("Incorrect parameters in text_append() call"));
+        log_msg(warn, _("Incorrect parameters in append_string() call"));
         return false;
       }
 

@@ -67,7 +67,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
             {
               log_msg(warn, MSG_F_UNEXPEOF, line_num);
               if      (prev_line == text)
-                text_append(event->text, line, "\n", MAXLINE, 0);
+                append_string(event->text, line, "\n", MAXLINE, 0);
               else if (prev_line == timing)
                 strncpy(event->text, line, MAXLINE);
             }
@@ -128,7 +128,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
             case text :
               /* TODO: wrapping handling here   */
               if (prev_line == text)
-                text_append(event->text, line, "\n", MAXLINE, 0);
+                append_string(event->text, line, "\n", MAXLINE, 0);
               else
                 strncpy(event->text, line, MAXLINE);
               break;
