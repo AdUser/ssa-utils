@@ -723,6 +723,63 @@ parse_color(char const * const s)
   }
 
 /** tags functions */
+
+bool
+add_tag_param(struct tag * const tag, char type, char *value)
+  {
+    uint16_t len = 0;
+    uint16_t i = 0;
+    char *p = NULL;
+
+    if (!tag || !value)
+      return false;
+
+    len = strlen(value);
+
+    p = tag->data;
+    while (*p != TAG_DATA_END && i < TAG_DATA_MAX) p++, i = (p - tag->data);
+
+    if (i == TAG_DATA_MAX)
+      {
+        log_msg(warn, _("Too many parameters in tag or too long values"));
+        return false;
+      }
+    /* 'p' now should points to '0x04' (EOT) */
+    printf("slen: %i\n", strlen(value));
+    printf("i:    %i, i + slen = %i\n", i, i + strlen(value));
+    if ((i + strlen(value) + 3) < TAG_DATA_MAX)
+      {
+        snprintf(p, (TAG_DATA_MAX - i), "%c%s%c%c",
+                    type, value, '\0', TAG_DATA_END);
+        return true;
+      }
+
+    /* if check above fails: */
+    log_msg(warn, MSG_W_TAGOVERBUF, _("parameter"));
+
+    return false;
+  }
+
+bool
+dump_tag(struct tag const * const tag)
+  {
+    char const * p = NULL;
+    uint16_t i;
+
+    if (!tag) return false;
+
+    printf("tag name: '%s'\n", tag->data);
+    printf("tag type: '%i'", tag->type);
+    for (p = tag->data, i = 0; i < TAG_DATA_MAX; i++, p++)
+      {
+        if (*p == TAG_PARAM) printf("\n'%s':", ++p);
+        if (*p == TAG_VALUE) printf("'%s'", ++p);
+      }
+    printf("\n");
+
+    return true;
+  }
+
 /* html-like tags */
 
 /*  typical html-like tag: (attention to various quotes):        *

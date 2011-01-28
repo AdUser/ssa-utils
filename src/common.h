@@ -99,23 +99,24 @@ struct res
   unsigned int height;
 };
 
-#define TAG_PARAMS 21
-#define TAG_PARAM_LEN 20
-#define TAG_VALUE_LEN 60
+/* ascii char 0x01 (SOH) and 0x02 (STX) *
+ * used as indicators of data type      *
+ * data stored looks-like this:         *
+ * [tagname\0\x1param\0\x2value\0\x4]   */
+#define TAG_PARAM    0x01
+#define TAG_VALUE    0x02
+#define TAG_DATA_END 0x04
+#define TAG_DATA_MAX 1024
 
-/* why not char *: this struct is highly reusable,       *
- * i don't build trees from them, so i prefer to use     *
- * 1 x memset() rather than 43 x (malloc() + free()) */
-struct html_tag
+struct tag
   {
     enum {
-        opening    = 0, /* "<....>"  */
-        closing    = 1, /* "</....>" */
-        standalone = 2  /* xml-like "<..../>" */
+        none       = 0, /* if undefined */
+        opening    = 1, /* "<tag>"  */
+        closing    = 2, /* "</tag>" */
+        standalone = 3  /* xml-like "<tag/>" */
       } type;
-    char name[TAG_PARAM_LEN + 1];
-    char params[TAG_PARAMS][TAG_PARAM_LEN + 1];
-    char values[TAG_PARAMS][TAG_VALUE_LEN + 1];
+    char data[TAG_DATA_MAX + 1];
     /* last byte always reserved for '\0' */
   };
 
@@ -220,7 +221,8 @@ bool font_size_normalize(struct res const * const, float * const);
 uint32_t parse_color(char const * const);
 
 /* tags functions */
-/* html-like tags */
+bool dump_tag(struct tag const * const);
+bool add_tag_param(struct tag * const, char, char *);
 int16_t process_html_tag(char const * const, struct html_tag * const);
 
 #endif /* _COMMON_H */
