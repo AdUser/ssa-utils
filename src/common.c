@@ -390,6 +390,22 @@ append_string(char *to, char *from, char *sep,
     return true;
   }
 
+bool
+append_char(char *to, char c, unsigned int len)
+  {
+    char *p = NULL;
+
+    if (!to || (strlen(to) + 1) >= len)
+      return false;
+
+    p = to + strlen(to);
+    /* 'p' now points to '\0' after last char in buffer */
+    *p++ = c;
+    *p = '\0';
+
+    return true;
+  }
+
 /** stack functions */
 
 void
