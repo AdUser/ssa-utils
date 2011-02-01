@@ -48,6 +48,7 @@
 #define MSG_W_TAGOVERBUF _("Unable to add %s to tag, buffer too small")
 #define MSG_W_TAGUNCL    _("Unclosed tag <%s> near here: %s")
 #define MSG_W_TAGXMLSRT  _("XML-like tags not allowed in srt format, but who cares?")
+#define MSG_W_TAGNOTFACE _("Used 'name' instead of 'face' in 'font' tag.")
 /* messages related to work with colors */
 #define MSG_W_UNKNCOLOR  _("Hey! I don't know this color: '%s'")
 #define MSG_W_HOWTOCOLOR _("Don't know how to get color from this token: '%s'")

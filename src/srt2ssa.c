@@ -41,6 +41,177 @@ void usage(int exit_code)
     exit(exit_code);
  }
 
+/* ssa tags differs from srt not only in format, but in scope too,     *
+ * for example, if srt tag acts as borders for scope of some property, *
+ * ssa - set this property untill next tag with the same name          */
+bool
+srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
+  {
+    char *p;
+    char *value;
+    char tags_buf[MAXLINE + 1] = "";
+    char common_buf[MAXLINE + 1] = "";
+    STACK_ELEM stack[STACK_MAX];
+    STACK_ELEM *top = stack;
+    STACK_ELEM chr;
+    int16_t len = 0;
+    uint8_t i = 0;
+    uint8_t font_params = 0;
+    struct tag ttag;
+    ssa_style *style = NULL;
+    enum { none, text, tag } last = none;
+
+    if (!srt || !ssa || !file) return false;
+
+    p = srt->text;
+    stack_init(stack);
+    for (p = srt->text; (len = parse_html_tag(p, &ttag)) != 0; )
+      {
+        if (len > 0) /* it's a tag! */
+          {
+            last = tag;
+            if (strlen(ttag.data) == 1)
+              {
+                chr = toupper(ttag.data[0]);
+                switch (chr)
+                  {
+                    case SRT_T_STRIKEOUT :
+                    case SRT_T_UNDERLINE :
+                      if (file->type == ssa_v4)
+                        {
+                          log_msg(warn, MSG_W_TAGNOTALL, ttag.data);
+                          break;
+                        }
+                    /* break; */
+                    case SRT_T_BOLD      :
+                    case SRT_T_ITALIC    :
+                      append_char(tags_buf, '\\', MAXLINE);
+                      append_char(tags_buf, tolower(chr), MAXLINE);
+                      append_char(tags_buf, (ttag.type == opening) ? '1' : '0',
+                                    MAXLINE);
+                      break;
+                    default  :
+                      log_msg(warn, MSG_W_UNRECTAG, ttag.data, srt->text);
+                      break;
+                } /* switch (chr) */
+              }
+            else if (strcmp(ttag.data, "font") == 0 && ttag.type == opening)
+              {
+                if ((value = get_tag_param_by_name(&ttag, "size")) != NULL)
+                  {
+                    append_string(tags_buf, value, "\\fs", MAXLINE, 0);
+                    font_params &= SRT_T_FONT_SIZE;
+                  }
+
+                if ((value = get_tag_param_by_name(&ttag, "face")) != NULL)
+                  {
+                    append_string(tags_buf, value, "\\fn", MAXLINE, 0);
+                    font_params &= SRT_T_FONT_FACE;
+                  }
+                else
+                if ((value = get_tag_param_by_name(&ttag, "name")) != NULL)
+                  {
+                    log_msg(warn, MSG_W_TAGNOTFACE);
+                    append_string(tags_buf, value, "\\fn", MAXLINE, 0);
+                    font_params &= SRT_T_FONT_FACE;
+                  }
+
+                if ((value = get_tag_param_by_name(&ttag, "color")) != NULL)
+                  {
+                    append_char(tags_buf, '\\', MAXLINE);
+                    if (file->type == ssa_v4p)
+                      append_char(tags_buf, '1', MAXLINE);
+                    i = strlen(tags_buf);
+                    snprintf((tags_buf + i), MAXLINE - i, "c&H%X&",
+                              parse_color(value)); /* TODO: check pointer */
+                    font_params &= SRT_T_FONT_COLOR;
+                  }
+                chr = SRT_T_FONT;
+              }
+            else if (strcmp(ttag.data, "font") == 0 && ttag.type == closing)
+              {
+                /* first, find right style for current event *
+                 * if not found, default will be used */
+                style = find_ssa_style_by_name(file, ssa->style);
+
+                if (font_params & SRT_T_FONT_FACE)
+                  append_string(tags_buf, style->fontname, "\\fn", MAXLINE, 0);
+
+                if (font_params & SRT_T_FONT_COLOR)
+                  {
+                    append_char(tags_buf, '\\', MAXLINE);
+                    if (file->type == ssa_v4p)
+                      append_char(tags_buf, '1', MAXLINE);
+                    i = strlen(tags_buf);
+                    snprintf((tags_buf + i), (MAXLINE - i),
+                                "c&H%X&", style->primary_color);
+                  }
+
+                if (font_params & SRT_T_FONT_SIZE)
+                  {
+                    append_string(tags_buf, "\\fs", "", MAXLINE, 0);
+                    i = strlen(tags_buf);
+                    snprintf((tags_buf + i), (MAXLINE - i),
+                               "%.1f", style->fontsize);
+                  }
+
+                font_params = 0x0;
+                chr = SRT_T_FONT;
+              }
+            else
+              {
+                /* as we don't know, how to handle this tag, *
+                 * skip stack operations below               */
+                log_msg(warn, MSG_W_UNRECTAG, ttag.data, srt->text);
+                ttag.type = none; /* skip stack operations */
+                len =  -len; /* to handle as text in block below */
+              }
+
+            /* stack operations */
+            switch (ttag.type)
+              {
+                case opening :
+                  if (*top == chr)
+                    log_msg(warn, MSG_W_TAGTWICE, ttag.data, srt->text);
+                  stack_push(stack, top, chr);
+                  break;
+                case closing :
+                  if (*top == chr) stack_pop(stack, top);
+                  else log_msg(warn, MSG_W_TAGUNCL, ttag.data, srt->text);
+                  /* note: stack remains unchanged in second case! */
+                  break;
+                case standalone :
+                  log_msg(info, MSG_W_TAGXMLSRT);
+                  /* break; */
+                case none :
+                default :
+                  /* do nothing */
+                  break;
+              }
+          }
+
+        if (len < 0)
+          {
+            if (last == tag && strlen(tags_buf) != 0)
+              {
+                append_string(common_buf, tags_buf, "{", MAXLINE, 0);
+                append_char(common_buf, '}', MAXLINE);
+                memset(tags_buf, 0, MAXLINE);
+              }
+            append_string(common_buf, p, "", MAXLINE, -len);
+            last = text;
+          }
+
+        p += (len > 0) ? len : -len ;
+      } /* main 'for' cycle ends */
+
+    /* TODO: check stack for unclosed / deranged tags  */
+    /* copy temp buffer to right place ^_^ */
+    strncpy(ssa->text, common_buf, MAXLINE);
+
+    return true;
+  }
+
 /* import some usefull stuff */
 extern struct options opts;
 extern ssa_style ssa_style_template;
@@ -153,17 +324,24 @@ int main(int argc, char *argv[])
 
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 
-        /* copy data */
+        /* copy simple data */
         (*dst)->type  = DIALOGUE;
         (*dst)->start = src->start;
         (*dst)->end   = src->end;
-        strncpy((*dst)->text, src->text, MAXLINE);
+
+        /* convert tags */
+        if (strchr(src->text, '<') != NULL)
+          srt_tags_to_ssa(src, &target, *dst);
+        else
+          strncpy((*dst)->text, src->text, MAXLINE);
+
         /* text wrapping here */
         if      (opts.o_wrap == keep)
           text_replace((*dst)->text, "\n", "\\n", MAXLINE, 0);
         else if (opts.o_wrap == merge)
           text_replace((*dst)->text, "\n", " ",   MAXLINE, 0);
 
+        /* events list operations */
         dst = &((*dst)->next);
         source.events = src->next;
         free(src); /* decreases memory consumption */
