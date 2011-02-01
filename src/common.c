@@ -761,8 +761,6 @@ add_tag_param(struct tag * const tag, char type, char *value)
         return false;
       }
     /* 'p' now should points to '0x04' (EOT) */
-    printf("slen: %i\n", strlen(value));
-    printf("i:    %i, i + slen = %i\n", i, i + strlen(value));
     if ((i + strlen(value) + 3) < TAG_DATA_MAX)
       {
         snprintf(p, (TAG_DATA_MAX - i), "%c%s%c%c",
