@@ -776,6 +776,26 @@ add_tag_param(struct tag * const tag, char type, char *value)
     return false;
   }
 
+/* note: this function actually returns *
+ * param value via param name           */
+char *
+get_tag_param_by_name(struct tag * const ttag, char *param)
+  {
+    char *p;
+
+    if (!ttag || !param) return NULL;
+
+    for (p = ttag->data; *p != TAG_DATA_END; p++)
+      if (*p == TAG_PARAM)
+        if (strcmp((p + 1), param) == 0)
+          {
+            p += 1 + strlen(param) + 1; /* 'TAG_PARAM' + "param" + '\0' */
+            return (*p == TAG_VALUE) ? (p + 1) : NULL ;
+          }
+
+    return NULL;
+  }
+
 bool
 dump_tag(struct tag const * const tag)
   {
