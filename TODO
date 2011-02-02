@@ -1,13 +1,11 @@
 [features]
+- обработка встроенных шрифтов
+- сохранение нестандартных параметров в [info]
+- уменьшение потребления памяти
 - переконвертация между версиями ssa-формата
-+ переконвертация microsub -> ssa
 - переконвертация smi      -> ssa
-+ сортировка по таймингу
-+ увеличение уровня вывода сообщений при указании опции '-T'
-- параметр '-W' для обработки переноса линий
+* параметр '-W' для обработки переноса линий
 ? параметр '-u' - принудительное включение режима юникода
-+ параметр '-S' - сортировка событий
-+ подстройка размера шрифта в стиле "по умолчанию" в зависимости от разрешения видео (опции '-x', '-y')
 - README: maintainers
 - ssa_retime: подстройка длительности для текстовых событий (-D ?).
   * set           Set subtitle duration proportionally subtitle lenght.
@@ -22,24 +20,25 @@ srt_parse:
 002: нет второй линии
 
 [utils]
-ssa_resize
-ssa_version
-ssa_resources
-ssa_stats
+ssa-resize (maybe i do it with 'zoom' only?)
+ssa-resources
+ssa-info
+ssa2ssa
 
-[ssa_stats]
+[ssa-info]
 * max/average/min event duration
-* events/media counts
-* used features
+* maximum lenght
+* events/styles counts
+* used features (?)
 * external dependencies
-* memory consumption during parsing
+* embeded media
 
-[ssa_versions]
-ssa_version <options> -i <infile> [-o <outfile>]
+[ssa2ssa]
+ssa2ssa <options> -i <infile> [-o <outfile>]
 Usage:
-    - ssa_version -a       -i <infile>
-    - ssa_version -f <str> -i <infile> [ -o <outfile>]
-    - ssa_version -u       -i <infile> [ -o <outfile>]
+    - ssa2ssa -a       -i <infile>
+    - ssa2ssa -f <str> -i <infile> [ -o <outfile>]
+    - ssa2ssa -u       -i <infile> [ -o <outfile>]
 
 Options:
       -i <file>   Input file. (Enter '-' for stdin)
@@ -52,5 +51,5 @@ Options:
 
 [ssa_resources]
 Usage: 
-    - ssa_resources show    
-    - ssa_resources extract
+    - ssa-resources show
+    - ssa-resources extract
