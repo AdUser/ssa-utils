@@ -1,0 +1,25 @@
+In project used mixed coding style, but commonly looks-like 'gnu' style.
+Indent - two space, not tab. Indent does as for curly braces, as for code
+in them. Logical blocks of code separates from each other by one blank line.
+Some examples as mini howto:
+
+char *
+function(args, ...)
+  {
+    char *p = NULL; /* all variables must be initialized *
+    int i = 0;       * in this block, or right below it  */
+
+    if (some_flag)
+      {
+        /* do some actions */
+        for (i = 0; i < 3; i++) /* note: spaces between operators */
+          action();
+       /* ^ note: for only one instruction, *
+        * i prefer not to use curly braces  */
+
+        some_flag = 0x0;
+      }
+
+    return NULL;
+  }
+     /* <- blank line here (as separator) */
