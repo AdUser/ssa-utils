@@ -1,0 +1,57 @@
+version 0.04
+  new:
+    + added handling other than 'Dialogue' lines in [events] section
+    + added basic support for tags convertation srt->ssa
+    + added initial support for parsing and work with html-like tags
+    + added simple functions to work with stack
+  changes:
+    * some cosmetic changes (renamed some programs)
+    * enhanced warning message about buffer overflow
+
+version 0.03
+  new:
+    + added 'merge' mode for line wrapping
+    + added 'points' mode to ssa_retime
+    + added internal help show if no options given in srt2ssa
+    + added 'font size tune' option (depends on specified resolution)
+    + added 'install' target in build system
+    + added newline after events section
+    + added some notes about git naming rules
+  changes:
+    * '-w' option now works right
+    * text wrapping now saves, when parsing .srt files
+    * input and output file options lowercase again
+  bugfixes:
+    = repaired (and almost completely rewrited) text_replace()
+    = fixed extra newline in info message
+    = bugfix: segfault when parsing srt files (double blank line)
+    = bugfix: incorrect EOF handle when parsing .ssa files
+    = bugfix: missing line number in warning message
+    = bugfix: fixed timing accuracy loss when convert from srt to ssa format
+
+version 0.02
+  new:
+    + added some notes about timing
+    + added new converter from microsub format (testing needed)
+    + added '-s' (sort) option to all converter utils
+    + added new util: ssa_retime (testing needed)
+    + added 'framerate' mode to 'ssa_retime'
+  changes:
+    * auto raise verbosity level to warninigs, when option '-t' specified
+    * improved status message during configure
+    * changed compiler flags for debug build
+    * changed programms behaviour when the error occurs
+    * unified & updated almost all log messages
+    * updated usage help in ssa_resize
+  bugfixes:
+    = bugfix: wrong handling unexpected EOF in .srt files
+    = bugfix: wrong handling subtitle id without anything (timing and text)
+    = bugfix: wrong handling various msec precision in .srt timing
+    = fixed some typos in error messages
+
+version 0.01
+  new:
+    + added project sources & headers
+    + added cmake files
+    + added standart files for project: README, Changelog, etc
+    + added some documentation
