@@ -17,7 +17,7 @@
 #include "common.h"
 #include "ssa.h"
 
-#define PROG_NAME "ssa_retime"
+#define PROG_NAME "ssa-retime"
 #define DEFAULT_FPS 25.0
 #define PTS_AVAIL 20
 /* 1 extra point for zero time (start of file)           *

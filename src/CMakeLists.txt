@@ -8,10 +8,10 @@ add_executable(microsub2ssa        ${MODULES_SRC} "ssa.c" "microsub.c" "microsub
 
 # various utils
 IF    (CMAKE_BUILD_TYPE STREQUAL "Debug")
-add_executable(ssa_resize          ${MODULES_SRC} "ssa.c" "ssa_resize.c")
+add_executable(ssa-resize          ${MODULES_SRC} "ssa.c" "ssa-resize.c")
 ENDIF (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-add_executable(ssa_retime          ${MODULES_SRC} "ssa.c" "ssa_retime.c")
+add_executable(ssa-retime          ${MODULES_SRC} "ssa.c" "ssa-retime.c")
 
 #tests
 IF    (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -22,10 +22,10 @@ ENDIF (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 target_link_libraries(srt2ssa             ${BUILD_LIBS})
 target_link_libraries(microsub2ssa        ${BUILD_LIBS})
-target_link_libraries(ssa_retime          ${BUILD_LIBS})
+target_link_libraries(ssa-retime          ${BUILD_LIBS})
 
 IF    (CMAKE_BUILD_TYPE STREQUAL "Debug")
-target_link_libraries(ssa_resize          ${BUILD_LIBS})
+target_link_libraries(ssa-resize          ${BUILD_LIBS})
 target_link_libraries(test_parse_ssa      ${BUILD_LIBS})
 target_link_libraries(test_parse_srt      ${BUILD_LIBS})
 target_link_libraries(test_parse_microsub ${BUILD_LIBS})
@@ -33,5 +33,5 @@ ENDIF (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 #add_test(test_parse_srt ${MODULES_SRC} test_parse_srt.c)
 
-install(TARGETS srt2ssa microsub2ssa ssa_retime
+install(TARGETS srt2ssa microsub2ssa ssa-retime
         RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")

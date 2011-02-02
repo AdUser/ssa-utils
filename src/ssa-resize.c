@@ -17,7 +17,7 @@
 #include "common.h"
 #include "ssa.h"
 
-#define PROG_NAME "ssa_resize"
+#define PROG_NAME "ssa-resize"
 #define MAX_PCT 1000 /* (res x 10) or 1000% */
 
 void usage(int exit_code)
