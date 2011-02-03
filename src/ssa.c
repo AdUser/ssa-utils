@@ -1034,31 +1034,27 @@ ssa_version_tos(ssa_version version)
 bool
 ssa_section_switch(enum ssa_section *section, char *line)
   {
-    bool result = true;
-    if (line[0] == '[')
-      {
-        string_lowercase(line, 0);
-        if      (strcmp("[script info]", line) == 0)
-          *section = HEADER;
-        else if (strcmp("[events]", line) == 0)
-          *section = EVENTS;
-        else if (strcmp(line, "[fonts]") == 0)
-          *section = FONTS;
-        else if (strcmp(line, "[graphics]") == 0)
-          *section = GRAPHICS;
-        else if (strstr(line, "styles]") != 0)
-          *section = STYLES;
-        else
-          {
-            log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), line, line_num);
+    char buf[MAXLINE + 1];
 
-            *section = UNKNOWN;
-          }
-      }
+    if (!section || !line) return false;
+
+    *section = UNKNOWN; /* by default */
+    memset(buf, 0x0, MAXLINE + 1);
+    strncpy(buf, line, MAXLINE);
+    string_skip_chars(buf, " ");
+    string_lowercase(buf, 0);
+
+    if (line[0] != '[') return false;
+
+         if (!strcmp(buf, "[script info]")) *section = HEADER;
+    else if (!strcmp(buf, "[events]"))      *section = EVENTS;
+    else if (!strcmp(buf, "[fonts]"))       *section = FONTS;
+    else if (!strcmp(buf, "[graphics]"))    *section = GRAPHICS;
+    else if (strstr(buf, "styles]") != 0)   *section = STYLES;
     else
-      result = false;
+      log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), buf, line_num);
 
-    return result;
+    return true;
   }
 
 void
