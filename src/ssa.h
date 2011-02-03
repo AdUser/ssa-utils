@@ -173,13 +173,13 @@ typedef struct ssa_file
   {
     /** data section */
     /* text fields */
-    char title   [MAX_HEADER_LINE]; /* Title                  */
-    char o_script[MAX_HEADER_LINE]; /* Original Script        */
-    char o_trans [MAX_HEADER_LINE]; /* Original Translation   */
-    char o_edit  [MAX_HEADER_LINE]; /* Original Editing       */
-    char o_timing[MAX_HEADER_LINE]; /* Original Timing        */
-    char updated [MAX_HEADER_LINE]; /* Script Updated By      */
-    char collisions [MAX_HEADER_LINE]; /* Collisions          */
+    char *title;      /* Title                  */
+    char *o_script;   /* Original Script        */
+    char *o_trans;    /* Original Translation   */
+    char *o_edit;     /* Original Editing       */
+    char *o_timing;   /* Original Timing        */
+    char *updated;    /* Script Updated By      */
+    char *collisions; /* Collisions             */
 
     /* numeric fields */
     struct res res;

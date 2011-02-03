@@ -266,115 +266,77 @@ bool
 get_ssa_option(char * const line, ssa_file * const h)
   {
     /* line: "Param: Value" */
-    char first_char; /* for optimize blocks of strcmp */
-    char *value;
-    char param[MAX_HEADER_LINE];
-    int v_len = 0;
-    int param_len = 0;
+    char param[MAXLINE] = "";
+    char buf[MAXLINE];
+    char *p = NULL;
 
-    if ((value = strchr(line, ':')) == NULL)
+    memset(buf,   0x0, MAXLINE);
+    memset(param, 0x0, MAXLINE);
+
+    if ((p = strchr(line, ':')) == NULL)
       {
         log_msg(warn, _("Can't get parameter value at line '%u'."), line_num);
         return false;
-      } /* else -> "Param|: Value" */
-
-      param_len = value - line; /* "[Param]|: Value" */
-      value = value + 1; /* "Param|: Value" -> "Param:| Value"  */
-
-      first_char = tolower(line[0]);
-      strncpy(param, line, param_len); /* "[Param]:|Value" */
-      *(param + param_len) = '\0';
-      string_lowercase(line, param_len); /* -> "[param]:|Value" */
-      trim_spaces(value, LINE_START | LINE_END);
-      v_len = strlen(value);
-
-      switch (first_char)
-        {
-        case 'c' :
-          if (strncmp("collisions", line, param_len) == 0 && v_len)
-            strncpy(h->collisions, value, MAX_HEADER_LINE),
-                  h->flags |= SSA_H_HAVE_COLLS;
-              break;
-        case 'o' : /* all 'Original*' lines */
-          if      (strncmp("original script", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->o_script, value, v_len), h->flags |= SSA_H_HAVE_OSCRIPT;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else if (strncmp("original translation", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->o_trans, value, v_len), h->flags |= SSA_H_HAVE_OTRANS;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else if (strncmp("original editing", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->o_edit, value, v_len), h->flags |= SSA_H_HAVE_OEDIT;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else if (strncmp("original timing", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->o_timing, value, v_len), h->flags |= SSA_H_HAVE_OTIMING;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          break;
-        case 'p' : /* all 'Play*' lines */
-          if      (strncmp("playresx",  line, param_len) == 0)
-            h->res.width  = atoi(value);
-          else if (strncmp("playresy",  line, param_len) == 0)
-            h->res.height = atoi(value);
-          else if (strncmp("playdepth", line, param_len) == 0)
-            h->depth = atoi(value);
-          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
-          break;
-        case 's' :
-          if      (strncmp("script updated by", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->updated, value, v_len), h->flags |= SSA_H_HAVE_UPDATED;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else if (strncmp("scripttype", line, param_len) == 0)
-            {
-              string_lowercase(value, v_len);
-              if      (strncmp("v4.00+", value, param_len) == 0)
-                h->type = ssa_v4p;
-              else if (strncmp("v4.00",  value, param_len) == 0)
-                h->type = ssa_v4;
-              else if (strncmp("v3.00",  value, param_len) == 0)
-                h->type = ssa_v3;
-              else
-                h->type = unknown;
-              /* TODO: выяснить насчет остальных типов */
-            }
-          else if (strncmp("synch point", line, param_len) == 0)
-            {
-              if (v_len) h->sync = atof(value);
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
-          break;
-        case 't' :
-          if      (strncmp("timer", line, param_len) == 0)
-            h->timer = atof(value);
-          else if (strncmp("title", line, param_len) == 0)
-            {
-              if (v_len)
-                strncpy(h->title, value, v_len), h->flags |= SSA_H_HAVE_TITLE;
-              else log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
-            }
-          else log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
-          break;
-        case 'w' :
-          if (strncmp("wrapstyle", line, param_len) == 0)
-            h->wrap = atoi(value);
-          break;
-        default :
-          log_msg(warn, MSG_W_UNRECPARAM, param, line_num);
       }
+    else
+      {
+        strncpy(param, line, (p - line)),
+        strncpy(buf, (p + 1), MAXLINE);
+      }
+
+    string_lowercase(param, strlen(param));
+    trim_spaces(buf, LINE_START | LINE_END);
+
+    if (strlen(buf) == 0)
+      {
+        log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
+        return true;
+      }
+
+    if      (!strcmp(param, "playresx"))
+      h->res.width  = atoi(buf);
+    else if (!strcmp(param, "playresy"))
+      h->res.height = atoi(buf);
+    else if (!strcmp(param, "playdepth"))
+      h->depth = atoi(buf);
+    else if (!strcmp(param, "synch point"))
+      h->sync = atof(buf);
+    else if (!strcmp(param, "timer"))
+      h->timer = atof(buf);
+    else if (!strcmp(param, "wrapstyle"))
+      h->wrap = atoi(buf);
+    else if (!strcmp(param, "title"))
+      h->title = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_TITLE;
+    else if (!strcmp(param, "collisions"))
+      h->collisions = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_COLLS;
+    else if (!strcmp(param, "original script"))
+      h->o_script = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_OSCRIPT;
+    else if (!strcmp(param, "original translation"))
+      h->o_trans = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_OTRANS;
+    else if (!strcmp(param, "original editing"))
+      h->o_edit = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_OEDIT;
+    else if (!strcmp(param, "original timing"))
+      h->o_timing = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_OTIMING;
+    else if (!strcmp(param, "script updated by"))
+      h->updated = _strndup(buf, MAXLINE),
+      h->flags |= SSA_H_HAVE_UPDATED;
+    else if (!strcmp(param, "scripttype"))
+      {
+        string_lowercase(buf, MAXLINE);
+        if      (!strcmp(buf, "v4.00+")) h->type = ssa_v4p;
+        else if (!strcmp(buf, "v4.00"))  h->type = ssa_v4;
+        else if (!strcmp(buf, "v3.00"))  h->type = ssa_v3;
+        else h->type = unknown;
+      }
+    else
+      log_msg(warn, MSG_W_UNRECPARAM, line, line_num);
+
     return true;
   }
 
