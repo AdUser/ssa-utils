@@ -32,6 +32,7 @@ bool
 parse_srt_file(FILE *infile, srt_file * const file)
   {
     char line[MAXLINE] = "";
+    char text_buf[MAXLINE] = "";
     int s_len = 0;
     bool skip_event = false;
     uint16_t parsed = 0; /* num events parsed */
@@ -67,9 +68,9 @@ parse_srt_file(FILE *infile, srt_file * const file)
             {
               log_msg(warn, MSG_F_UNEXPEOF, line_num);
               if      (prev_line == text)
-                append_string(event->text, line, "\n", MAXLINE, 0);
+                append_string(text_buf, line, "\n", MAXLINE, 0);
               else if (prev_line == timing)
-                strncpy(event->text, line, MAXLINE);
+                strncpy(text_buf, line, MAXLINE);
             }
           curr_line = blank;
         }
@@ -128,13 +129,18 @@ parse_srt_file(FILE *infile, srt_file * const file)
             case text :
               /* TODO: wrapping handling here   */
               if (prev_line == text)
-                append_string(event->text, line, "\n", MAXLINE, 0);
+                append_string(text_buf, line, "\n", MAXLINE, 0);
               else
-                strncpy(event->text, line, MAXLINE);
+                strncpy(text_buf, line, MAXLINE);
               break;
             case blank :
               if (!skip_event && prev_line != blank)
-                srt_event_append(&file->events, &elist_tail, event, opts.i_sort);
+                {
+                  if ((event->text = strndup(text_buf, MAXLINE)) == NULL)
+                    log_msg(error, MSG_M_OOM);
+                  srt_event_append(&file->events, &elist_tail, event, opts.i_sort);
+                  memset(text_buf, 0, MAXLINE);
+                }
             case unknown :
             default      :
               continue;
@@ -145,6 +151,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
           {
             /* clean parsed stuff & skip calloc() next time */
             memset(event, 0, sizeof(srt_event));
+            memset(text_buf, 0, MAXLINE);
             parsed--;
           }
      }

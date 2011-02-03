@@ -26,7 +26,7 @@ typedef struct srt_event
     unsigned long int id;
     double start;
     double end;
-    char text[MAXLINE];
+    char *text;
 
     /** extensions */
     /* #1: position */

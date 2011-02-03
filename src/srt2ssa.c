@@ -21,6 +21,11 @@
 
 #define PROG_NAME "srt2ssa"
 
+/* import some usefull stuff */
+extern struct options opts;
+extern ssa_style ssa_style_template;
+extern ssa_event ssa_event_template;
+
 void usage(int exit_code)
   {
     usage_convert(PROG_NAME);
@@ -45,7 +50,7 @@ void usage(int exit_code)
  * for example, if srt tag acts as borders for scope of some property, *
  * ssa - set this property untill next tag with the same name          */
 bool
-srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
+srt_tags_to_ssa(char *string, ssa_file *file)
   {
     char *p;
     char *value;
@@ -61,11 +66,10 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
     ssa_style *style = NULL;
     enum { none, text, tag } last = none;
 
-    if (!srt || !ssa || !file) return false;
+    if (!string || !file) return false;
 
-    p = srt->text;
     stack_init(stack);
-    for (p = srt->text; (len = parse_html_tag(p, &ttag)) != 0; )
+    for (p = string; (len = parse_html_tag(p, &ttag)) != 0; )
       {
         if (len > 0) /* it's a tag! */
           {
@@ -91,7 +95,7 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
                                     MAXLINE);
                       break;
                     default  :
-                      log_msg(warn, MSG_W_UNRECTAG, ttag.data, srt->text);
+                      log_msg(warn, MSG_W_UNRECTAG, ttag.data, string);
                       break;
                 } /* switch (chr) */
               }
@@ -132,7 +136,7 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
               {
                 /* first, find right style for current event *
                  * if not found, default will be used */
-                style = find_ssa_style_by_name(file, ssa->style);
+                style = &ssa_style_template;
 
                 if (font_params & SRT_T_FONT_FACE)
                   append_string(tags_buf, style->fontname, "\\fn", MAXLINE, 0);
@@ -162,7 +166,7 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
               {
                 /* as we don't know, how to handle this tag, *
                  * skip stack operations below               */
-                log_msg(warn, MSG_W_UNRECTAG, ttag.data, srt->text);
+                log_msg(warn, MSG_W_UNRECTAG, ttag.data, string);
                 ttag.type = none; /* skip stack operations */
                 len =  -len; /* to handle as text in block below */
               }
@@ -172,12 +176,12 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
               {
                 case opening :
                   if (*top == chr)
-                    log_msg(warn, MSG_W_TAGTWICE, ttag.data, srt->text);
+                    log_msg(warn, MSG_W_TAGTWICE, ttag.data, string);
                   stack_push(stack, top, chr);
                   break;
                 case closing :
                   if (*top == chr) stack_pop(stack, top);
-                  else log_msg(warn, MSG_W_TAGUNCL, ttag.data, srt->text);
+                  else log_msg(warn, MSG_W_TAGUNCL, ttag.data, string);
                   /* note: stack remains unchanged in second case! */
                   break;
                 case standalone :
@@ -207,15 +211,10 @@ srt_tags_to_ssa(srt_event * srt, ssa_file * file, ssa_event * ssa)
 
     /* TODO: check stack for unclosed / deranged tags  */
     /* copy temp buffer to right place ^_^ */
-    strncpy(ssa->text, common_buf, MAXLINE);
+    strncpy(string, common_buf, MAXLINE);
 
     return true;
   }
-
-/* import some usefull stuff */
-extern struct options opts;
-extern ssa_style ssa_style_template;
-extern ssa_event ssa_event_template;
 
 /* options */
 unsigned long int line_num = 0;
@@ -228,6 +227,7 @@ int main(int argc, char *argv[])
     srt_event *src;
     ssa_event **dst;
     char opt;
+    char buf[MAXLINE] = "";
 
     if (argc < 2) usage(EXIT_SUCCESS);
 
@@ -329,22 +329,28 @@ int main(int argc, char *argv[])
         (*dst)->start = src->start;
         (*dst)->end   = src->end;
 
-        /* convert tags */
-        if (strchr(src->text, '<') != NULL)
-          srt_tags_to_ssa(src, &target, *dst);
-        else
-          strncpy((*dst)->text, src->text, MAXLINE);
+        strncpy(buf, src->text, MAXLINE);
+        free(src->text);
 
-        /* text wrapping here */
+        /* convert tags */
+        if (strchr(buf, '<') != NULL)
+          srt_tags_to_ssa(buf, &target);
+
+        /* text wrapping */
         if      (opts.o_wrap == keep)
-          text_replace((*dst)->text, "\n", "\\n", MAXLINE, 0);
+          text_replace(buf, "\n", "\\n", MAXLINE, 0);
         else if (opts.o_wrap == merge)
-          text_replace((*dst)->text, "\n", " ",   MAXLINE, 0);
+          text_replace(buf, "\n", " ",   MAXLINE, 0);
+
+        strncpy((*dst)->text, buf, MAXLINE);
+        /* line above is dummy plug. Should be replaced with next soon:
+        if (((*dst)->text = strndup(buf, MAXLINE)) == NULL)
+          log_msg(error, MSG_M_OOM); */
 
         /* events list operations */
         dst = &((*dst)->next);
         source.events = src->next;
-        free(src); /* decreases memory consumption */
+        free(src);
         src = source.events;
       }
 
