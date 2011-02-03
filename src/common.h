@@ -213,7 +213,7 @@ bool stack_push(STACK_ELEM *, STACK_ELEM *, STACK_ELEM);
 bool stack_pop(STACK_ELEM *,  STACK_ELEM *);
 
 /* various functions */
-unsigned int _strtok(char *, char *);
+int _strtok(char *, char *);
 void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);

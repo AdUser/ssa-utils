@@ -453,7 +453,7 @@ stack_pop(STACK_ELEM *st, STACK_ELEM *top)
     if string is zero-length          -> 0
     if delimiter found                -> strlen(token)
     if delimiter not found in string  -> strlen(string) */
-unsigned int
+int
 _strtok(char *s, char *delim)
   {
     int len_s = 0;
