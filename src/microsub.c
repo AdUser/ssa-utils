@@ -80,8 +80,9 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
             p++, i++;
             if (i == 2) /* "{123}{234} Some text." */
               {         /*            ^- '*p'      */
-                strncpy(event->text, p, MAXLINE);
-                while ((p = strchr(event->text, '|')) != NULL) *p = '\n';
+                while ((p = strchr(line, '|')) != NULL) *p = '\n';
+                if ((event->text = strndup(line, MAXLINE)) == NULL)
+                  log_msg(error, MSG_M_OOM);
                 break;
               }
           }

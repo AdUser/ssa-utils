@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
     microsub_event *src;
     ssa_event     **dst;
     char opt;
+    char buf[MAXLINE] = "";
 
     if (argc < 2) usage(EXIT_SUCCESS);
 
@@ -148,12 +149,21 @@ int main(int argc, char *argv[])
         (*dst)->type  = DIALOGUE;
         (*dst)->start = src->start;
         (*dst)->end   = src->end;
-        strncpy((*dst)->text, src->text, MAXLINE);
-        /* text wrapping here */
+
+        /* strncpy((*dst)->text, src->text, MAXLINE); */
+        strncpy(buf, src->text, MAXLINE);
+        free(src->text);
+
+        /* text wrapping */
         if      (opts.o_wrap == keep)
-          text_replace((*dst)->text, "|", "\\n", MAXLINE, 0);
+          text_replace(buf, "|", "\\n", MAXLINE, 0);
         else if (opts.o_wrap == merge)
-          text_replace((*dst)->text, "|", " ",   MAXLINE, 0);
+          text_replace(buf, "|", " ",   MAXLINE, 0);
+
+        strncpy((*dst)->text, buf, MAXLINE);
+        /* replace with next line, when upgrage ssa_event:
+        if (((*dst)->text = strndup(buf, MAXLINE)) == NULL)
+          log_msg(error, MSG_M_OOM);*/
 
         dst = &((*dst)->next);
         source.events = src->next;
