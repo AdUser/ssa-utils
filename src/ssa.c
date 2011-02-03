@@ -346,9 +346,9 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
     bool result = true;
     int8_t *fields_order;
     char compare[MAXLINE];
+    char buf[MAXLINE + 1] = "";
 
-    string_skip_chars(format, " ");
-    string_lowercase(format, 0);
+    strncpy(buf, format, MAXLINE);
 
     switch (v)
       {
@@ -367,12 +367,17 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
           break;
       }
 
+    /* prepare provided 'Format:' string */
+    string_skip_chars(buf, " ");
+    string_lowercase(buf, 0);
+
+    /* prepare standart 'Format:' string */
     string_skip_chars(compare, " ");
     string_lowercase(compare, 0);
 
-    if (strcmp(compare,  format) == 0)
+    if (strcmp(compare,  buf) == 0)
       memcpy(fieldlist, fields_order, sizeof(uint8_t) * MAX_FIELDS);
-    else if ((result = detect_style_fields_order(format, fieldlist)) == true)
+    else if ((result = detect_style_fields_order(buf, fieldlist)) == true)
       log_msg(warn, MSG_W_WRONGFORDER, _("styles"));
     else
       {
