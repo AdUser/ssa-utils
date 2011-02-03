@@ -582,80 +582,46 @@ set_event_fields_order(char * const format, ssa_version v, int8_t * fieldlist)
     return result;
   }
 
+/* 'format' passed to this function must be lowercase string, *
+ * contains only alphanumeric chars, commas and no spaces    */
 bool
 detect_event_fields_order(char *format, int8_t *fieldlist)
   {
     char *p, *token;
+    char buf[MAXLINE + 1] = "";
     bool result;
     int i;
     int8_t *field = fieldlist;
 
-    if ((p = strchr(format, ':')) == 0)
-      log_msg(error, _("Malformed 'Format:' line."));
+    if (!format || !fieldlist) return false;
+
+    strncpy(buf, format, MAXLINE);
+    if ((p = strchr(buf, ':')) == 0)
+      {
+        log_msg(error, _("Malformed 'Format:' line."));
+        return false;
+      }
 
     /* this saves from of duplicate code below *
-     * possible, i should do it with memset()?  */
+     * possible, i should do it with memset()? */
     *(field + MAX_FIELDS) = 0; /* set list-terminator */
-    for (i = 0; i < MAX_FIELDS; i++)
-                  *field++ = -1;
+    for (i = 0; i < MAX_FIELDS; i++) *field++ = -1;
 
     token = strtok(++p, ",");
     do
       {
-        switch(token[0])
-          {
-            case 'e' :
-                if      (strcmp(token, "effect") == 0)
-                  *field = EVENT_EFFECT;
-                else if (strcmp(token, "end") == 0)
-                  *field = EVENT_END;
-                else
-                  goto unknown;
-              break;
-            case 'l' :
-                if      (strcmp(token, "layer") == 0)
-                  *field = EVENT_LAYER;
-                else
-                  goto unknown;
-              break;
-            case 'm' :
-                if      (strcmp(token, "marginl") == 0)
-                  *field = EVENT_MARGINL;
-                if      (strcmp(token, "marginr") == 0)
-                  *field = EVENT_MARGINR;
-                if      (strcmp(token, "marginv") == 0)
-                  *field = EVENT_MARGINV;
-                if      (strcmp(token, "marked") == 0)
-                  *field = EVENT_LAYER;
-                else
-                  goto unknown;
-              break;
-            case 'n' :
-                if      (strcmp(token, "name") == 0)
-                  *field = EVENT_NAME;
-                else
-                  goto unknown;
-              break;
-            case 's' :
-                if      (strcmp(token, "start") == 0)
-                  *field = EVENT_START;
-                else if (strcmp(token, "style") == 0)
-                  *field = EVENT_STYLE;
-                else
-                  goto unknown;
-              break;
-            case 't' :
-                if      (strcmp(token, "text") == 0)
-                  *field = EVENT_TEXT;
-                else
-                  goto unknown;
-              break;
-            default :
-            unknown :
-              log_msg(warn, MSG_W_UNRECFIELD, token);
-            result = false;
-              break;
-          }
+             if (!strcmp(token, "layer"))   *field = EVENT_LAYER;
+        else if (!strcmp(token, "start"))   *field = EVENT_START;
+        else if (!strcmp(token, "end"))     *field = EVENT_END;
+        else if (!strcmp(token, "style"))   *field = EVENT_STYLE;
+        else if (!strcmp(token, "name"))    *field = EVENT_NAME;
+        else if (!strcmp(token, "marginl")) *field = EVENT_MARGINL;
+        else if (!strcmp(token, "marginr")) *field = EVENT_MARGINR;
+        else if (!strcmp(token, "marginv")) *field = EVENT_MARGINV;
+        else if (!strcmp(token, "effect"))  *field = EVENT_EFFECT;
+        else if (!strcmp(token, "text"))    *field = EVENT_TEXT;
+        else log_msg(warn, MSG_W_UNRECFIELD, token), result = false;
+
         field++;
       }
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
