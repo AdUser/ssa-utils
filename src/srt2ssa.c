@@ -148,7 +148,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                       append_char(tags_buf, '1', MAXLINE);
                     i = strlen(tags_buf);
                     snprintf((tags_buf + i), (MAXLINE - i),
-                                "c&H%X&", style->primary_color);
+                                "c&H%X&", style->pr_color);
                   }
 
                 if (font_params & SRT_T_FONT_SIZE)

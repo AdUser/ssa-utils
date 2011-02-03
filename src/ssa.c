@@ -526,12 +526,12 @@ get_ssa_style(char * const line, ssa_style ** style,
             case STYLE_MARGINR  : ptr->margin_r = atoi(token);   break;
             case STYLE_MARGINV  : ptr->margin_v = atoi(token);   break;
             case STYLE_ENC      : ptr->codepage = atoi(token);   break;
-            case STYLE_BORDER   : ptr->border_style = atoi(token); break;
-            case STYLE_ALPHA    : ptr->alpha_level  = atoi(token); break;
-            case STYLE_PCOLOR   : ptr->primary_color    = ssa_color(token); break;
-            case STYLE_SCOLOR   : ptr->secondary_color  = ssa_color(token); break;
-            case STYLE_TCOLOR   : ptr->outline_color    = ssa_color(token); break;
-            case STYLE_BCOLOR   : ptr->background_color = ssa_color(token); break;
+            case STYLE_BORDER   : ptr->brd_style = atoi(token);  break;
+            case STYLE_ALPHA    : ptr->a_level  = atoi(token);   break;
+            case STYLE_PCOLOR   : ptr->pr_color = ssa_color(token); break;
+            case STYLE_SCOLOR   : ptr->se_color = ssa_color(token); break;
+            case STYLE_TCOLOR   : ptr->tr_color = ssa_color(token); break;
+            case STYLE_BCOLOR   : ptr->bg_color = ssa_color(token); break;
             default :
               break;
           }
@@ -847,8 +847,8 @@ write_ssa_style(FILE * outfile, ssa_style  * const style, ssa_version v)
       }
 
     fprintf(outfile, color_format, \
-              style->primary_color, style->secondary_color, \
-              style->outline_color, style->background_color);
+              style->pr_color, style->se_color, \
+              style->tr_color, style->bg_color);
 
     fprintf(outfile, "%i,%i,", style->bold, style->italic);
 
@@ -860,14 +860,14 @@ write_ssa_style(FILE * outfile, ssa_style  * const style, ssa_version v)
                 style->spacing, style->angle);
 
     fprintf(outfile, "%i,%i,%i,%i,",  \
-                style->border_style, style->outline, \
-                style->shadow,       style->alignment);
+                style->brd_style, style->outline, \
+                style->shadow,    style->alignment);
 
     fprintf(outfile, "%i,%i,%i,",  \
                 style->margin_l, style->margin_r, style->margin_v);
 
     if (alphalevel)
-        fprintf(outfile, "%i,", style->alpha_level);
+        fprintf(outfile, "%i,", style->a_level);
 
     fprintf(outfile, "%i\n", style->codepage);
 

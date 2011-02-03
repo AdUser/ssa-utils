@@ -48,10 +48,10 @@ typedef struct ssa_style
     char fontname[MAX_STYLE_NAME];
     float fontsize;
 
-    uint32_t primary_color;
-    uint32_t secondary_color;
-    uint32_t outline_color;
-    uint32_t background_color;
+    uint32_t pr_color;
+    uint32_t se_color;
+    uint32_t tr_color;
+    uint32_t bg_color;
 
     /* true as -1, false as 0 */
     int8_t bold;
@@ -65,7 +65,7 @@ typedef struct ssa_style
 
     uint8_t spacing;
     float angle; /* values from -360 to 360 */
-    uint8_t border_style;
+    uint8_t brd_style;
     uint8_t outline;
     uint8_t shadow;
     uint8_t alignment;
@@ -78,7 +78,7 @@ typedef struct ssa_style
     uint16_t margin_l;  /*  | ML subs MR |  */
     uint16_t margin_r;  /*  |     MB     |  */
     uint16_t margin_v;  /*  `------------'  */
-    uint8_t alpha_level;/* not used neither in ssa, nor in ass */
+    uint8_t a_level;    /* not used neither in ssa, nor in ass */
     uint8_t codepage;   /* 204 - russian */
   } ssa_style;
 
