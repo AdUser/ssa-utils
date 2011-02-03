@@ -480,6 +480,17 @@ _strtok(char *s, char *delim)
     return len; /* i miss something ^^" */
   }
 
+char *
+_strndup(char *orig, unsigned int len)
+  {
+    char *copy = NULL;
+
+    if ((copy = strndup(orig, len)) == NULL)
+      log_msg(error, MSG_M_OOM);
+
+    return copy;
+  }
+
 enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {
