@@ -284,7 +284,7 @@ get_ssa_option(char * const line, ssa_file * const h)
         strncpy(buf, (p + 1), MAXLINE);
       }
 
-    string_lowercase(param, strlen(param));
+    string_lowercase(param, 0);
     trim_spaces(buf, LINE_START | LINE_END);
 
     if (strlen(buf) == 0)
@@ -328,7 +328,7 @@ get_ssa_option(char * const line, ssa_file * const h)
       h->flags |= SSA_H_HAVE_UPDATED;
     else if (!strcmp(param, "scripttype"))
       {
-        string_lowercase(buf, MAXLINE);
+        string_lowercase(buf, 0);
         if      (!strcmp(buf, "v4.00+")) h->type = ssa_v4p;
         else if (!strcmp(buf, "v4.00"))  h->type = ssa_v4;
         else if (!strcmp(buf, "v3.00"))  h->type = ssa_v3;
@@ -344,12 +344,11 @@ bool
 set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
   {
     bool result = true;
-    int len = strlen(format);
     int8_t *fields_order;
     char compare[MAXLINE];
 
     string_skip_chars(format, " ");
-    string_lowercase(format, len);
+    string_lowercase(format, 0);
 
     switch (v)
       {
@@ -662,11 +661,10 @@ bool
 set_event_fields_order(char * const format, ssa_version v, int8_t * fieldlist)
   {
     bool result = true;
-    int len = strlen(format);
     char compare[MAXLINE];
 
     string_skip_chars(format, " ");
-    string_lowercase(format, len);
+    string_lowercase(format, 0);
 
     switch (v)
       {
@@ -1154,7 +1152,7 @@ ssa_section_switch(enum ssa_section *section, char *line)
     bool result = true;
     if (line[0] == '[')
       {
-        string_lowercase(line, MAXLINE);
+        string_lowercase(line, 0);
         if      (strcmp("[script info]", line) == 0)
           *section = HEADER;
         else if (strcmp("[events]", line) == 0)

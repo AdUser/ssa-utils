@@ -331,14 +331,19 @@ strip_text(char *where, char from, char to)
     return true;
   }
 
-void
+bool
 string_lowercase(char * const s, unsigned int length)
   {
-    char *p;
-    if (length == 0 || length > MAXLINE) length = MAXLINE;
-    if (length > 0 && length <= MAXLINE)
-      for (p = s; length --> 0 && *p != '\0'; p++)
-        *p = tolower(*p);
+    char *p = NULL;
+
+    if (!s) return false;
+
+    if (length == 0) length = strlen(s);
+
+    for (p = s; length --> 0 && *p != '\0'; p++)
+      *p = tolower(*p);
+
+    return true;
   }
 
 void
@@ -873,7 +878,7 @@ parse_html_tag(char const * const s, struct tag * const tag)
       w++, tag->type = opening;
 
     /* now, we expecting tag name and one or more parameters */
-    for (b = buf, len = 0; cont == true; w++)
+    for (b = buf; cont == true; w++)
       {
         /* little hack to avoid switch limitation */
         test = (isspace(*w)) ? ' ' : *w ;
@@ -933,12 +938,12 @@ parse_html_tag(char const * const s, struct tag * const tag)
             switch (get)
               {
                 case name :
-                  string_lowercase(buf, len);
+                  string_lowercase(buf, 0);
                   snprintf(tag->data, TAG_DATA_MAX, "%s%c%c",
                      buf, '\0', TAG_DATA_END);
                   break;
                 case param :
-                  string_lowercase(buf, len);
+                  string_lowercase(buf, 0);
                   add_tag_param(tag, TAG_PARAM, buf);
                   break;
                 case value :

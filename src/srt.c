@@ -165,7 +165,7 @@ analyze_srt_timing(char *s, uint8_t * const flags)
     char token[MAXLINE] = "";
 
     strcpy(token, s);
-    string_lowercase(token, MAXLINE);
+    string_lowercase(token, 0);
 
     /* these capabilities are mutually exclusive, therefore 'else if' *
      * see header for details and examples */

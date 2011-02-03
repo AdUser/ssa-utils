@@ -190,7 +190,7 @@ void trim_newline(char *);
 bool trim_spaces(char *, int);
 bool text_replace(char *, char *, char *, unsigned int, unsigned int);
 bool strip_text(char *, char, char);
-void string_lowercase(char * const, unsigned int);
+bool string_lowercase(char * const, unsigned int);
 void string_skip_chars(char *, char *);
 bool append_string(char *, char *, char *, unsigned int, unsigned int);
 bool append_char(char *, char, unsigned int);
