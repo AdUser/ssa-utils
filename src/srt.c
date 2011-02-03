@@ -162,16 +162,16 @@ parse_srt_file(FILE *infile, srt_file * const file)
 bool
 analyze_srt_timing(char *s, uint8_t * const flags)
   {
-    char token[MAXLINE] = "";
+    char buf[MAXLINE + 1] = "";
 
-    strcpy(token, s);
-    string_lowercase(token, 0);
+    strncpy(buf, s, MAXLINE);
+    string_lowercase(buf, 0);
 
     /* these capabilities are mutually exclusive, therefore 'else if' *
      * see header for details and examples */
-    if      (strstr(token, "x1:") && strstr(token, "y2:"))
+    if      (strstr(buf, "x1:") && strstr(buf, "y2:"))
       *flags |= SRT_E_HAVE_POSITION;
-    else if (strstr(token, "ssa:"))
+    else if (strstr(buf, "ssa:"))
       *flags |= SRT_E_HAVE_STYLE;
 
     return true;
