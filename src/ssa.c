@@ -388,8 +388,10 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
     return result;
   }
 
+/* 'format' passed to this function must be lowercase string, *
+ * contains only alphanumeric chars, commas and no spaces    */
 bool
-detect_style_fields_order(char * format, int8_t *fieldlist)
+detect_style_fields_order(char *format, int8_t *fieldlist)
   {
     char *p, *token;
     bool result;
@@ -413,112 +415,34 @@ detect_style_fields_order(char * format, int8_t *fieldlist)
     token = strtok(++p, ",");
     do
       {
-        switch(token[0])
-          {
-            case 'a' :
-                if      (strcmp(token, "alignment") == 0)
-                  *field = STYLE_ALIGN;
-                else if (strcmp(token, "alphalevel") == 0)
-                  *field = STYLE_ALPHA;
-                else if (strcmp(token, "angle") == 0)
-                  *field = STYLE_ANGLE;
-                else
-                  goto unknown;
-              break;
-            case 'b' :
-                if      (strcmp(token, "backcolour") == 0)
-                  *field = STYLE_BCOLOR;
-                else if (strcmp(token, "borderstyle") == 0)
-                  *field = STYLE_BORDER;
-                else if (strcmp(token, "bold") == 0)
-                  *field = STYLE_BOLD;
-                else
-                  goto unknown;
-              break;
-            case 'e' :
-                if      (strcmp(token, "encoding") == 0)
-                  *field = STYLE_ENC;
-                else
-                  goto unknown;
-              break;
-            case 'f' :
-                if      (strcmp(token, "fontname") == 0)
-                  *field = STYLE_FONTNAME;
-                else if (strcmp(token, "fontsize") == 0)
-                  *field = STYLE_FONTSIZE;
-                else
-                  goto unknown;
-              break;
-            case 'i' :
-                if      (strcmp(token, "italic") == 0)
-                  *field = STYLE_ITALIC;
-                else
-                  goto unknown;
-              break;
-            case 'm' :
-                if      (strcmp(token, "marginl") == 0)
-                  *field = STYLE_MARGINL;
-                else if (strcmp(token, "marginr") == 0)
-                  *field = STYLE_MARGINR;
-                else if (strcmp(token, "marginv") == 0)
-                  *field = STYLE_MARGINV;
-                else
-                  goto unknown;
-              break;
-            case 'n' :
-                if      (strcmp(token, "name") == 0)
-                  *field = STYLE_NAME;
-                else
-                  goto unknown;
-              break;
-            case 'o' :
-                if      (strcmp(token, "outlinecolour") == 0)
-                    *field = STYLE_TCOLOR;
-                else if (strcmp(token, "outline") == 0)
-                    *field = STYLE_OUTLINE;
-                else
-                  goto unknown;
-              break;
-            case 'p' :
-                if      (strcmp(token, "primarycolour") == 0)
-                  *field = STYLE_PCOLOR;
-                else
-                  goto unknown;
-              break;
-            case 's' :
-                if      (strcmp(token, "scalex") == 0)
-                  *field = STYLE_SCALEX;
-                else if (strcmp(token, "scaley") == 0)
-                  *field = STYLE_SCALEY;
-                else if (strcmp(token, "shadow") == 0)
-                  *field = STYLE_SHADOW;
-                else if (strcmp(token, "spacing") == 0)
-                  *field = STYLE_SPACING;
-                else if (strcmp(token, "strikeout") == 0)
-                  *field = STYLE_STRIKE;
-                else if (strcmp(token, "secondarycolour") == 0)
-                  *field = STYLE_SCOLOR;
-                else
-                  goto unknown;
-              break;
-            case 't' :
-                if      (strcmp(token, "tertiarycolour") == 0)
-                  *field = STYLE_TCOLOR;
-                else
-                  goto unknown;
-              break;
-            case 'u' :
-                if      (strcmp(token, "underline") == 0)
-                  *field = STYLE_UNDER;
-                else
-                  goto unknown;
-              break;
-            default :
-            unknown :
-              log_msg(warn, MSG_W_UNRECFIELD, token);
-            result = false;
-              break;
-          }
+             if (!strcmp(token, "name"))            *field = STYLE_NAME;
+        else if (!strcmp(token, "fontname"))        *field = STYLE_FONTNAME;
+        else if (!strcmp(token, "fontsize"))        *field = STYLE_FONTSIZE;
+        else if (!strcmp(token, "primarycolour"))   *field = STYLE_PCOLOR;
+        else if (!strcmp(token, "secondarycolour")) *field = STYLE_SCOLOR;
+        else if (!strcmp(token, "backcolour"))      *field = STYLE_BCOLOR;
+        else if (!strcmp(token, "tertiarycolour"))  *field = STYLE_TCOLOR;
+        else if (!strcmp(token, "outlinecolour"))   *field = STYLE_TCOLOR;
+        else if (!strcmp(token, "bold"))            *field = STYLE_BOLD;
+        else if (!strcmp(token, "italic"))          *field = STYLE_ITALIC;
+        else if (!strcmp(token, "underline"))       *field = STYLE_UNDER;
+        else if (!strcmp(token, "strikeout"))       *field = STYLE_STRIKE;
+        else if (!strcmp(token, "scalex"))          *field = STYLE_SCALEX;
+        else if (!strcmp(token, "scaley"))          *field = STYLE_SCALEY;
+        else if (!strcmp(token, "spacing"))         *field = STYLE_SPACING;
+        else if (!strcmp(token, "angle"))           *field = STYLE_ANGLE;
+        else if (!strcmp(token, "borderstyle"))     *field = STYLE_BORDER;
+        else if (!strcmp(token, "outline"))         *field = STYLE_OUTLINE;
+        else if (!strcmp(token, "shadow"))          *field = STYLE_SHADOW;
+        else if (!strcmp(token, "alignment"))       *field = STYLE_ALIGN;
+        else if (!strcmp(token, "marginl"))         *field = STYLE_MARGINL;
+        else if (!strcmp(token, "marginr"))         *field = STYLE_MARGINR;
+        else if (!strcmp(token, "marginv"))         *field = STYLE_MARGINV;
+        else if (!strcmp(token, "encoding"))        *field = STYLE_ENC;
+        else if (!strcmp(token, "alphalevel"))      *field = STYLE_ALPHA;
+        else
+          log_msg(warn, MSG_W_UNRECFIELD, token), result = false;
+
         field++;
       }
     while ((token = strtok(NULL, ",")) != 0 && *field != 0);
