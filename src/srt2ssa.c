@@ -330,7 +330,6 @@ int main(int argc, char *argv[])
         (*dst)->end   = src->end;
 
         strncpy(buf, src->text, MAXLINE);
-        free(src->text);
 
         /* convert tags */
         if (strchr(buf, '<') != NULL)
@@ -342,14 +341,12 @@ int main(int argc, char *argv[])
         else if (opts.o_wrap == merge)
           text_replace(buf, "\n", " ",   MAXLINE, 0);
 
-        strncpy((*dst)->text, buf, MAXLINE);
-        /* line above is dummy plug. Should be replaced with next soon:
-        if (((*dst)->text = strndup(buf, MAXLINE)) == NULL)
-          log_msg(error, MSG_M_OOM); */
+        (*dst)->text = _strndup(buf, MAXLINE);
 
         /* events list operations */
         dst = &((*dst)->next);
         source.events = src->next;
+        free(src->text);
         free(src);
         src = source.events;
       }

@@ -150,9 +150,7 @@ int main(int argc, char *argv[])
         (*dst)->start = src->start;
         (*dst)->end   = src->end;
 
-        /* strncpy((*dst)->text, src->text, MAXLINE); */
         strncpy(buf, src->text, MAXLINE);
-        free(src->text);
 
         /* text wrapping */
         if      (opts.o_wrap == keep)
@@ -160,14 +158,12 @@ int main(int argc, char *argv[])
         else if (opts.o_wrap == merge)
           text_replace(buf, "|", " ",   MAXLINE, 0);
 
-        strncpy((*dst)->text, buf, MAXLINE);
-        /* replace with next line, when upgrage ssa_event:
-        if (((*dst)->text = strndup(buf, MAXLINE)) == NULL)
-          log_msg(error, MSG_M_OOM);*/
+        (*dst)->text = _strndup(buf, MAXLINE);
 
         dst = &((*dst)->next);
         source.events = src->next;
-        free(src); /* decreases memory consumption */
+        free(src->text);
+        free(src);
         src = source.events;
       }
 

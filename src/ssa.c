@@ -640,41 +640,40 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
     int8_t *field = fieldlist;
     subtime st = { 0, 0, 0, 0.0 };
     char *p = line, *delim = ",";
-    char token[MAXLINE];
+    char buf[MAXLINE + 1];
     int len = -1;
     double *t;
 
-    if (event == NULL)
+    if (!event || !line || !fieldlist)
       return false;
 
-    if ((p = strchr(line, ':')) == NULL)
-      return false;
+    if ((p = strchr(line, ':')) == NULL) return false;
 
     p = p + 1; /* "EventType:|" */
 
     while (*field != 0)
       {
         len = _strtok(p, delim);
-        if (len < 0)
-          return false;
-        else if (len > 0 && len < MAXLINE)
+        if (len < 0) return false;
+
+        if (len > 0 && len < MAXLINE)
           {
-            strncpy(token, p, len);
+            strncpy(buf, p, len);
             p += (len + strlen(delim));
-            token[len] = '\0';
+            buf[len] = '\0';
           }
         else /* len == 0 || len > MAXLINE */
-          token[0] = '\0', p++;
+          buf[0] = '\0', p++;
 
         switch (*field)
           {
             case EVENT_LAYER :
-              event->layer = atoi(token); /* little hack */
+              event->layer = atoi(buf); /* little hack */
               break;
             case EVENT_START :
             case EVENT_END :
               t = (*field == EVENT_START) ? &event->start : &event->end;
-              if (!str2subtime(token, &st))
+              if (!str2subtime(buf, &st))
                 {
                   log_msg(warn, _("Can't get timing at line '%u'."), line_num);
                   return false;
@@ -683,25 +682,25 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
                 subtime2double(&st, t);
               break;
             case EVENT_STYLE :
-              strncpy(event->style, token, MAX_EVENT_NAME);
+              strncpy(event->style, buf, MAX_EVENT_NAME);
               break;
             case EVENT_NAME :
-              strncpy(event->name, token, MAX_EVENT_NAME);
+              strncpy(event->name, buf, MAX_EVENT_NAME);
               break;
             case EVENT_MARGINL :
-              event->margin_l = atoi(token);
+              event->margin_l = atoi(buf);
               break;
             case EVENT_MARGINR :
-              event->margin_r = atoi(token);
+              event->margin_r = atoi(buf);
               break;
             case EVENT_MARGINV :
-              event->margin_v = atoi(token);
+              event->margin_v = atoi(buf);
               break;
             case EVENT_EFFECT :
-              strncpy(event->effect, token, MAX_EVENT_NAME);
+              strncpy(event->effect, buf, MAX_EVENT_NAME);
               break;
             case EVENT_TEXT :
-              strncpy(event->text, token, MAXLINE);
+              event->text = _strndup(buf, MAXLINE);
               break;
             default :
               break;
@@ -915,7 +914,7 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
         write_ssa_event(outfile, ptr, v);
         prev = ptr;
         ptr = ptr->next;
-        if (memfree) free(prev);
+        if (memfree) free(prev->text), free(prev);
       }
 
     fputc('\n', outfile);
@@ -1004,10 +1003,8 @@ ssa_section_switch(enum ssa_section *section, char *line)
 
     if (!section || !line) return false;
 
-    *section = UNKNOWN; /* by default */
     memset(buf, 0x0, MAXLINE + 1);
     strncpy(buf, line, MAXLINE);
-    string_skip_chars(buf, " ");
     string_lowercase(buf, 0);
 
     if (line[0] != '[') return false;
@@ -1018,7 +1015,11 @@ ssa_section_switch(enum ssa_section *section, char *line)
     else if (!strcmp(buf, "[graphics]"))    *section = GRAPHICS;
     else if (strstr(buf, "styles]") != 0)   *section = STYLES;
     else
-      log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), buf, line_num);
+      {
+        log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), buf, line_num);
+        *section = UNKNOWN; /* by default */
+        return false;
+      }
 
     return true;
   }

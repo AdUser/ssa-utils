@@ -138,7 +138,7 @@ typedef struct ssa_event
     int margin_l;
     int margin_v;
     char effect[MAX_EVENT_NAME];
-    char text[MAXLINE];
+    char *text;
   } ssa_event;
 
 /* Defined order & names below matches ssa_v4+ *
