@@ -346,16 +346,21 @@ string_lowercase(char * const s, unsigned int length)
     return true;
   }
 
-void
+bool
 string_skip_chars(char *string, char *chars)
   {
     char *p1, *p2, *c;
+
+    if (!string || !chars) return false;
+
     for (c = chars; *c != '\0'; c++)
       {
         for (p1 = p2 = string; *p2 != '\0'; p2++)
           if (*p2 != *c) *p1++ = *p2;
         *p1 = '\0';
       }
+
+    return true;
   }
 
 /* copies text 'from' 'to' buffer size 'to_size' *
