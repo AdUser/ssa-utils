@@ -510,72 +510,28 @@ get_ssa_style(char * const line, ssa_style ** style,
                 strncpy(ptr->fontname, token, MAX_STYLE_NAME);
                 trim_spaces(ptr->fontname, LINE_START | LINE_END);
               break;
-            case STYLE_FONTSIZE :
-                ptr->fontsize = atof(token);
-              break;
-            case STYLE_PCOLOR :
-                ptr->primary_color = ssa_color(token);
-              break;
-            case STYLE_SCOLOR :
-                ptr->secondary_color = ssa_color(token);
-              break;
-            case STYLE_TCOLOR :
-                ptr->outline_color = ssa_color(token);
-              break;
-            case STYLE_BCOLOR :
-                ptr->background_color = ssa_color(token);
-              break;
-            case STYLE_BOLD :
-                ptr->bold = atoi(token);
-              break;
-            case STYLE_ITALIC :
-                ptr->italic = atoi(token);
-              break;
-            case STYLE_UNDER :
-                ptr->underlined = atoi(token);
-              break;
-            case STYLE_STRIKE :
-                ptr->strikeout = atoi(token);
-              break;
-            case STYLE_SCALEX :
-                ptr->scale_x = atoi(token);
-              break;
-            case STYLE_SCALEY :
-                ptr->scale_y = atoi(token);
-              break;
-            case STYLE_SPACING :
-                ptr->spacing = atoi(token);
-              break;
-            case STYLE_ANGLE :
-                ptr->angle = atof(token);
-              break;
-            case STYLE_BORDER :
-                ptr->border_style = atoi(token);
-              break;
-            case STYLE_OUTLINE :
-                ptr->outline = atoi(token);
-              break;
-            case STYLE_SHADOW :
-                ptr->shadow = atoi(token);
-              break;
-            case STYLE_ALIGN :
-                ptr->alignment = atoi(token);
-              break;
-            case STYLE_MARGINL :
-                ptr->margin_l = atoi(token);
-              break;
-            case STYLE_MARGINR :
-                ptr->margin_r = atoi(token);
-              break;
-            case STYLE_MARGINV :
-                ptr->margin_v = atoi(token);
-              break;
-            case STYLE_ALPHA :
-                ptr->alpha_level = atoi(token);
-              break;
-            case STYLE_ENC :
-                ptr->codepage = atoi(token);
-              break;
+            case STYLE_FONTSIZE : ptr->fontsize = atof(token);   break;
+            case STYLE_BOLD     : ptr->bold = atoi(token);       break;
+            case STYLE_ITALIC   : ptr->italic = atoi(token);     break;
+            case STYLE_UNDER    : ptr->underlined = atoi(token); break;
+            case STYLE_STRIKE   : ptr->strikeout = atoi(token);  break;
+            case STYLE_SCALEX   : ptr->scale_x = atoi(token);    break;
+            case STYLE_SCALEY   : ptr->scale_y = atoi(token);    break;
+            case STYLE_SPACING  : ptr->spacing = atoi(token);    break;
+            case STYLE_ANGLE    : ptr->angle = atof(token);      break;
+            case STYLE_OUTLINE  : ptr->outline = atoi(token);    break;
+            case STYLE_SHADOW   : ptr->shadow = atoi(token);     break;
+            case STYLE_ALIGN    : ptr->alignment = atoi(token);  break;
+            case STYLE_MARGINL  : ptr->margin_l = atoi(token);   break;
+            case STYLE_MARGINR  : ptr->margin_r = atoi(token);   break;
+            case STYLE_MARGINV  : ptr->margin_v = atoi(token);   break;
+            case STYLE_ENC      : ptr->codepage = atoi(token);   break;
+            case STYLE_BORDER   : ptr->border_style = atoi(token); break;
+            case STYLE_ALPHA    : ptr->alpha_level  = atoi(token); break;
+            case STYLE_PCOLOR   : ptr->primary_color    = ssa_color(token); break;
+            case STYLE_SCOLOR   : ptr->secondary_color  = ssa_color(token); break;
+            case STYLE_TCOLOR   : ptr->outline_color    = ssa_color(token); break;
+            case STYLE_BCOLOR   : ptr->background_color = ssa_color(token); break;
             default :
               break;
           }
