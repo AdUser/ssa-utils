@@ -214,7 +214,7 @@ bool stack_pop(STACK_ELEM *,  STACK_ELEM *);
 
 /* various functions */
 int _strtok(char *, char *);
-char *_strndup(char *, unsigned int len);
+bool _strndup(char **, char *, unsigned int len);
 void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);

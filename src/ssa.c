@@ -59,13 +59,13 @@ ssa_file ssa_file_template =
   {
     /** data section */
     /* text fields */
-    "",       /* Title                */
-    "",       /* Original Script      */
-    "",       /* Original Translation */
-    "",       /* Original Editing     */
-    "",       /* Original Timing      */
-    "",       /* Script Updated By    */
-    "Normal", /* Collisions           */
+    NULL,     /* Title                */
+    NULL,     /* Original Script      */
+    NULL,     /* Original Translation */
+    NULL,     /* Original Editing     */
+    NULL,     /* Original Timing      */
+    NULL,     /* Script Updated By    */
+    NULL,     /* Collisions           */
 
     /* numeric fields */
     { 0, 0 }, /* PlayResX & PlayResY  */
@@ -134,7 +134,7 @@ ssa_event ssa_event_template =
     0,         /* margin_l */
     0,         /* margin_l */
     "",        /* effect   */
-    ""         /* text     */
+    NULL       /* text     */
 };
 
 /* top-level functions */
@@ -306,25 +306,25 @@ get_ssa_option(char * const line, ssa_file * const h)
     else if (!strcmp(param, "wrapstyle"))
       h->wrap = atoi(buf);
     else if (!strcmp(param, "title"))
-      h->title = _strndup(buf, MAXLINE),
+      _strndup(&(h->title), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_TITLE;
     else if (!strcmp(param, "collisions"))
-      h->collisions = _strndup(buf, MAXLINE),
+      _strndup(&(h->collisions), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_COLLS;
     else if (!strcmp(param, "original script"))
-      h->o_script = _strndup(buf, MAXLINE),
+      _strndup(&(h->o_script), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_OSCRIPT;
     else if (!strcmp(param, "original translation"))
-      h->o_trans = _strndup(buf, MAXLINE),
+      _strndup(&(h->o_trans), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_OTRANS;
     else if (!strcmp(param, "original editing"))
-      h->o_edit = _strndup(buf, MAXLINE),
+      _strndup(&(h->o_edit), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_OEDIT;
     else if (!strcmp(param, "original timing"))
-      h->o_timing = _strndup(buf, MAXLINE),
+      _strndup(&(h->o_timing), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_OTIMING;
     else if (!strcmp(param, "script updated by"))
-      h->updated = _strndup(buf, MAXLINE),
+      _strndup(&(h->updated), buf, MAXLINE),
       h->flags |= SSA_H_HAVE_UPDATED;
     else if (!strcmp(param, "scripttype"))
       {
@@ -700,7 +700,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
               strncpy(event->effect, buf, MAX_EVENT_NAME);
               break;
             case EVENT_TEXT :
-              event->text = _strndup(buf, MAXLINE);
+              _strndup(&(event->text), buf, MAXLINE);
               break;
             default :
               break;

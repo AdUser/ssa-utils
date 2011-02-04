@@ -490,15 +490,17 @@ _strtok(char *s, char *delim)
     return len; /* i miss something ^^" */
   }
 
-char *
-_strndup(char *orig, unsigned int len)
+bool
+_strndup(char **copy, char *orig, unsigned int len)
   {
-    char *copy = NULL;
+    if (!copy || !orig) return false;
 
-    if ((copy = strndup(orig, len)) == NULL)
+    if (*copy) free(*copy);
+
+    if ((*copy = strndup(orig, len)) == NULL)
       log_msg(error, MSG_M_OOM);
 
-    return copy;
+    return true;
   }
 
 enum chs_type

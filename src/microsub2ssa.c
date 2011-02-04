@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
         else if (opts.o_wrap == merge)
           text_replace(buf, "|", " ",   MAXLINE, 0);
 
-        (*dst)->text = _strndup(buf, MAXLINE);
+        _strndup(&((*dst)->text), buf, MAXLINE);
 
         dst = &((*dst)->next);
         source.events = src->next;
