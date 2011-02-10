@@ -312,15 +312,13 @@ int main(int argc, char *argv[])
     /* init, stage 2 */
     src = source.events;
     dst = &target.events;
-    if ((target.styles = calloc(1, sizeof(ssa_style))) == NULL)
-      log_msg(error, MSG_M_OOM);
+    CALLOC(target.styles, 1, sizeof(ssa_style));
 
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
 
     while (src != (srt_event *) 0)
       {
-        if ((*dst = (ssa_event *) calloc(1, sizeof(ssa_event))) == NULL)
-          log_msg(error, MSG_M_OOM);
+        CALLOC(*dst, 1, sizeof(ssa_event));
 
         memcpy(*dst, &ssa_event_template, sizeof(ssa_event));
 

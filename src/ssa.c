@@ -198,8 +198,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                     file->type, file->event_fields_order);
               else
                 {
-                  if ((e = calloc(1, sizeof(ssa_event))) == NULL)
-                    log_msg(error, MSG_M_OOM);
+                  CALLOC(e, 1, sizeof(ssa_event));
                   switch (toupper(*line))
                     {
                       case 'D' : e->type = DIALOGUE; break;
@@ -248,7 +247,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
       if ((get_styles && file->styles == (ssa_style *) 0) || !get_styles)
         {
           log_msg(warn, _("No styles was defined. Default style assumed."));
-          file->styles = calloc(1, sizeof(ssa_style));
+          CALLOC(file->styles, 1, sizeof(ssa_style));
           if (file->styles)
             memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
         }
@@ -476,10 +475,9 @@ get_ssa_style(char * const line, ssa_style ** style,
 
     if ((p = strchr(line, ':')) == NULL)
       return false;
-    else if ((*ptr_alloc = calloc(1, sizeof(ssa_style))) != NULL)
-      memcpy(*ptr_alloc, &ssa_style_template, sizeof(ssa_style));
-    else
-      return false;
+
+    CALLOC(*ptr_alloc, 1, sizeof(ssa_style));
+    memcpy(*ptr_alloc, &ssa_style_template, sizeof(ssa_style));
 
     ptr = *ptr_alloc;
 

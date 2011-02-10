@@ -84,10 +84,8 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
         if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
-            event = calloc(1, sizeof(srt_event));
+            CALLOC(event, 1, sizeof(srt_event));
             memset(text_buf, 0x0, MAXLINE);
-            if (!event)
-              log_msg(error, MSG_M_OOM);
 
             if (curr_line != id)
               {

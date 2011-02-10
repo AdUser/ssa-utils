@@ -32,7 +32,7 @@
 #define MSG_F_OFMISSING  _("Output file not specified. stdout will be used.")
 #define MSG_F_UNEXPEOF   _("Unexpected EOF at line '%u'")
 /* memory operations */
-#define MSG_M_OOM        _("Can't allocate memory.")
+#define MSG_M_OOM        _("%s:%i: Can't allocate memory.")
 /* workflow */
 #define MSG_W_TESTONLY   _("Only test will be performed.")
 #define MSG_W_TESTDONE   _("Input file test completed. See warnings above, if any.")

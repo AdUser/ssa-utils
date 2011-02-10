@@ -57,8 +57,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 
-        if ((event = calloc(1, sizeof(microsub_event))) == NULL)
-          log_msg(error, MSG_M_OOM);
+        CALLOC(event, 1, sizeof(microsub_event));
 
         if (strncmp(line, "{1}{1}", 6) == 0)
           {

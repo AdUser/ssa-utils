@@ -36,7 +36,13 @@
 #define MAXLINE 3072 * sizeof(char)
 #define COMMON_PROG_NAME "ssa-utils"
 #define VERSION 0.04
+
+/* wrappers */
 #define _(x) gettext((x))
+#define CALLOC(ptr, nmemb, size) \
+  if (((ptr) = calloc((nmemb), (size))) == NULL) \
+    log_msg(error, MSG_M_OOM, __FILE__, __LINE__)
+    /* yes, i know about assert() */
 
 #define SEC_MAX     85399 /* 23h:59m:59s */
 #define SEC_IN_HOUR  3600
