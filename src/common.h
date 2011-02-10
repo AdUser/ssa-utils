@@ -38,7 +38,7 @@
 #define VERSION 0.04
 #define _(x) gettext((x))
 
-#define SEC_MAX     86399 /* 23h:59m:59s */
+#define SEC_MAX     85399 /* 23h:59m:59s */
 #define SEC_IN_HOUR  3600
 #define SEC_IN_MIN     60
 #define MSEC_MAX      999
