@@ -8,6 +8,7 @@
 ? параметр '-u' - принудительное включение режима юникода
 - README: maintainers
 - ssa_retime: подстройка длительности для текстовых событий (-D ?).
+  * mshift        Shift time in subtitle by multiple points.
   * set           Set subtitle duration proportionally subtitle lenght.
   * extend-only   Same as 'set', but don't change duration, if calculated value less than existing.
   * reduce-only   Same as 'set', but don't change duration, if calculated value greater than existing.
