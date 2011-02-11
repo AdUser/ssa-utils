@@ -32,10 +32,12 @@ struct unicode_test BOMs[6] =
   { SINGLE,  { 0x00, 0x00, 0x00, 0x00 }, 0 } /* this entry acts as list-terminator */
 };
 
-struct options opts = {
+struct options opts =
+{
   warn,       /* msglevel    */
   false,      /* sort_events */
   false,      /* test        */
+  false,      /* strict parse */
   false,      /* font tune   */
   (FILE *) 0, /* infile      */
   (FILE *) 0, /* outfile     */

@@ -172,6 +172,7 @@ struct options
 
   bool i_sort;
   bool i_test;
+  bool i_strict;
   bool o_fsize_tune;
 
   FILE *infile;
