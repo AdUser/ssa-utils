@@ -83,7 +83,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                     case SRT_T_UNDERLINE :
                       if (file->type == ssa_v4)
                         {
-                          log_msg(warn, MSG_W_TAGNOTALL, ttag.data);
+                          log_msg(warn, MSG_W_NOTALLOWED, "Tag", ttag.data);
                           break;
                         }
                     /* break; */

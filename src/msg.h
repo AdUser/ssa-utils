@@ -40,9 +40,12 @@
 #define MSG_W_UNIMPL     _("Unimplemented feature.")
 #define MSG_W_WRONGUNI   _("%s not supported. Please, convert file to singlebyte charset or UTF-8.")
 #define MSG_W_TXTNOTFITS _("Text not fits in buffer. Available: %i, needed: %i bytes. %s")
+#define MSG_W_NOTALLOWED _("%s '%s' not allowed in this format version.")
+#define MSG_W_SKIPSTRICT _("Skipped %s due to strict mode enabled: %s")
+#define MSG_W_UNCOMMON   _("Uncommon %s at line '%lu': %s")
+#define MSG_W_UNRECOGN   _("Unrecognized %s at line '%u': %s")
 /* messages related to work with tags */
 #define MSG_W_UNRECTAG   _("Unrecognized tag <%s> near here: %s")
-#define MSG_W_TAGNOTALL  _("Tag <%s> not allowed in this format version.")
 #define MSG_W_TAGTWICE   _("The same opening tag <%s> twice in row near here: %s")
 #define MSG_W_TAGPARMMAX _("Reached maximum for tag parameters. Next one(s) will be skipped.")
 #define MSG_W_TAGOVERBUF _("Unable to add %s to tag, buffer too small")

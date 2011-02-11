@@ -32,7 +32,7 @@ typedef enum ssa_version
     ssa_v4p /* advanced ssa (ASS) */
   } ssa_version;
 
-/* fields flags */
+/* common fields flags */
 #define SSA_H_HAVE_TITLE    1
 #define SSA_H_HAVE_OSCRIPT  2
 #define SSA_H_HAVE_OTRANS   4
@@ -40,6 +40,12 @@ typedef enum ssa_version
 #define SSA_H_HAVE_OTIMING  16
 #define SSA_H_HAVE_UPDATED  32
 #define SSA_H_HAVE_COLLS    64
+
+typedef struct ssa_txt_param
+  {
+    char *data;
+    struct ssa_txt_param *next;
+  } ssa_txt_param;
 
 typedef struct ssa_style
   {
@@ -180,6 +186,7 @@ typedef struct ssa_file
     char *o_timing;   /* Original Timing        */
     char *updated;    /* Script Updated By      */
     char *collisions; /* Collisions             */
+    ssa_txt_param *txt_params;
 
     /* numeric fields */
     struct res res;
@@ -208,7 +215,8 @@ bool init_ssa_file(ssa_file * const);
 bool parse_ssa_file(FILE *, ssa_file *);
 
 /** header section */
-bool get_ssa_option(char * const, ssa_file * const);
+bool get_ssa_param(char * const, ssa_file * const);
+bool add_ssa_txt_param(ssa_txt_param **, char *);
 
 /** styles section */
 bool set_style_fields_order(char * const, ssa_version, int8_t *);
@@ -222,6 +230,9 @@ bool get_ssa_event (char * const, ssa_event * const, int8_t *);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);
+
+bool write_ssa_txt_param(FILE *, char *, char *, bool, bool);
+bool write_ssa_header(FILE *, ssa_file   * const, bool);
 
 bool write_ssa_styles(FILE *, ssa_style  * const, ssa_version, bool);
 bool write_ssa_style (FILE *, ssa_style  * const, ssa_version);
