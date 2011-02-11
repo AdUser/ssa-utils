@@ -717,7 +717,7 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
   {
     bool result = true;
 
-    if (!outfile) return false;
+    if (!outfile || !f) return false;
 
     if (fprintf(outfile, "%s\n", "[Script Info]") < 0)
       log_msg(error, MSG_F_WRFAIL);
