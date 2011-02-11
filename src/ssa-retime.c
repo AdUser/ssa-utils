@@ -389,5 +389,7 @@ int main(int argc, char *argv[])
 
   write_ssa_file(opts.outfile, &file, true);
 
+  fclose(opts.outfile);
+
   return 0;
 }
