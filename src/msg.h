@@ -50,6 +50,7 @@
 #define MSG_W_TAGPARMMAX _("Reached maximum for tag parameters. Next one(s) will be skipped.")
 #define MSG_W_TAGOVERBUF _("Unable to add %s to tag, buffer too small")
 #define MSG_W_TAGUNCL    _("Unclosed tag <%s> near here: %s")
+#define MSG_W_TAGPROBLEM _("Improperly opened/closed/deranged tag(s) near here: %s")
 #define MSG_W_TAGXMLSRT  _("XML-like tags not allowed in srt format, but who cares?")
 #define MSG_W_TAGNOTFACE _("Used 'name' instead of 'face' in 'font' tag.")
 /* messages related to work with colors */

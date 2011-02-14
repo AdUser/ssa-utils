@@ -209,7 +209,10 @@ srt_tags_to_ssa(char *string, ssa_file *file)
         p += (len > 0) ? len : -len ;
       } /* main 'for' cycle ends */
 
-    /* TODO: check stack for unclosed / deranged tags  */
+    /* check stack for wrong opened / closed / deranged tags */
+    if (top != stack)
+      log_msg(warn, MSG_W_TAGPROBLEM, string);
+
     /* copy temp buffer to right place ^_^ */
     strncpy(string, common_buf, MAXLINE);
 
