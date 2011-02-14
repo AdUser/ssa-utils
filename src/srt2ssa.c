@@ -126,8 +126,9 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                     if (file->type == ssa_v4p)
                       append_char(tags_buf, '1', MAXLINE);
                     i = strlen(tags_buf);
+                    i = (i < MAXLINE && i >= 0) ? i : MAXLINE;
                     snprintf((tags_buf + i), MAXLINE - i, "c&H%X&",
-                              parse_color(value)); /* TODO: check pointer */
+                              parse_color(value));
                     font_params &= SRT_T_FONT_COLOR;
                   }
                 chr = SRT_T_FONT;
