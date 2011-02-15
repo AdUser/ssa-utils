@@ -940,13 +940,15 @@ write_ssa_event(FILE *outfile, ssa_event * const event, ssa_version v)
       }
     fprintf(outfile, "%s: %s%i,", type, (v == ssa_v4) ? "Marked=" : "", event->layer);
 
+    event->start = round(event->start * 100.0) / 100.0;
     double2subtime(event->start, &st);
     fprintf(outfile, "%i:%02i:%02i.%02i,",
-        st.hrs, st.min, st.sec, (int) round((double) st.msec / 10.0));
+        st.hrs, st.min, st.sec, st.msec / 10);
 
+    event->end   = round(event->end   * 100.0) / 100.0;
     double2subtime(event->end, &st);
     fprintf(outfile, "%i:%02i:%02i.%02i,",
-        st.hrs, st.min, st.sec, (int) round((double) st.msec / 10.0));
+        st.hrs, st.min, st.sec, st.msec / 10);
 
     fprintf(outfile, "%s,%s,%04i,%04i,%04i,%s,%s", \
                     event->style, event->name,\
