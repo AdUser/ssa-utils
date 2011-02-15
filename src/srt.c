@@ -62,24 +62,23 @@ parse_srt_file(FILE *infile, srt_file * const file)
         trim_spaces(line, LINE_START | LINE_END);
         s_len = strlen(line);
 
-        if (feof(infile))
-        {
-          if (s_len != 0)
-            {
-              log_msg(warn, MSG_F_UNEXPEOF, line_num);
-              if      (prev_line == text)
-                append_string(text_buf, line, "\n", MAXLINE, 0);
-              else if (prev_line == timing)
-                strncpy(text_buf, line, MAXLINE);
-            }
-          curr_line = blank;
-        }
-
         if      (s_len == 0)          curr_line = blank;
         else if (strstr(line, "-->")) curr_line = timing;
         else if (prev_line == blank ||
                  prev_line == unknown) curr_line = id;  /* at least, expected */
         else /* prev_line == timing*/ curr_line = text; /* also expected */
+
+
+        if (feof(infile)) curr_line = blank;
+
+        if (feof(infile) && s_len != 0)
+          {
+            log_msg(warn, MSG_F_UNEXPEOF, line_num);
+            if (prev_line == text)
+              append_string(text_buf, line, "\n", MAXLINE, 0);
+            else
+              strncpy(text_buf, line, MAXLINE);
+          }
 
         log_msg(debug, "Line type: %i", curr_line);
 
