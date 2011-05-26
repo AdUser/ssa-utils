@@ -191,7 +191,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               if      (*line == 'F' || *line == 'f')
                 get_styles = set_style_fields_order(line,
                     file->type, file->style_fields_order);
-              else if (get_styles && (*line == 'S' || *line == 's'))
+              else if (get_styles && toupper(line[0]) == 'S')
                 get_ssa_style(line, &file->styles, file->style_fields_order);
               break;
             case EVENTS :
