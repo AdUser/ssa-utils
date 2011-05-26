@@ -209,7 +209,10 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                       case 'P' : e->type = PICTURE;  break;
                       case 'S' : e->type = SOUND;    break;
                       case 'C' :
-                        e->type = (strncmp(line, "Comment", 7) == 0) ? COMMENT : COMMAND ;
+                        if (strncmp(line, "Comment", 7) == 0)
+                          e->type = COMMENT;
+                        if (strncmp(line, "Command", 7) == 0)
+                          e->type = COMMAND;
                         break;
                       default  :
                         log_msg(warn, _("W: Unknown event type at line '%lu': %s"), line_num, line);
