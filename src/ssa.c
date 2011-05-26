@@ -171,11 +171,14 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 
-        if (line[0] == ';' || is_empty_line(line))
+        if (line[0] == ';' || strlen(line) == 0)
           continue;
 
-        if (ssa_section_switch(&section, line) || section == UNKNOWN)
-          continue;
+        if (line[0] == '[')
+          {
+            ssa_section_switch(&section, line);
+            continue;
+          }
 
         switch (section)
           {
