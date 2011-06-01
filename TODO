@@ -1,16 +1,17 @@
 [features]
+- миграция на libass
 - обработка встроенных шрифтов
 - переконвертация между версиями ssa-формата
-- переконвертация smi      -> ssa
+- переконвертация smi -> ssa
 * параметр '-W' для обработки переноса линий
 ? параметр '-u' - принудительное включение режима юникода
 - README: maintainers
 - ssa_retime: подстройка длительности для текстовых событий (-D ?).
   * mshift        Shift time in subtitle by multiple points.
-  * set           Set subtitle duration proportionally subtitle lenght.
+  * set           Set subtitle duration to this value.
+  * mset          Set subtitle duration proportionally subtitle lenght.
   * extend-only   Same as 'set', but don't change duration, if calculated value less than existing.
   * reduce-only   Same as 'set', but don't change duration, if calculated value greater than existing.
-- ssa_retime: опция усреднения значения при подстройке длительности. (-d ?)
 
 [utils]
 ssa-resize (maybe i do it with 'zoom' only?)
