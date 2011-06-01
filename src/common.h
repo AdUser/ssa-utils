@@ -35,7 +35,7 @@
 
 #define MAXLINE 3072 * sizeof(char)
 #define COMMON_PROG_NAME "ssa-utils"
-#define VERSION 0.04
+#define VERSION 0.05
 
 /* wrappers */
 #define _(x) gettext((x))
