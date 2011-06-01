@@ -1,3 +1,36 @@
+version 0.05
+  new:
+    + added _strndup() - wrapper around std strndup()
+    + added wrappper around calloc()
+    + added parameter i_strict in opts: tolerate to bugs or spec deviations during parsing or not
+    + added tags stack check after coversion in srt2ssa
+    + added some pointer check
+    + added some notes for documentation
+    + added fclose() in ssa-retime
+  changes:
+    * changed subs structs for text(char[] -> char *)
+    * string_lowercase(): added some checks, 'len' option now works right
+    * string_skip_chars(): added checks
+    * changed work with buffer in analyze_srt_timing()
+    * set_style_fields_order(): work with internal buf
+    * detect_style_fields_order(): simplified
+    * get_ssa_style(): simplified
+    * ssa_section_switch(): simplified, added checks and internal buf
+    * detect_event_fields_order(): simplified, added checks and internal buf
+    * renamed some too long parameters in struct ssa_style
+    * changed _strndup(): call free(dest) if not null
+    * updated TODO
+    * modified check of input parameters in set_style_fields_order()
+    * changed struct ssa_file (in part of text opts in header)
+    * changed handling line with comments and [sections]
+    * 'Comment' and 'Command' lines now handled by more obvious way
+    * small change in handling 'Style:' line
+  bugfixes:
+    = incorrect timing due to rounding error
+    = wrong handling unexpected EOF in .srt files (second try to fix this)
+    = fixed definition of SEC_MAX
+    = fixed return len in _strtok()
+
 version 0.04
   new:
     + added handling other than 'Dialogue' lines in [events] section
