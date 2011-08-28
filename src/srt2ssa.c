@@ -178,10 +178,11 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                 case opening :
                   if (*top == chr)
                     log_msg(warn, MSG_W_TAGTWICE, ttag.data, string);
-                  stack_push(stack, top, chr);
+                  stack_push(stack, &top, chr);
                   break;
                 case closing :
-                  if (*top == chr) stack_pop(stack, top);
+                  if (*top == chr)
+                    stack_pop(stack, &top);
                   else log_msg(warn, MSG_W_TAGUNCL, ttag.data, string);
                   /* note: stack remains unchanged in second case! */
                   break;

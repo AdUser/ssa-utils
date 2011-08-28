@@ -426,30 +426,22 @@ stack_init(STACK_ELEM *st)
     memset(st, 0, STACK_ELEM_SIZE * STACK_MAX);
   }
 
-bool
-stack_push(STACK_ELEM *st, STACK_ELEM *top, STACK_ELEM val)
+void
+stack_push(STACK_ELEM * const st, STACK_ELEM **top, STACK_ELEM val)
   {
-    if ((top - st) < STACK_MAX)
-      {
-        *top = val, top++;
-        return true;
-      }
+    if ((*top - st) < STACK_MAX)
+      (*top)++, **top = val;
     else
-      {
-        log_msg(warn, _("Stack is full! Increase STACK_MAX and recompile."));
-        return false;
-      }
+      log_msg(debug, _("Stack is full! Increase STACK_MAX and recompile."));
   }
 
-bool
-stack_pop(STACK_ELEM *st, STACK_ELEM *top)
+void
+stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
   {
-    if (top > st)
-      {
-        top = '\0', top--;
-        return true;
-      }
-    return false;
+    if (*top > st)
+      **top = '\0', (*top)--;
+    else
+      log_msg(debug, "Try to pop on empty stack.");
   }
 
 /** various functions */

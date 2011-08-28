@@ -216,8 +216,8 @@ void usage_convert_output(void);
 
 /* stack functions */
 void stack_init(STACK_ELEM *);
-bool stack_push(STACK_ELEM *, STACK_ELEM *, STACK_ELEM);
-bool stack_pop(STACK_ELEM *,  STACK_ELEM *);
+void stack_push(STACK_ELEM * const, STACK_ELEM **, STACK_ELEM);
+void stack_pop (STACK_ELEM * const, STACK_ELEM **);
 
 /* various functions */
 int _strtok(char *, char *);
