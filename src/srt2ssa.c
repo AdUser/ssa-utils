@@ -46,6 +46,16 @@ void usage(int exit_code)
     exit(exit_code);
  }
 
+/* this chunk of code calls at least twice, *
+ * so i've made it as separate function     */
+void
+commit_tags_buffer(char *common_buf, char *tags_buf)
+  {
+    append_string(common_buf, tags_buf, "{", MAXLINE, 0);
+    append_char(common_buf, '}', MAXLINE);
+    memset(tags_buf, 0, MAXLINE);
+  }
+
 /* ssa tags differs from srt not only in format, but in scope too,     *
  * for example, if srt tag acts as borders for scope of some property, *
  * ssa - set this property untill next tag with the same name          */
@@ -198,12 +208,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
 
         if (len < 0)
           {
-            if (last == tag && strlen(tags_buf) != 0)
-              {
-                append_string(common_buf, tags_buf, "{", MAXLINE, 0);
-                append_char(common_buf, '}', MAXLINE);
-                memset(tags_buf, 0, MAXLINE);
-              }
+            commit_tags_buffer(common_buf, tags_buf);
             append_string(common_buf, p, "", MAXLINE, -len);
             last = text;
           }
@@ -214,6 +219,12 @@ srt_tags_to_ssa(char *string, ssa_file *file)
     /* check stack for wrong opened / closed / deranged tags */
     if (top != stack)
       log_msg(warn, MSG_W_TAGPROBLEM, string);
+
+    /* append remaining tags to resulting string *
+     * (usually it is closing tags)              *
+     * it's not necessarily strictly, but some   *
+     * wrong-coded renders may need them         */
+    commit_tags_buffer(common_buf, tags_buf);
 
     /* copy temp buffer to right place ^_^ */
     strncpy(string, common_buf, MAXLINE);
