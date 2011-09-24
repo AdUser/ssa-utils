@@ -94,7 +94,7 @@ ssa_style ssa_style_template =
   {
     (ssa_style *) 0, /* pointer to next style */
     "Default", /* style name   */
-    "Arial",   /* font name    */
+    "Sans",    /* font name    */
     24.0,      /* font size    */
     16761538,  /* primary    - 00FFC2C2 */
     65535,     /* secondary  - 0000FFFF */
@@ -118,7 +118,7 @@ ssa_style ssa_style_template =
     10,        /* margin right  */
     20,        /* margin bottom */
     0,         /* alpha level */
-    204        /* 0 - ansi, 204 - russian */
+    0          /* 0 - ansi, 204 - russian */
   };
 
 ssa_event ssa_event_template =
