@@ -160,6 +160,19 @@ typedef enum ssa_section
     GRAPHICS
   } ssa_section;
 
+typedef struct ssa_media
+  {
+    struct ssa_media *next;
+    enum
+    {
+      type_unknown,
+      type_font,
+      type_image
+    } type;
+    char *filename; /* "Original filename before embedding" */
+    FILE *data;
+  } ssa_media;
+
 typedef struct ssa_file
   {
     /*** data section */
@@ -198,6 +211,8 @@ typedef struct ssa_file
 
     ssa_style *styles;
     ssa_event *events;
+    ssa_media *fonts;
+    ssa_media *images;
   } ssa_file;
 
   /** function prototypes */

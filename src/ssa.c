@@ -76,7 +76,9 @@ ssa_file ssa_file_template =
 
     /** structures */
     (ssa_style *) 0, /* styles list */
-    (ssa_event *) 0  /* events list */
+    (ssa_event *) 0, /* events list */
+    (ssa_media *) 0, /* fonts list  */
+    (ssa_media *) 0  /* images list */
   };
 
 ssa_style ssa_style_template =
