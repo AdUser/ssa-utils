@@ -208,6 +208,9 @@ bool string_skip_chars(char *, char *);
 bool append_string(char *, char *, char *, unsigned int, unsigned int);
 bool append_char(char *, char, unsigned int);
 
+/* strings list functions */
+bool slist_add(struct slist **, char *);
+
 /* unicode-related functions */
 enum chs_type unicode_check(char *, struct unicode_test *);
 char *charset_type_tos(enum chs_type type);

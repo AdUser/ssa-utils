@@ -418,6 +418,23 @@ append_char(char *to, char c, unsigned int len)
     return true;
   }
 
+/** strings list functions */
+bool
+slist_add(struct slist **list, char *item)
+  {
+    struct slist *p = *list;
+
+    if (p != NULL)
+      for (; p->next != NULL; p = p->next);
+    else
+      CALLOC(p, 1, sizeof(struct slist));
+
+    if ((p->value = strdup(item)) == NULL)
+      log_msg(error, MSG_M_OOM);
+
+    return true;
+  }
+
 /** stack functions */
 
 void
