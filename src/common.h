@@ -105,6 +105,13 @@ struct res
   unsigned int height;
 };
 
+struct slist
+{
+  char *name;
+  char *value;
+  struct slist *next;
+};
+
 /* ascii char 0x01 (SOH) and 0x02 (STX) *
  * used as indicators of data type      *
  * data stored looks-like this:         *
