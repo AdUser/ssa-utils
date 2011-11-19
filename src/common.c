@@ -731,15 +731,14 @@ font_size_normalize(struct res const * const res, float * const fsize)
 uint32_t
 parse_color(char const * const s)
   {
-    uint8_t  i = 0;
     uint32_t color = WHITE;
 
     if (!s) return color;
 
     if      (*s == '#')
-      i = sscanf(s, "#%X", &color);
+      sscanf(s, "#%X", &color);
     else if (isxdigit(*s))
-      i = sscanf(s, "%X", &color);
+      sscanf(s, "%X", &color);
     else if (isalpha(*s)) /* possible need to set locale to "C" here */
       {
         if      (strcmp(s, "red")    == 0) color = RED;
@@ -778,7 +777,7 @@ add_tag_param(struct tag * const tag, char type, char *value)
         return false;
       }
     /* 'p' now should points to '0x04' (EOT) */
-    if ((i + strlen(value) + 3) < TAG_DATA_MAX)
+    if ((i + len + 3) < TAG_DATA_MAX)
       {
         snprintf(p, (TAG_DATA_MAX - i), "%c%s%c%c",
                     type, value, '\0', TAG_DATA_END);
