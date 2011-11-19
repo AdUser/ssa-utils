@@ -107,7 +107,6 @@ struct res
 
 struct slist
 {
-  char *name;
   char *value;
   struct slist *next;
 };
