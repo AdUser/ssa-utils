@@ -44,6 +44,9 @@ Modes are: \n\
   fputc('\n', stderr);
 
   usage_common_opts();
+  fprintf(stderr, _("\
+  -S <string>       Retime only events with specified style.\n\
+                    This option may be given more than once.\n"));
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
@@ -222,6 +225,8 @@ int main(int argc, char *argv[])
   double max_time = 0.0;
   ssa_event *e_ptr = NULL;
 
+  struct slist **affected_styles = NULL;
+
   mode = unset;
   memset(pts_list, 0, sizeof(struct time_pt) * PTS_MAX);
 
@@ -236,7 +241,7 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "qvhi:o:" "f:F:" "p:" "t:s:e:l:")) != -1)
+  while ((opt = getopt(argc, argv, "qvhi:o:" "S:" "f:F:" "p:" "t:s:e:l:")) != -1)
     {
       switch(opt)
         {
@@ -254,6 +259,10 @@ int main(int argc, char *argv[])
                 log_msg(warn, MSG_F_OWRFAILSO, optarg);
                 opts.outfile = stdout;
               }
+            break;
+
+          case 'S':
+            /* stub */
             break;
 
           case 'f':
