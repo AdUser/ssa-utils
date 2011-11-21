@@ -307,29 +307,30 @@ int main(int argc, char *argv[])
   /* args checks */
   common_checks(&opts);
 
-  if (mode == shift)
+  if (mode != points)
     {
-      /* checks */
-      if (time_shift == 0.0)
-        log_msg(error, MSG_O_OREQUIRED, "-t");
       if (shift_start < 0.0)
         log_msg(error, MSG_O_NOTNEGATIVE, _("Period start"));
       if (shift_end   < 0.0)
         log_msg(error, MSG_O_NOTNEGATIVE, _("Period end"));
       if (shift_end != 0.0 && shift_end < shift_start)
         log_msg(error, MSG_O_NOTNEGATIVE, _("Period duration"));
-      /* it's possible to do swap(begin, end) values, but i will not */
       if (shift_lenght < 0.0)
         log_msg(error, MSG_O_NOTNEGATIVE, _("Shift offset"));
       if (shift_end != 0.0 && shift_lenght != 0.0)
         log_msg(error, MSG_O_NOTTOGETHER, "-l", "-e");
+    }
 
-      /* work */
+  if (mode == shift)
+    {
+      if (time_shift == 0.0)
+        log_msg(error, MSG_O_OREQUIRED, "-t");
+
       if (shift_lenght != 0.0)
         shift_end = shift_start + shift_lenght;
-      /* it's simple, isn't it? :) */
     }
-  else if (mode == framerate)
+
+  if (mode == framerate)
     {
       /* checks */
       if (src_fps == 0.0)
@@ -350,7 +351,8 @@ int main(int argc, char *argv[])
       /* work */
       multiplier = (double) src_fps / (double) dst_fps;
     }
-  else if (mode == points)
+
+  if (mode == points)
     {
       if (pts_list->used == false)
         log_msg(error, _("At least one point must be specified."));
