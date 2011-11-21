@@ -60,6 +60,11 @@ Events selectors (does not work in 'points' mode):\n\
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
+Specific options for 'shift' mode:\n\
+  -t <time>         Change time for this value.\n"));
+  fputc('\n', stderr);
+
+  fprintf(stderr, _("\
 Specific options for 'framerate' mode:\n\
   -f <float>        Source framerate. Default: %2.2f fps.\n\
   -F <float>        Target framerate.\n"), DEFAULT_FPS);
@@ -67,15 +72,9 @@ Specific options for 'framerate' mode:\n\
 
   fprintf(stderr, _("\
 Specific options for 'points' mode:\n\
-  -p <time>::<shift>\n\
-                    Point of fixup & time shift in it. Option can be\n\
+  -p <time>::<time> Point of fixup & time shift in it. Option can be\n\
                     specified more than once. (see man for details)\n\
-                    Both args must be in form of [[h:]m:]s[.ms].\n"));
-  fputc('\n', stderr);
-
-  fprintf(stderr, _("\
-Specific options for 'shift' mode:\n\
-  -t <time>         Change time for this value.\n"));
+                    Both args must be in form of [-][[h:]m:]s[.ms].\n"));
   fputc('\n', stderr);
 
   exit(exit_code);
