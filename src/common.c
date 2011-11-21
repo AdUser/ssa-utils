@@ -435,6 +435,18 @@ slist_add(struct slist **list, char *item)
     return true;
   }
 
+bool
+slist_match(struct slist **list, char *item)
+  {
+    struct slist *i = *list;
+
+    for (; i != NULL; i = i->next)
+      if (strcmp(i->value, item) == 0)
+        return true;
+
+    return false;
+  }
+
 /** stack functions */
 
 void
