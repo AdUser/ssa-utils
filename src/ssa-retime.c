@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
   char opt;
   char *m;
   ssa_file file;
-  ssa_event *e;
+  ssa_event *e = NULL;
 
   double shift_start  = 0.0;
   double shift_end    = 0.0;
@@ -229,7 +229,6 @@ int main(int argc, char *argv[])
 
   struct time_pt pts_list[PTS_MAX];
   double max_time = 0.0;
-  ssa_event *e_ptr = NULL;
 
   struct slist **affected_styles = NULL;
 
@@ -393,10 +392,10 @@ int main(int argc, char *argv[])
           }
         break;
       case points :
-        for (e_ptr = file.events; e_ptr != NULL; e_ptr = e_ptr->next)
+        for (; e != NULL; e = e->next)
           {
-            shift_by_pts(pts_list, &e_ptr->start);
-            shift_by_pts(pts_list, &e_ptr->end);
+            shift_by_pts(pts_list, &e->start);
+            shift_by_pts(pts_list, &e->end);
           }
         break;
       default :
