@@ -44,9 +44,19 @@ Modes are: \n\
   fputc('\n', stderr);
 
   usage_common_opts();
+  fputc('\n', stderr);
+
   fprintf(stderr, _("\
+Events selectors (does not work in 'points' mode):\n\
   -S <string>       Retime only events with specified style.\n\
                     This option may be given more than once.\n"));
+  fprintf(stderr, _("\
+  -s <time>         Start time of period, that will be changed.\n\
+                    Default: first event.\n\
+  -e <time>         End time of period, that will be changed.\n\
+                    Default: the latest time found in file.\n\
+  -l <time>         Duration of period above. This option require '-s'\n\
+                    You may select either '-o' or '-e' at the same time.\n"));
   fputc('\n', stderr);
 
   fprintf(stderr, _("\
@@ -65,13 +75,7 @@ Specific options for 'points' mode:\n\
 
   fprintf(stderr, _("\
 Specific options for 'shift' mode:\n\
-  -t <time>         Change time for this value.\n\
-  -s <time>         Start time of period, that will be timeshift'ed.\n\
-                    Default: first event.\n\
-  -e <time>         End time of period, that will be timeshift'ed.\n\
-                    Default: the latest time found in file.\n\
-  -l <time>         Duration of period above. This option require '-s'\n\
-                    You may select either '-o' or '-e' at the same time.\n"));
+  -t <time>         Change time for this value.\n"));
   fputc('\n', stderr);
 
   exit(exit_code);
@@ -377,17 +381,16 @@ int main(int argc, char *argv[])
     {
       if (slist_match(affected_styles, e->style) == false)
         continue;
+      if ((e->start <= shift_start) || \
+          (shift_end != 0.0 && e->start >= shift_end))
+        continue;
     }
 
     switch (mode)
     {
       case shift :
-        if (e->start >= shift_start &&
-            (shift_end == 0.0 || e->start <= shift_end))
-          {
-            adjust_timing(&e->start, time_shift);
-            adjust_timing(&e->end,   time_shift);
-          }
+        adjust_timing(&e->start, time_shift);
+        adjust_timing(&e->end,   time_shift);
         break;
       case framerate :
         e->start *= multiplier;
