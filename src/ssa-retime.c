@@ -142,12 +142,18 @@ swap_pts(struct time_pt * const a, struct time_pt * const b)
     memcpy(b, &t, i);
   }
 
+/*
+ * Sort and validate points list.
+ */
 void
 handle_pts_list(struct time_pt * const list, double max_time)
   {
     uint16_t pts_num = 0, i = 0;
     struct time_pt *l;
     bool again = true;
+
+    /* add zero-time point as start of time */
+    add_point(list, "0::0");
 
     for (l = list; l->used == true; l++, pts_num++);
 
@@ -346,7 +352,16 @@ int main(int argc, char *argv[])
     {
       if (pts_list->used == false)
         log_msg(error, _("At least one point must be specified."));
+
+      for (e = file.events; e != NULL; e = e->next)
+        {
+          if (max_time < e->start) max_time = e->start;
+          if (max_time < e->end)   max_time = e->end;
+        }
+
+      handle_pts_list(pts_list, max_time + 0.001);
     }
+
   /* init */
   init_ssa_file(&file);
   if (!parse_ssa_file(opts.infile, &file))
@@ -378,14 +393,6 @@ int main(int argc, char *argv[])
           }
         break;
       case points :
-        for (e_ptr = file.events; e_ptr != NULL; e_ptr = e_ptr->next)
-          {
-            if (max_time < e_ptr->start) max_time = e_ptr->start;
-            if (max_time < e_ptr->end)   max_time = e_ptr->end;
-          }
-        /* add zero-time point as start of time */
-        add_point(pts_list, "0::0");
-        handle_pts_list(pts_list, max_time + 0.001);
         for (e_ptr = file.events; e_ptr != NULL; e_ptr = e_ptr->next)
           {
             shift_by_pts(pts_list, &e_ptr->start);
