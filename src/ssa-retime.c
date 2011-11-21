@@ -371,36 +371,30 @@ int main(int argc, char *argv[])
   if ((e = file.events) == NULL)
     log_msg(error, _("There is no events in this file, nothing to do."));
 
-  switch (mode)
+  for (; e != NULL; e = e->next)
+  {
+    switch (mode)
     {
       case shift :
-         for (; e != NULL; e = e->next)
-           {
-             if (e->start >= shift_start &&
-                 (shift_end == 0.0 || e->start <= shift_end))
-               {
-                 adjust_timing(&e->start, time_shift);
-                 adjust_timing(&e->end,   time_shift);
-               }
-           }
-       break;
-      case framerate :
-        for (; e != NULL; e = e->next)
+        if (e->start >= shift_start &&
+            (shift_end == 0.0 || e->start <= shift_end))
           {
-            e->start *= multiplier;
-            e->end   *= multiplier;
+            adjust_timing(&e->start, time_shift);
+            adjust_timing(&e->end,   time_shift);
           }
         break;
+      case framerate :
+        e->start *= multiplier;
+        e->end   *= multiplier;
+        break;
       case points :
-        for (; e != NULL; e = e->next)
-          {
-            shift_by_pts(pts_list, &e->start);
-            shift_by_pts(pts_list, &e->end);
-          }
+        shift_by_pts(pts_list, &e->start);
+        shift_by_pts(pts_list, &e->end);
         break;
       default :
         break;
     }
+  }
 
   write_ssa_file(opts.outfile, &file, true);
 
