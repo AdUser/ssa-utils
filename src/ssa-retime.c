@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
             break;
 
           case 'S':
-            /* stub */
+            slist_add(affected_styles, optarg);
             break;
 
           case 'f':
@@ -373,6 +373,12 @@ int main(int argc, char *argv[])
 
   for (; e != NULL; e = e->next)
   {
+    if (mode != points)
+    {
+      if (slist_match(affected_styles, e->style) == false)
+        continue;
+    }
+
     switch (mode)
     {
       case shift :
