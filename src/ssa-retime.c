@@ -19,11 +19,7 @@
 
 #define PROG_NAME "ssa-retime"
 #define DEFAULT_FPS 25.0
-#define PTS_AVAIL 20
-/* 1 extra point for zero time (start of file)           *
- * another one - for (maybe) maximum time in parsed file */
-#define PTS_MAX   22
-#define TIME_MAXLEN 40
+#define TIME_MAXLEN 50
 
 #define MSG_O_NOTNEGATIVE _("%s can't be negative.")
 #define MSG_O_NOTTOGETHER _("Options '%s' and '%s' can't be used together.")
@@ -80,7 +76,7 @@ Specific options for 'points' mode:\n\
   exit(exit_code);
 }
 
-/** use this for debug
+/** use this for debug (FIXME: broken due to changing time_pt struct)
 void
 dump_pts_list(struct time_pt *list)
   {
@@ -93,86 +89,90 @@ dump_pts_list(struct time_pt *list)
 */
 
 bool
-add_point(struct time_pt * const list, char * const s)
+add_point(struct time_pt **list, char * const s)
   {
     uint8_t i;
-    struct time_pt *l = list;
-    struct time_pt pt = { true, 0.0, 0.0 };
     char *p = NULL;
+    struct time_pt **l = list;
+    struct time_pt *t = NULL;
     char buf[TIME_MAXLEN];
 
-    if (!list) return false;
+    if (s == NULL)
+      return false;
 
-    if (s)
-      {
-        if ((p = strstr(s, "::")) == NULL)
-          log_msg(error, _("Incorrect option arg: %s"), s);
+    CALLOC(t, 1, sizeof(struct time_pt));
 
-        i = _strtok(s, "::");
+    /* parse time and shift */
+    if ((p = strstr(s, "::")) == NULL)
+      log_msg(error, _("Incorrect option arg: %s"), s);
 
-        if (i >= TIME_MAXLEN) log_msg(error, MSG_W_TXTNOTFITS, "");
+    i = _strtok(s, "::");
 
-        strncpy(buf, s, i);
-        /* as strncpy can not copy trailing '\0' */
-        buf[TIME_MAXLEN - 1] = '\0';
-        p += 2;
+    if (i >= TIME_MAXLEN)
+      log_msg(error, MSG_W_TXTNOTFITS, "");
 
-        /* if parse failed, program exits */
-        parse_time(buf, &pt.pos,   true);
-        parse_time(p,   &pt.shift, true);
-      }
+    strncpy(buf, s, i);
+    buf[TIME_MAXLEN] = '\0'; /* as strncpy can not copy trailing '\0' */
+    p += 2;
 
-    for (i = 0; i <= PTS_AVAIL; i++, l++)
-      if (l->used == false)
-        {
-          memcpy(l, &pt, sizeof(struct time_pt));
-          return true;
-        }
+    /* if parse failed, program exits */
+    parse_time(buf, &t->pos,   true);
+    parse_time(p,   &t->shift, true);
 
-    /* if loop above exits normally, it's bad */
-    log_msg(error, _("Only %i points can be specified."), PTS_AVAIL);
+    /* put new point to list */
+    if (*l == NULL)
+    {
+      *l = t;
+      return true;
+    }
+
+    while ((*l != NULL) && (t->pos > (*l)->pos))
+      l = &((*l)->next);
+
+    if (*l == NULL)
+    {
+      *l = t;
+      return true;
+    }
+
+    if (t->pos < (*l)->pos)
+    {
+      t->next = *l;
+      *l = t;
+      return true;
+    }
+
+    free(t);
+
     return false;
   }
 
-void
-swap_pts(struct time_pt * const a, struct time_pt * const b)
-  {
-    struct time_pt t;
-    size_t i = sizeof(struct time_pt);
-
-    memcpy(&t, a, i);
-    memcpy(a,  b, i);
-    memcpy(b, &t, i);
-  }
-
 /*
- * Sort and validate points list.
+ * validate points list.
  */
-void
-handle_pts_list(struct time_pt * const list, double max_time)
+bool
+validate_pts_list(struct time_pt **list, double max_time)
   {
-    uint16_t pts_num = 0, i = 0;
-    struct time_pt *l;
-    bool again = true;
+    struct time_pt *l = NULL;
+
+    if (*list == NULL)
+      log_msg(error, _("At least one point must be specified."));
 
     /* add zero-time point as start of time */
     add_point(list, "0::0");
 
-    for (l = list; l->used == true; l++, pts_num++);
-
-    /* bubble sort for list of points (see notes in doc file) */
-    while (again)
-      for (l = list, i = pts_num, again = false; i --> 0; l++)
-        if ((l + 1)->used == true && l->pos > (l + 1)->pos)
-          swap_pts(l, (l + 1)), again = true;
-
     /* add end point if needed */
-    while (l->used == true) l++;
-    if (l > list && max_time > (l - 1)->pos)
+    for (l = *list; l != NULL && l->next != NULL; l = l->next);
+
+    if (l->pos < max_time)
       {
-        l->used = true, l->pos = max_time, l->shift = 0.0;
+        CALLOC(l->next, 1, sizeof(struct time_pt));
+        l->next->pos = max_time;
+        l->next->shift = 0.0;
         log_msg(info, _("Auto added new point at pos %.3fs"), max_time);
       }
+
+    return true;
   }
 
 void
@@ -187,25 +187,31 @@ adjust_timing(double * const d, double shift)
       }
   }
 
-void
+/* FIXME: still broken */
+bool
 shift_by_pts(struct time_pt *list, double *time)
   {
-    struct time_pt *before, *after;
+    struct time_pt *pb = NULL; /* point before *time */
+    struct time_pt *pa = NULL; /* point after  *time */
     double pct_len  = 0.0;
 
-    before = list;
-    after  = list + 1;
+    if (list == NULL || list->next == NULL)
+      return false;
 
-    /* i suppose that points list sorted in asc order */
-    while (*time > after->pos && after->used == true)
-      before++, after++;
+    pb = list;
+    pa = list->next;
+
+    while ((*time > pa->pos) && (pa->next != NULL))
+      pb = pb->next, pa = pa->next;
 
     /* video: 40s 47s    64s         *                     (47.0 - 40.0) *
      * |-------*---*------*-----|    * t += (-3.0 - 0.5) * ------------- *
      * (0.5s) b^   ^t(?s) ^a (-3.0s) *                     (64.0 - 40.0) *
      *                               * t += -1.02s + +0.5 => t += -0.52s */
-    pct_len = (*time - before->pos) / (after->pos - before->pos);
-    *time += (after->shift - before->shift) * pct_len + before->shift;
+    pct_len = (*time - pb->pos) / (pa->pos - pb->pos);
+    *time += (pa->shift - pb->shift) * pct_len + pb->shift;
+
+    return true;
   }
 
 enum { unset, framerate, shift, points } mode;
@@ -230,13 +236,12 @@ int main(int argc, char *argv[])
   double dst_fps = 0.0;
   double multiplier = 0.0;
 
-  struct time_pt pts_list[PTS_MAX];
+  struct time_pt *pts_list = NULL;
   double max_time = 0.0;
 
   struct slist *affected_styles = NULL;
 
   mode = unset;
-  memset(pts_list, 0, sizeof(struct time_pt) * PTS_MAX);
 
   if (argc >= 4)
     {
@@ -281,7 +286,7 @@ int main(int argc, char *argv[])
             break;
 
           case 'p':
-            add_point(pts_list, optarg);
+            add_point(&pts_list, optarg);
             break;
 
           case 't':
@@ -307,6 +312,17 @@ int main(int argc, char *argv[])
   /* args checks */
   common_checks(&opts);
 
+  /* init */
+  init_ssa_file(&file);
+  if (!parse_ssa_file(opts.infile, &file))
+    log_msg(error, MSG_U_UNKNOWN);
+
+  fclose(opts.infile);
+
+  if ((e = file.events) == NULL)
+    log_msg(error, _("There is no events in this file, nothing to do."));
+
+  /* set some variables and check options */
   if (mode != points)
     {
       if (shift_start < 0.0)
@@ -354,29 +370,16 @@ int main(int argc, char *argv[])
 
   if (mode == points)
     {
-      if (pts_list->used == false)
-        log_msg(error, _("At least one point must be specified."));
-
       for (e = file.events; e != NULL; e = e->next)
         {
           if (max_time < e->start) max_time = e->start;
           if (max_time < e->end)   max_time = e->end;
         }
 
-      handle_pts_list(pts_list, max_time + 0.001);
+      validate_pts_list(&pts_list, max_time + 0.001);
     }
 
-  /* init */
-  init_ssa_file(&file);
-  if (!parse_ssa_file(opts.infile, &file))
-    log_msg(error, MSG_U_UNKNOWN);
-
-  fclose(opts.infile);
-
-  if ((e = file.events) == NULL)
-    log_msg(error, _("There is no events in this file, nothing to do."));
-
-  for (; e != NULL; e = e->next)
+  for (e = file.events; e != NULL; e = e->next)
   {
     if (mode != points)
     {

@@ -94,9 +94,9 @@ struct point
 
 struct time_pt
 {
-  bool used;
   double pos;
   double shift;
+  struct time_pt *next;
 };
 
 struct res
