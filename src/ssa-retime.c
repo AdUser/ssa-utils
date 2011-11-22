@@ -380,8 +380,10 @@ int main(int argc, char *argv[])
   {
     if (mode != points)
     {
-      if (slist_match(affected_styles, e->style) == false)
+      if ((affected_styles != NULL) && \
+          (slist_match(affected_styles, e->style) == false))
         continue;
+
       if ((e->start <= shift_start) || \
           (shift_end != 0.0 && e->start >= shift_end))
         continue;
