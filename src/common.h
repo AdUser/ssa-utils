@@ -210,7 +210,7 @@ bool append_char(char *, char, unsigned int);
 
 /* strings list functions */
 bool slist_add(struct slist **, char *);
-bool slist_match(struct slist **, char *);
+bool slist_match(struct slist *, char *);
 
 /* unicode-related functions */
 enum chs_type unicode_check(char *, struct unicode_test *);

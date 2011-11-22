@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
   struct time_pt pts_list[PTS_MAX];
   double max_time = 0.0;
 
-  struct slist **affected_styles = NULL;
+  struct slist *affected_styles = NULL;
 
   mode = unset;
   memset(pts_list, 0, sizeof(struct time_pt) * PTS_MAX);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
             break;
 
           case 'S':
-            slist_add(affected_styles, optarg);
+            slist_add(&affected_styles, optarg);
             break;
 
           case 'f':

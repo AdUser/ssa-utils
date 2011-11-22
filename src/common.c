@@ -422,12 +422,17 @@ append_char(char *to, char c, unsigned int len)
 bool
 slist_add(struct slist **list, char *item)
   {
-    struct slist *p = *list;
+    struct slist *p = NULL;
 
-    if (p != NULL)
-      for (; p->next != NULL; p = p->next);
-    else
-      CALLOC(p, 1, sizeof(struct slist));
+    if (*list == NULL)
+    {
+      CALLOC(*list, 1, sizeof(struct slist));
+      p = *list;
+    } else {
+      for (p = *list; p->next != NULL; p = p->next);
+      CALLOC(p->next, 1, sizeof(struct slist));
+      p = p->next;
+    }
 
     if ((p->value = strdup(item)) == NULL)
       log_msg(error, MSG_M_OOM);
@@ -436,11 +441,14 @@ slist_add(struct slist **list, char *item)
   }
 
 bool
-slist_match(struct slist **list, char *item)
+slist_match(struct slist *list, char *item)
   {
-    struct slist *i = *list;
+    struct slist *i = NULL;
 
-    for (; i != NULL; i = i->next)
+    if (list == NULL)
+      return false;
+
+    for (i = list; i != NULL; i = i->next)
       if (strcmp(i->value, item) == 0)
         return true;
 
