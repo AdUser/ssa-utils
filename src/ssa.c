@@ -30,7 +30,7 @@ extern struct unicode_test BOMs[6];
 extern struct options opts;
 
 /* to use from outer space :-) */
-  int8_t fields_order[MAX_FIELDS] = { 0 };
+int8_t fields_order[MAX_FIELDS] = { 0 };
 
 /* templates of normal fields order, zero is list-terminator */
 int8_t style_fields_order_ssa_v4[MAX_FIELDS] = \
