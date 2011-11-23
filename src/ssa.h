@@ -19,7 +19,6 @@
 
 /* this should be reasonable values */
 #define MAX_HEADER_LINE 200
-#define MAX_EVENT_NAME 128
 #define MAX_DIALOGUE_LINE 3072
 #define MAX_FIELDS 24 /* (in ssa styles v4+) */
 
@@ -137,12 +136,12 @@ typedef struct ssa_event
     uint32_t layer;
     double start;
     double end;
-    char style[MAX_EVENT_NAME];
-    char name[MAX_EVENT_NAME];
+    char *style;
+    char *name;
     int margin_r;
     int margin_l;
     int margin_v;
-    char effect[MAX_EVENT_NAME];
+    char *effect;
     char *text;
   } ssa_event;
 

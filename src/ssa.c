@@ -672,7 +672,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
     int8_t *field = fieldlist;
     subtime st = { 0, 0, 0, 0.0 };
     char *p = line, *delim = ",";
-    char buf[MAXLINE + 1];
+    char buf[MAXLINE];
     int len = -1;
     double *t;
 
@@ -714,10 +714,10 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
                 subtime2double(&st, t);
               break;
             case EVENT_STYLE :
-              strncpy(event->style, buf, MAX_EVENT_NAME);
+              _strndup(&(event->style), buf, MAXLINE);
               break;
             case EVENT_NAME :
-              strncpy(event->name, buf, MAX_EVENT_NAME);
+              _strndup(&(event->name), buf, MAXLINE);
               break;
             case EVENT_MARGINL :
               event->margin_l = atoi(buf);
@@ -729,7 +729,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
               event->margin_v = atoi(buf);
               break;
             case EVENT_EFFECT :
-              strncpy(event->effect, buf, MAX_EVENT_NAME);
+              _strndup(&(event->effect), buf, MAXLINE);
               break;
             case EVENT_TEXT :
               _strndup(&(event->text), buf, MAXLINE);
