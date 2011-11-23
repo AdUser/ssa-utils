@@ -535,12 +535,12 @@ get_ssa_style(char * const line, ssa_style ** style,
         switch (*field)
           {
             case STYLE_NAME :
-                strncpy(ptr->name, token, MAX_STYLE_NAME);
-                trim_spaces(ptr->name, LINE_START | LINE_END);
+                trim_spaces(token, LINE_START | LINE_END);
+                _strndup(&ptr->name, token, MAXLINE);
               break;
             case STYLE_FONTNAME :
-                strncpy(ptr->fontname, token, MAX_STYLE_NAME);
-                trim_spaces(ptr->fontname, LINE_START | LINE_END);
+                trim_spaces(token, LINE_START | LINE_END);
+                _strndup(&ptr->fontname, token, MAXLINE);
               break;
             case STYLE_FONTSIZE : ptr->fontsize = atof(token);   break;
             case STYLE_BOLD     : ptr->bold = atoi(token);       break;

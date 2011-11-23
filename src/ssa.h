@@ -19,7 +19,6 @@
 
 /* this should be reasonable values */
 #define MAX_HEADER_LINE 200
-#define MAX_STYLE_NAME 96
 #define MAX_EVENT_NAME 128
 #define MAX_DIALOGUE_LINE 3072
 #define MAX_FIELDS 24 /* (in ssa styles v4+) */
@@ -50,8 +49,8 @@ typedef struct ssa_txt_param
 typedef struct ssa_style
   {
     struct ssa_style *next;
-    char name[MAX_STYLE_NAME];
-    char fontname[MAX_STYLE_NAME];
+    char *name;
+    char *fontname;
     float fontsize;
 
     uint32_t pr_color;
