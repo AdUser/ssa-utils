@@ -74,7 +74,6 @@ srt_tags_to_ssa(char *string, ssa_file *file)
     uint8_t font_params = 0;
     struct tag ttag;
     ssa_style *style = NULL;
-    enum { none, text, tag } last = none;
 
     if (!string || !file) return false;
 
@@ -83,7 +82,6 @@ srt_tags_to_ssa(char *string, ssa_file *file)
       {
         if (len > 0) /* it's a tag! */
           {
-            last = tag;
             if (strlen(ttag.data) == 1)
               {
                 chr = toupper(ttag.data[0]);
@@ -210,7 +208,6 @@ srt_tags_to_ssa(char *string, ssa_file *file)
           {
             commit_tags_buffer(common_buf, tags_buf);
             append_string(common_buf, p, "", MAXLINE, -len);
-            last = text;
           }
 
         p += (len > 0) ? len : -len ;
