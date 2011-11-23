@@ -18,8 +18,6 @@
 #define _SSA_H
 
 /* this should be reasonable values */
-#define MAX_HEADER_LINE 200
-#define MAX_DIALOGUE_LINE 3072
 #define MAX_FIELDS 24 /* (in ssa styles v4+) */
 
 typedef enum ssa_version
