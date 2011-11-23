@@ -150,9 +150,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
 
     ssa_section section = NONE;
 
-    while (!feof(infile))
+    while (fgets(line, MAXLINE, infile) != NULL)
       {
-        fgets(line, MAXLINE, infile);
         line_num++;
 
         /* unicode handle */
