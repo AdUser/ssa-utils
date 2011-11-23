@@ -56,36 +56,25 @@ struct unicode_test uc_t_ssa[5] =
 /* structs */
 ssa_file ssa_file_template =
   {
-    /** data section */
-    /* standart text fields */
-    NULL,     /* Title                */
-    NULL,     /* Original Script      */
-    NULL,     /* Original Translation */
-    NULL,     /* Original Editing     */
-    NULL,     /* Original Timing      */
-    NULL,     /* Script Updated By    */
-    NULL,     /* Collisions           */
-    (struct slist *) 0, /* other text params */
+    /** numeric fields */
+    { 0, 0 }, /* PlayResX & PlayResY */
+    0,        /* PlayDepth           */
+    100.0,    /* Timer               */
+    0,        /* Synch Point         */
+    0,        /* WrapStyle           */
 
-    /* numeric fields */
-    { 0, 0 }, /* PlayResX & PlayResY  */
-    0,        /* PlayDepth            */
-    100.0,    /* Timer                */
-    0,        /* Synch Point          */
-    0,        /* WrapStyle            */
-    /* 0: smart wrapping, lines are evenly broken   *
-     * 1: end-of-line word wrapping, only \N breaks *
-     * 2: no word wrapping, \n \N both breaks       *
-     * 3: same as 0, but lower line gets wider.     */
+    unknown,  /* Script Type         */
 
-    unknown,  /* Script Type          */
+    /** text parameters */
+    (struct slist *) 0,
 
-    /** service section */
-    0,        /* flags: 0x00000000 */
+    0x0, /* flags */
 
+    /** arrays */
     { 0 }, /* style field order */
     { 0 }, /* event field order */
 
+    /** structures */
     (ssa_style *) 0, /* styles list */
     (ssa_event *) 0  /* events list */
   };
@@ -93,8 +82,8 @@ ssa_file ssa_file_template =
 ssa_style ssa_style_template =
   {
     (ssa_style *) 0, /* pointer to next style */
-    "Default", /* style name   */
-    "Sans",    /* font name    */
+    NULL,      /* style name   */
+    NULL,      /* font name    */
     24.0,      /* font size    */
     16761538,  /* primary    - 00FFC2C2 */
     65535,     /* secondary  - 0000FFFF */
@@ -128,12 +117,12 @@ ssa_event ssa_event_template =
     0,         /* layer    */
     0.0,       /* start    */
     0.0,       /* end      */
-    "Default", /* style    */
-    "",        /* name     */
+    NULL,      /* style    */
+    NULL,      /* name     */
     0,         /* margin_r */
     0,         /* margin_l */
     0,         /* margin_l */
-    "",        /* effect   */
+    NULL,      /* effect   */
     NULL       /* text     */
 };
 
@@ -144,6 +133,10 @@ init_ssa_file(ssa_file * const file)
     if (!file) return false;
 
     memcpy(file, &ssa_file_template, sizeof(ssa_file));
+
+    if (opts.i_sort)
+      file->flags |= SSA_E_SORTED;
+
     return true;
   }
 
@@ -253,8 +246,9 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         {
           log_msg(warn, _("No styles was defined. Default style assumed."));
           CALLOC(file->styles, 1, sizeof(ssa_style));
-          if (file->styles)
-            memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
+          memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
+          _strndup(&(file->style->name), "Default", MAXLINE);
+          _strndup(&(file->style->fontname), SSA_DEFAULT_FONT, MAXLINE);
         }
 
       return true;
@@ -270,75 +264,56 @@ bool
 get_ssa_param(char * const line, ssa_file * const h)
   {
     /* line: "Param: Value" */
-    char param[MAXLINE] = "";
-    char buf[MAXLINE] = "";
-    char *p = NULL;
+    char *v = NULL;
+    int p_len = 0;
 
-    if ((p = strchr(line, ':')) == NULL)
+    if ((v = strchr(line, ':')) == NULL)
       {
         log_msg(warn, _("Can't get parameter value at line '%u'."), line_num);
         return false;
       }
-    else
-      {
-        strncpy(param, line, (p - line)),
-        strncpy(buf, (p + 1), MAXLINE);
-      }
 
-    string_lowercase(param, 0);
-    trim_spaces(buf, LINE_START | LINE_END);
+    p_len = v - line;
 
-    if (strlen(buf) == 0)
+    for (v += 1; *v != '\0' && isspace(*v); v++);
+
+    if (strlen(v) == 0)
       {
-        log_msg(info, MSG_W_SKIPEPARAM, param, line_num);
+        log_msg(info, MSG_W_SKIPEPARAM, line, line_num);
         return true;
       }
 
-    if      (!strcmp(param, "playresx"))
-      h->res.width  = atoi(buf);
-    else if (!strcmp(param, "playresy"))
-      h->res.height = atoi(buf);
-    else if (!strcmp(param, "playdepth"))
-      h->depth = atoi(buf);
-    else if (!strcmp(param, "synch point"))
-      h->sync = atof(buf);
-    else if (!strcmp(param, "timer"))
-      h->timer = atof(buf);
-    else if (!strcmp(param, "wrapstyle"))
-      h->wrap = atoi(buf);
-    else if (!strcmp(param, "title"))
-      _strndup(&(h->title), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_TITLE;
-    else if (!strcmp(param, "collisions"))
-      _strndup(&(h->collisions), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_COLLS;
-    else if (!strcmp(param, "original script"))
-      _strndup(&(h->o_script), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_OSCRIPT;
-    else if (!strcmp(param, "original translation"))
-      _strndup(&(h->o_trans), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_OTRANS;
-    else if (!strcmp(param, "original editing"))
-      _strndup(&(h->o_edit), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_OEDIT;
-    else if (!strcmp(param, "original timing"))
-      _strndup(&(h->o_timing), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_OTIMING;
-    else if (!strcmp(param, "script updated by"))
-      _strndup(&(h->updated), buf, MAXLINE),
-      h->flags |= SSA_H_HAVE_UPDATED;
-    else if (!strcmp(param, "scripttype"))
+    if      (strncmp(line, "PlayResX", p_len) == 0)
+      h->res.width  = atoi(v);
+    else if (strncmp(line, "PlayResY", p_len) == 0)
+      h->res.height = atoi(v);
+    else if (strncmp(line, "PlayDepth", p_len) == 0)
+      h->depth = atoi(v);
+    else if (strncmp(line, "Synch Point", p_len) == 0)
+      h->sync = atof(v);
+    else if (strncmp(line, "Timer", p_len) == 0)
+      h->timer = atof(v);
+    else if (strncmp(line, "WrapStyle", p_len) == 0)
       {
-        string_lowercase(buf, 0);
-        if      (!strcmp(buf, "v4.00+")) h->type = ssa_v4p;
-        else if (!strcmp(buf, "v4.00"))  h->type = ssa_v4;
-        else if (!strcmp(buf, "v3.00"))  h->type = ssa_v3;
+        if (h->type == ssa_v4p) h->wrap = atoi(v);
+        else log_msg(warn, MSG_W_NOTALLOWED, "Parameter", line);
+      }
+    else if (strncmp(line, "ScriptType", p_len) == 0)
+      {
+        if      (strncmp(v, "v4.00+", 6) == 0) h->type = ssa_v4p;
+        else if (strncmp(v, "v4.00",  5) == 0) h->type = ssa_v4;
+        else if (strncmp(v, "v3.00",  5) == 0) h->type = ssa_v3;
         else h->type = unknown;
       }
-    else if (!strcmp(param, "wrapstyle"))
+    else if (strncmp(line, "Title", p_len) == 0 || \
+             strncmp(line, "Collisions", p_len) == 0 || \
+             strncmp(line, "Original Script", p_len) == 0 || \
+             strncmp(line, "Original Timing", p_len) == 0 || \
+             strncmp(line, "Original Editing", p_len) == 0 || \
+             strncmp(line, "Script Updated By", p_len) == 0 || \
+             strncmp(line, "Original Translation", p_len) == 0)
       {
-        if (h->type == ssa_v4p) h->wrap = atoi(buf);
-        else log_msg(warn, MSG_W_NOTALLOWED, "Parameter", param);
+        slist_add(&(h->txt_params), line);
       }
     else if (opts.i_strict == true)
       log_msg(warn, MSG_W_SKIPSTRICT, line, line_num);
@@ -347,8 +322,6 @@ get_ssa_param(char * const line, ssa_file * const h)
         log_msg(warn, MSG_W_UNCOMMON, _("parameter"), line_num, line);
         slist_add(&(h->txt_params), line);
       }
-    else
-      log_msg(warn, MSG_W_UNRECOGN, _("parameter"), line_num, line);
 
     return true;
   }
@@ -771,23 +744,7 @@ write_ssa_header(FILE *outfile, ssa_file * const f, bool memfree)
     fprintf(outfile, "; Generated by: %s %.2f\n",
               COMMON_PROG_NAME, VERSION);
 
-    write_ssa_txt_param(outfile, "Title", f->title,
-                        f->flags & SSA_H_HAVE_TITLE,   memfree);
-    write_ssa_txt_param(outfile, "Original Script", f->o_script,
-                        f->flags & SSA_H_HAVE_OSCRIPT, memfree);
-    write_ssa_txt_param(outfile, "Original Translation", f->o_trans,
-                        f->flags & SSA_H_HAVE_OTRANS,  memfree);
-    write_ssa_txt_param(outfile, "Original Editing", f->o_edit,
-                        f->flags & SSA_H_HAVE_OEDIT,   memfree);
-    write_ssa_txt_param(outfile, "Original Timing", f->o_timing,
-                        f->flags & SSA_H_HAVE_OTIMING, memfree);
-    write_ssa_txt_param(outfile, "Script Updated By", f->updated,
-                        f->flags & SSA_H_HAVE_UPDATED, memfree);
-    write_ssa_txt_param(outfile, "Collisions", f->collisions,
-                        f->flags & SSA_H_HAVE_COLLS, memfree);
-    f->flags = 0x0;
-
-    /* uncommon text fields. validity should be checked during parsing */
+    /* text fields. validity should be checked during parsing */
     for (p = f->txt_params; p != NULL;)
       {
         fprintf(outfile, "%s\n", p->value);
@@ -1100,7 +1057,8 @@ find_ssa_style_by_name(ssa_file *f, char *name)
   {
     ssa_style *s = NULL;
 
-    if (!f || !name) return &ssa_style_template;
+    if (!f || !name)
+      return NULL;
 
     /* else */
     for (s = f->styles; s != NULL; s = s->next)
@@ -1108,5 +1066,5 @@ find_ssa_style_by_name(ssa_file *f, char *name)
         return s;
 
     /* if this not works */
-    return &ssa_style_template;
+    return NULL;
   }

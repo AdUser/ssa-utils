@@ -20,6 +20,10 @@
 /* this should be reasonable values */
 #define MAX_FIELDS 24 /* (in ssa styles v4+) */
 
+#define SSA_DEFAULT_FONT "Sans"
+
+#define SSA_E_SORTED   0x01
+
 typedef enum ssa_version
   {
     unknown,
@@ -27,15 +31,6 @@ typedef enum ssa_version
     ssa_v4, /* common ssa format  */
     ssa_v4p /* advanced ssa (ASS) */
   } ssa_version;
-
-/* common fields flags */
-#define SSA_H_HAVE_TITLE    1
-#define SSA_H_HAVE_OSCRIPT  2
-#define SSA_H_HAVE_OTRANS   4
-#define SSA_H_HAVE_OEDIT    8
-#define SSA_H_HAVE_OTIMING  16
-#define SSA_H_HAVE_UPDATED  32
-#define SSA_H_HAVE_COLLS    64
 
 typedef struct ssa_style
   {
@@ -167,28 +162,36 @@ typedef enum ssa_section
 
 typedef struct ssa_file
   {
-    /** data section */
-    /* text fields */
-    char *title;      /* Title                  */
-    char *o_script;   /* Original Script        */
-    char *o_trans;    /* Original Translation   */
-    char *o_edit;     /* Original Editing       */
-    char *o_timing;   /* Original Timing        */
-    char *updated;    /* Script Updated By      */
-    char *collisions; /* Collisions             */
+    /*** data section */
+
+    /** numeric fields */
+    struct res res;     /* PlayResX & PlayResY    */
+    uint16_t depth;     /* PlayDepth              */
+    float    timer;     /* Timer                  */
+    float    sync;      /* Synch Point (WTF?)     */
+
+    uint8_t  wrap;      /* WrapStyle (>= ASS subs) */
+    /* 0: smart wrapping, lines are evenly broken   *
+     * 1: end-of-line word wrapping, only \N breaks *
+     * 2: no word wrapping, \n \N both breaks       *
+     * 3: same as 0, but lower line gets wider.     */
+
+    ssa_version type;   /* Script Type            */
+
+    /** text fields */
+    /* standart text fields:  *
+     * Title                  *
+     * Original Script        *
+     * Original Translation   *
+     * Original Editing       *
+     * Original Timing        *
+     * Script Updated By      *
+     * Collisions             *
+     * + any unrecognized     */
     struct slist *txt_params;
 
-    /* numeric fields */
-    struct res res;
-    uint16_t depth;                 /* PlayDepth              */
-    float    timer;                 /* Timer                  */
-    float    sync;                  /* Synch Point (WTF?)     */
-    uint8_t  wrap;                  /* WrapStyle (>= ASS subs)*/
-
-    ssa_version type;               /* Script Type            */
-
-    /** service section */
-    uint16_t flags;                 /* flags for char fields  */
+    /*** service section */
+    uint16_t flags;
 
     int8_t style_fields_order[MAX_FIELDS];
     int8_t event_fields_order[MAX_FIELDS];
