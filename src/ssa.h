@@ -37,12 +37,6 @@ typedef enum ssa_version
 #define SSA_H_HAVE_UPDATED  32
 #define SSA_H_HAVE_COLLS    64
 
-typedef struct ssa_txt_param
-  {
-    char *data;
-    struct ssa_txt_param *next;
-  } ssa_txt_param;
-
 typedef struct ssa_style
   {
     struct ssa_style *next;
@@ -182,7 +176,7 @@ typedef struct ssa_file
     char *o_timing;   /* Original Timing        */
     char *updated;    /* Script Updated By      */
     char *collisions; /* Collisions             */
-    ssa_txt_param *txt_params;
+    struct slist *txt_params;
 
     /* numeric fields */
     struct res res;
@@ -212,7 +206,6 @@ bool parse_ssa_file(FILE *, ssa_file *);
 
 /** header section */
 bool get_ssa_param(char * const, ssa_file * const);
-bool add_ssa_txt_param(ssa_txt_param **, char *);
 
 /** styles section */
 bool set_style_fields_order(char * const, ssa_version, int8_t *);

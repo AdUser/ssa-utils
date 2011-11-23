@@ -65,7 +65,7 @@ ssa_file ssa_file_template =
     NULL,     /* Original Timing      */
     NULL,     /* Script Updated By    */
     NULL,     /* Collisions           */
-    (ssa_txt_param *) 0, /* other text params */
+    (struct slist *) 0, /* other text params */
 
     /* numeric fields */
     { 0, 0 }, /* PlayResX & PlayResY  */
@@ -345,26 +345,10 @@ get_ssa_param(char * const line, ssa_file * const h)
     else if (opts.i_strict == false)
       {
         log_msg(warn, MSG_W_UNCOMMON, _("parameter"), line_num, line);
-        add_ssa_txt_param(&(h->txt_params), line);
+        slist_add(&(h->txt_params), line);
       }
     else
       log_msg(warn, MSG_W_UNRECOGN, _("parameter"), line_num, line);
-
-    return true;
-  }
-
-bool
-add_ssa_txt_param(ssa_txt_param **list, char *data)
-  {
-    ssa_txt_param **p = NULL;
-
-    if (!list || !data)
-      return false;
-
-    for (p = list; *p != NULL; p = &((*p)->next));
-
-    CALLOC(*p, 1, sizeof(ssa_txt_param));
-    _strndup(&((*p)->data), data, MAXLINE);
 
     return true;
   }
@@ -777,7 +761,7 @@ write_ssa_txt_param(FILE *outfile, char *name,\
 bool
 write_ssa_header(FILE *outfile, ssa_file * const f, bool memfree)
   {
-    ssa_txt_param *p = NULL, *l = NULL;
+    struct slist *p = NULL, *l = NULL;
 
     if (!outfile || !f) return false;
 
@@ -806,9 +790,9 @@ write_ssa_header(FILE *outfile, ssa_file * const f, bool memfree)
     /* uncommon text fields. validity should be checked during parsing */
     for (p = f->txt_params; p != NULL;)
       {
-        fprintf(outfile, "%s\n", p->data);
+        fprintf(outfile, "%s\n", p->value);
         l = p, p = p->next;
-        if (memfree) free(l->data), free(l);
+        if (memfree) free(l->value), free(l);
       }
 
     if (f->sync != 0)
