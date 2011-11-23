@@ -46,7 +46,6 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
     while(!feof(infile))
       {
-        memset(line, 0, MAXLINE);
         fgets(line, MAXLINE, infile);
         line_num++;
 

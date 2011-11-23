@@ -159,7 +159,6 @@ parse_ssa_file(FILE *infile, ssa_file *file)
 
     while (!feof(infile))
       {
-        memset(line, 0, MAXLINE);
         fgets(line, MAXLINE, infile);
         line_num++;
 
@@ -272,11 +271,8 @@ get_ssa_param(char * const line, ssa_file * const h)
   {
     /* line: "Param: Value" */
     char param[MAXLINE] = "";
-    char buf[MAXLINE];
+    char buf[MAXLINE] = "";
     char *p = NULL;
-
-    memset(buf,   0x0, MAXLINE);
-    memset(param, 0x0, MAXLINE);
 
     if ((p = strchr(line, ':')) == NULL)
       {
@@ -495,7 +491,7 @@ get_ssa_style(char * const line, ssa_style ** style,
     int8_t *field = fieldlist;
     ssa_style *ptr = *style, **ptr_alloc;
     char *p = line, *delim = ",";
-    char token[MAXLINE];
+    char token[MAXLINE] = "";
     int len = -1;
 
     if (ptr != (ssa_style *) 0) /* list has no entries */
@@ -516,7 +512,6 @@ get_ssa_style(char * const line, ssa_style ** style,
     ptr = *ptr_alloc;
 
     p = p + 1; /* "Style:| " */
-    memset(token, 0, MAXLINE);
 
     while (*field != 0)
       {
@@ -1072,12 +1067,11 @@ ssa_version_tos(ssa_version version)
 bool
 ssa_section_switch(enum ssa_section *section, char *line)
   {
-    char buf[MAXLINE + 1];
+    char buf[MAXLINE] = "";
 
     if (!section || !line) return false;
 
-    memset(buf, 0x0, MAXLINE + 1);
-    strncpy(buf, line, MAXLINE);
+    strncpy(buf, line, MAXLINE - 1);
     string_lowercase(buf, 0);
 
     if (line[0] != '[') return false;
