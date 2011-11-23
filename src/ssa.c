@@ -247,8 +247,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
           log_msg(warn, _("No styles was defined. Default style assumed."));
           CALLOC(file->styles, 1, sizeof(ssa_style));
           memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
-          _strndup(&(file->style->name), "Default", MAXLINE);
-          _strndup(&(file->style->fontname), SSA_DEFAULT_FONT, MAXLINE);
+          _strndup(&(file->styles->name), "Default", MAXLINE);
+          _strndup(&(file->styles->fontname), SSA_DEFAULT_FONT, MAXLINE);
         }
 
       return true;
