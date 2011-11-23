@@ -123,7 +123,7 @@ parse_time(char *token, double *d, bool exit)
     subtime t = { 0, 0, 0, 0 };
     bool negative = false;
     int8_t count = -1;
-    verbosity level = warn;
+    verbosity level = (exit == true) ? error : warn;
     int8_t scan  = 0;
     uint32_t len = 0;
 
@@ -133,7 +133,6 @@ parse_time(char *token, double *d, bool exit)
 
     len = strlen(p);
     *d = 0.0;
-    if (exit) level = error;
 
     if (len <= 0)
       return false;
@@ -181,6 +180,12 @@ parse_time(char *token, double *d, bool exit)
              default: /* t.msec *= 1; */ break;
            }
       }
+
+    if (check_subtime(&t) == false)
+    {
+      log_msg(level, MSG_W_WRONGTIMEF, token);
+      return false;
+    }
 
     subtime2double(&t, d);
     if (negative) *d = -(*d);
