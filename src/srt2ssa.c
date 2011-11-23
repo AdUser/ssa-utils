@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
               break;
             case 'e' :
               log_msg(info, _("Strict mode. No mercy for malformed lines or uncommon extensions!"));
-              target.flags |= SRT_E_STRICT;
+              source.flags |= SRT_E_STRICT;
               break;
             case 'S' :
               opts.i_sort = true;
