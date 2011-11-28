@@ -76,17 +76,20 @@ Specific options for 'points' mode:\n\
   exit(exit_code);
 }
 
-/** use this for debug (FIXME: broken due to changing time_pt struct)
+/** use this for debug */
 void
 dump_pts_list(struct time_pt *list)
   {
-    uint8_t i;
-    struct time_pt *l = list;
+    uint8_t i = 1;
+    struct time_pt *l = NULL;
 
-    for (i = 0; i < PTS_MAX && l->used == true; i++, l++)
-      fprintf(stderr, "pts_list[%i] = { used: %s, pos: %7.3f, shift: %7.3f }\n", i, (l->used) ? "true" : "false", l->pos, l->shift);
+    log_msg(debug, "Points:");
+    log_msg(debug, "  # |    time    | shift");
+
+    for (l = list; l != NULL; l = l->next, i++)
+      log_msg(debug, "% 3u | % 10.3f : % 8.3f", i, l->pos, l->shift);
+
   }
-*/
 
 bool
 add_point(struct time_pt **list, char * const s)
@@ -377,6 +380,7 @@ int main(int argc, char *argv[])
         }
 
       validate_pts_list(&pts_list, max_time + 0.001);
+      dump_pts_list(pts_list);
     }
 
   for (e = file.events; e != NULL; e = e->next)
