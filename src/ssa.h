@@ -26,7 +26,7 @@
 
 typedef enum ssa_version
   {
-    unknown,
+    ssa_unknown,
     ssa_v3, /* legacy ssa format  */
     ssa_v4, /* common ssa format  */
     ssa_v4p /* advanced ssa (ASS) */

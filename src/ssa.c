@@ -63,7 +63,7 @@ ssa_file ssa_file_template =
     0,        /* Synch Point         */
     0,        /* WrapStyle           */
 
-    unknown,  /* Script Type         */
+    ssa_unknown, /* Script Type         */
 
     /** text parameters */
     (struct slist *) 0,
@@ -234,7 +234,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         }
 
       /* some checks and fixes */
-      if (file->type == unknown)
+      if (file->type == ssa_unknown)
         log_msg(error, _("Missing 'Script Type' line in input file."));
 
       if (file->timer == 0)
@@ -304,7 +304,7 @@ get_ssa_param(char * const line, ssa_file * const h)
         if      (strncmp(v, "v4.00+", 6) == 0) h->type = ssa_v4p;
         else if (strncmp(v, "v4.00",  5) == 0) h->type = ssa_v4;
         else if (strncmp(v, "v3.00",  5) == 0) h->type = ssa_v3;
-        else h->type = unknown;
+        else h->type = ssa_unknown;
       }
     else if (strncmp(line, "Title", p_len) == 0 || \
              strncmp(line, "Collisions", p_len) == 0 || \
@@ -348,7 +348,7 @@ set_style_fields_order(char *format, ssa_version v, int8_t *fieldlist)
           strcpy(compare, SSA_STYLE_V4_FORMAT);
           break;
         case ssa_v3:
-        case unknown:
+        case ssa_unknown:
         default :
           return false;
           break;
@@ -545,7 +545,7 @@ set_event_fields_order(char * const format, ssa_version v, int8_t * fieldlist)
           strcpy(compare, SSA_EVENT_V4_FORMAT);
           break;
         case ssa_v3:
-        case unknown:
+        case ssa_unknown:
         default :
           return false;
           break;
@@ -799,7 +799,7 @@ write_ssa_styles(FILE * outfile, ssa_style  * const style, ssa_version v, bool m
           format_string = false;
           section_header = false;
 /*        break;*/
-        case unknown:
+        case ssa_unknown:
         default :
           return false;
           break;
@@ -847,7 +847,7 @@ write_ssa_style(FILE * outfile, ssa_style  * const style, ssa_version v)
           break;
         case ssa_v4 : /* all other uses raw integer */
         case ssa_v3 :
-        case unknown:
+        case ssa_unknown:
         default :
           color_format = "%i,%i,%i,%i,";
           break;
@@ -902,7 +902,7 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
           format_string = false;
           section_header = false;
 /*        break;*/
-        case unknown:
+        case ssa_unknown:
         default :
           return false;
           break;
@@ -998,7 +998,7 @@ ssa_version_tos(ssa_version version)
         case ssa_v4p :
           return "v4.00+";
           break;
-        case unknown :
+        case ssa_unknown :
         default :
           return "";
           break;

@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
   unsigned int pct_h = 0;
   ssa_file file;
 
-  mode = unknown;
+  mode = ssa_unknown;
 
   if (argc >= 4)
     {

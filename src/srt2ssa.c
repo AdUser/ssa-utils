@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
     /* checks */
     common_checks(&opts);
 
-    if (target.type == unknown)
+    if (target.type == ssa_unknown)
       log_msg(error, MSG_O_OREQUIRED, "-f");
 
     if (opts.o_fsize_tune && !target.res.width && !target.res.height)
