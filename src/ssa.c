@@ -219,6 +219,17 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               break;
             case FONTS :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("fonts"));
+              switch (detect_media_line_type(line))
+                {
+                  case MEDIA_HEADER :
+                    break;
+                  case MEDIA_UUE_LINE :
+                    break;
+                  case MEDIA_UUE_TAIL :
+                    break;
+                  default :
+                    break;
+                }
               break;
             case GRAPHICS :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("graphics"));
@@ -1068,4 +1079,40 @@ find_ssa_style_by_name(ssa_file *f, char *name)
 
     /* if this not works */
     return NULL;
+  }
+
+int8_t
+detect_media_line_type(char const * const line)
+  {
+    ssize_t len = 0;
+
+    len = strlen(line);
+    if (len == 80)
+      return MEDIA_UUE_LINE;
+
+    if (len == 0)
+      return MEDIA_UUE_TAIL;
+
+    /* In official specification for SSA we should use 'filename' *
+     * in every case, but actually, all use 'fontname' keyword    */
+    if (strncmp(line, "fontname:", 9) == 0)
+      return MEDIA_HEADER;
+
+    if (strncmp(line, "filename:", 9) == 0)
+      return MEDIA_HEADER;
+
+    /* The keywords above MUST be lowercase, but we should     *
+     * remember about not-well-coded applications, who think   *
+     * that 'filename' should conforms to style of other lines */
+    if (len >= 9 && (strncmp((line + 1), "ontname:", 8) == 0 ||
+                     strncmp((line + 1), "ilename:", 8) == 0))
+      {
+        log_msg(warn, _("Keyword '*name' must be fully lowercase: %s"), line);
+        return MEDIA_HEADER;
+      }
+
+    if (len > 0 && len < 80)
+      return MEDIA_UUE_TAIL;
+
+    return MEDIA_UNKNOWN;
   }

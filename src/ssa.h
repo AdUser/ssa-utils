@@ -24,6 +24,11 @@
 
 #define SSA_E_SORTED   0x01
 
+#define MEDIA_UNKNOWN  0x0
+#define MEDIA_HEADER   0x1
+#define MEDIA_UUE_LINE 0x2
+#define MEDIA_UUE_TAIL 0x3
+
 typedef enum ssa_version
   {
     ssa_unknown,
@@ -234,6 +239,9 @@ bool get_ssa_style(char * const, ssa_style **, int8_t *);
 bool set_event_fields_order(char * const, ssa_version, int8_t *);
 bool detect_event_fields_order(char * const, int8_t *);
 bool get_ssa_event (char * const, ssa_event * const, int8_t *);
+
+/** media section */
+int8_t detect_media_line_type(char const * const);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);
