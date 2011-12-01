@@ -1105,7 +1105,8 @@ detect_media_line_type(char const * const line)
     if (len >= 9 && (strncmp((line + 1), "ontname:", 8) == 0 ||
                      strncmp((line + 1), "ilename:", 8) == 0))
       {
-        log_msg(warn, _("Keyword '*name' must be fully lowercase: %s"), line);
+        log_msg(warn, _("Keyword '*name' must be fully lowercase: %u:%s"), \
+                      line_num, line);
         return MEDIA_HEADER;
       }
 
