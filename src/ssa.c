@@ -145,7 +145,9 @@ init_ssa_file(ssa_file * const file)
 bool
 parse_ssa_file(FILE *infile, ssa_file *file)
   {
-    bool get_styles = true; /* skip or not styles in file */
+    bool get_styles = true; /* skip or not styles? */
+    bool get_fonts  = true; /* ... embedded fonts? */
+    bool get_graph  = true; /* ... embedded graphics? */
     char line[MAXLINE] = "";
     ssa_event *e = NULL;
     ssa_event **elist_tail  = &file->events;
@@ -219,6 +221,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               break;
             case FONTS :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("fonts"));
+              if (get_fonts == false)
+                continue;
               switch (detect_media_line_type(line))
                 {
                   case MEDIA_HEADER :
@@ -233,6 +237,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               break;
             case GRAPHICS :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("graphics"));
+              if (get_graph == false)
+                continue;
               break;
             case UNKNOWN :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("unknown"));
