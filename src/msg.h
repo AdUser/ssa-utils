@@ -27,6 +27,7 @@
 #define MSG_F_ORDFAIL    _("Can't open file '%s' for read.")
 #define MSG_F_OWRFAIL    _("Can't open file '%s' for write.")
 #define MSG_F_OWRFAILSO  _("Can't open file '%s' for write. stdout will be used.")
+#define MSG_F_CTMPFAIL   _("Can't create temporary file: %s")
 #define MSG_F_WRFAIL     _("Write failed.")
 #define MSG_F_IFMISSING  _("Input file not specified.")
 #define MSG_F_OFMISSING  _("Output file not specified. stdout will be used.")

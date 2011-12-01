@@ -15,6 +15,7 @@
  */
 
 #include <ctype.h>
+#include <errno.h>
 #include <fenv.h>
 #include <libintl.h>
 #include <locale.h>
@@ -43,6 +44,10 @@
   if (((ptr) = calloc((nmemb), (size))) == NULL) \
     log_msg(error, MSG_M_OOM, __FILE__, __LINE__)
     /* yes, i know about assert() */
+
+#define TMPFILE(ptr) \
+  if (((ptr) = tmpfile()) == NULL) \
+    log_msg(error, MSG_F_CTMPFAIL, strerror(errno))
 
 #define SEC_MAX     85399 /* 23h:59m:59s */
 #define SEC_IN_HOUR  3600
