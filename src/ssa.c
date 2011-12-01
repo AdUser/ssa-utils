@@ -1093,8 +1093,6 @@ detect_media_line_type(char const * const line)
     if (len == 0)
       return MEDIA_UUE_TAIL;
 
-    /* In official specification for SSA we should use 'filename' *
-     * in every case, but actually, all use 'fontname' keyword    */
     if (strncmp(line, "fontname:", 9) == 0)
       return MEDIA_HEADER;
 
