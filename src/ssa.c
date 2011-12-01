@@ -151,6 +151,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
     char line[MAXLINE] = "";
     ssa_event *e = NULL;
     ssa_event **elist_tail  = &file->events;
+    ssa_media *f = NULL; /* fonts list handler */
+    ssa_media *g = NULL; /* graphics list handler */
 
     ssa_section section = NONE;
 
@@ -226,12 +228,23 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               switch (detect_media_line_type(line))
                 {
                   case MEDIA_HEADER :
+                    if (f != NULL) {
+                        CALLOC(f->next, 1, sizeof(ssa_media));
+                        f = f->next;
+                      } else {
+                        CALLOC(f, 1, sizeof(ssa_media));
+                        file->fonts = f;
+                      }
+                    f->type = type_font;
+                    TMPFILE(f->data);
                     break;
                   case MEDIA_UUE_LINE :
-                    break;
                   case MEDIA_UUE_TAIL :
+                    fputs(line, f->data);
+                    fputs("\n", f->data);
                     break;
                   default :
+                    /* do nothing */
                     break;
                 }
               break;
