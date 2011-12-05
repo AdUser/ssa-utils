@@ -145,6 +145,7 @@ init_ssa_file(ssa_file * const file)
 bool
 parse_ssa_file(FILE *infile, ssa_file *file)
   {
+    uint16_t len = 0;
     bool get_styles = true; /* skip or not styles? */
     bool get_fonts  = true; /* ... embedded fonts? */
     bool get_graph  = true; /* ... embedded graphics? */
@@ -167,19 +168,20 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         trim_newline(line);
         log_msg(raw, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
+        len = strlen(line);
 
-        if (line[0] == ';' || strlen(line) == 0)
+        if (len == 0)
           continue;
 
-        if (line[0] == '[')
-          {
-            ssa_section_switch(&section, line);
+        if (len != 80 && !(section == FONTS || section == GRAPHICS))
+          if (ssa_section_switch(&section, line) == true)
             continue;
-          }
 
         switch (section)
           {
             case HEADER :
+              if (line[0] == ';')
+                continue;
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("header"));
               get_ssa_param(line, file);
               break;
@@ -239,9 +241,13 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                     TMPFILE(f->data);
                     break;
                   case MEDIA_UUE_LINE :
+                    fputs(line, f->data);
+                    fputs("\n", f->data);
+                    break;
                   case MEDIA_UUE_TAIL :
                     fputs(line, f->data);
                     fputs("\n", f->data);
+                    fflush(f->data);
                     break;
                   default :
                     /* do nothing */
