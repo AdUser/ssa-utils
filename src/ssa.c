@@ -1053,16 +1053,25 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
     if (!outfile || !list)
       return false;
 
-    for (h = list; h != NULL; )
+    h = list;
+    media_type = (h->type == type_font) ? "Fonts" : "Graphics";
+    fprintf(outfile, "[%s]\n", media_type);
+
+    while (h != NULL)
       {
         media_type = (h->type == type_font) ? "fontname" : "filename";
-        fprintf(outfile, "%s: %s", media_type, h->filename);
+        fprintf(outfile, "%s: %s\n", media_type, h->filename);
 
         rewind(h->data);
-        while ((read = fread(buf, MAXLINE, 1, h->data)) > 0)
-          fwrite(buf, MAXLINE, 1, outfile);
+        while ((read = fread(buf, sizeof(uint8_t), MAXLINE, h->data)) > 0)
+          if (read == MAXLINE * sizeof(uint8_t))
+            fwrite(buf, sizeof(uint8_t), sizeof(uint8_t) * MAXLINE, outfile);
+          else
+            fwrite(buf, sizeof(uint8_t), sizeof(uint8_t) * read,    outfile);
+
         if (errno)
           log_msg(error, "%s", strerror(errno));
+        fflush(outfile);
 
         t = h;
         h = h->next;
@@ -1073,6 +1082,8 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
             free(t);
           }
       }
+
+    fputc('\n', outfile);
 
     return true;
   }
