@@ -767,11 +767,22 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
   {
     bool result = true;
 
-    if (!outfile || !f) return false;
+    if (!outfile || !f)
+      return false;
 
     result &= write_ssa_header(outfile, f, memfree);
-    result &= write_ssa_styles(outfile, f->styles, f->type, memfree);
-    result &= write_ssa_events(outfile, f->events, f->type, memfree);
+
+    if (f->styles)
+      result &= write_ssa_styles(outfile, f->styles, f->type, memfree);
+
+    if (f->events)
+      result &= write_ssa_events(outfile, f->events, f->type, memfree);
+
+    if (f->fonts)
+      result &= write_ssa_media(outfile, f->fonts, memfree);
+
+    if (f->images)
+      result &= write_ssa_media(outfile, f->images, memfree);
 
     return result;
   }
