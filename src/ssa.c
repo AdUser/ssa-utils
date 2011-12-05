@@ -712,6 +712,8 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
 bool
 get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
   {
+    char *p = NULL;
+
     if (list == NULL || h == NULL || line == NULL)
       return false;
 
@@ -729,6 +731,11 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
             (*h)->type = type_font;
           if (strncmp(line, "filename", 8) == 0)
             (*h)->type = type_image;
+          if ((p = strchr(line, ':')) != NULL)
+          {
+            for (p += 1; *p != '\0' && isspace(*p); p++);
+            _strndup(&(*h)->filename, p, MAXLINE);
+          }
           TMPFILE((*h)->data);
           break;
         case MEDIA_UUE_LINE :
