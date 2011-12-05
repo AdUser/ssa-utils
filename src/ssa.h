@@ -256,6 +256,8 @@ bool write_ssa_style (FILE *, ssa_style  * const, ssa_version);
 bool write_ssa_events(FILE *, ssa_event  * const, ssa_version, bool);
 bool write_ssa_event (FILE *, ssa_event  * const, ssa_version);
 
+bool write_ssa_media (FILE *, ssa_media  * const, bool);
+
 /** other */
 uint32_t ssa_color(char * const);
 char *ssa_version_tos(ssa_version);
