@@ -249,6 +249,10 @@ parse_ssa_file(FILE *infile, ssa_file *file)
       if (file->type == ssa_unknown)
         log_msg(error, _("Missing 'Script Type' line in input file."));
 
+      /* this is needed, if last line was 80 chars also */
+      if (f != NULL) fflush(f->data);
+      if (g != NULL) fflush(g->data);
+
       if (file->timer == 0)
         {
           log_msg(warn, _("Undefined or zero 'Timer' value. Default value assumed."));
@@ -721,6 +725,7 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
       {
         case MEDIA_HEADER :
           if ((*h) != NULL) {
+              fflush((*h)->data);
               CALLOC((*h)->next, 1, sizeof(ssa_media));
               *h = (*h)->next;
             } else {
