@@ -227,37 +227,13 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("fonts"));
               if (get_fonts == false)
                 continue;
-              switch (detect_media_line_type(line))
-                {
-                  case MEDIA_HEADER :
-                    if (f != NULL) {
-                        CALLOC(f->next, 1, sizeof(ssa_media));
-                        f = f->next;
-                      } else {
-                        CALLOC(f, 1, sizeof(ssa_media));
-                        file->fonts = f;
-                      }
-                    f->type = type_font;
-                    TMPFILE(f->data);
-                    break;
-                  case MEDIA_UUE_LINE :
-                    fputs(line, f->data);
-                    fputs("\n", f->data);
-                    break;
-                  case MEDIA_UUE_TAIL :
-                    fputs(line, f->data);
-                    fputs("\n", f->data);
-                    fflush(f->data);
-                    break;
-                  default :
-                    /* do nothing */
-                    break;
-                }
+              get_ssa_media(&file->fonts, &f, line);
               break;
             case GRAPHICS :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("graphics"));
               if (get_graph == false)
                 continue;
+              get_ssa_media(&file->images, &g, line);
               break;
             case UNKNOWN :
               log_msg(debug, MSG_W_CURRSECTION, line_num, _("unknown"));
@@ -728,6 +704,45 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
           }
         field++;
         if (*field == EVENT_TEXT) delim = "";
+      }
+
+    return true;
+  }
+
+bool
+get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
+  {
+    if (list == NULL || h == NULL || line == NULL)
+      return false;
+
+    switch (detect_media_line_type(line))
+      {
+        case MEDIA_HEADER :
+          if ((*h) != NULL) {
+              CALLOC((*h)->next, 1, sizeof(ssa_media));
+              *h = (*h)->next;
+            } else {
+              CALLOC((*h), 1, sizeof(ssa_media));
+              *list = *h;
+            }
+          if (strncmp(line, "fontname", 8) == 0)
+            (*h)->type = type_font;
+          if (strncmp(line, "filename", 8) == 0)
+            (*h)->type = type_image;
+          TMPFILE((*h)->data);
+          break;
+        case MEDIA_UUE_LINE :
+          fputs(line, (*h)->data);
+          fputs("\n", (*h)->data);
+          break;
+        case MEDIA_UUE_TAIL :
+          fputs(line, (*h)->data);
+          fputs("\n", (*h)->data);
+          fflush((*h)->data);
+          break;
+        default :
+          /* do nothing */
+          break;
       }
 
     return true;

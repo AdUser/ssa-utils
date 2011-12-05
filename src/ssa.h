@@ -242,6 +242,7 @@ bool get_ssa_event (char * const, ssa_event * const, int8_t *);
 
 /** media section */
 int8_t detect_media_line_type(char const * const);
+bool get_ssa_media(ssa_media **, ssa_media **, char const * const);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);
