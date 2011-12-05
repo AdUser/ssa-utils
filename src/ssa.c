@@ -1037,25 +1037,28 @@ ssa_version_tos(ssa_version version)
 
 /* returns true, if changes section and false otherwise */
 bool
-ssa_section_switch(enum ssa_section *section, char *line)
+ssa_section_switch(enum ssa_section *section, char const * const line)
   {
     char buf[MAXLINE] = "";
 
-    if (!section || !line) return false;
+    if (!section || !line)
+      return false;
 
-    strncpy(buf, line, MAXLINE - 1);
+    if (line[0] != '[')
+      return false;
+
+    strncpy(buf, line, MAXLINE);
     string_lowercase(buf, 0);
-
-    if (line[0] != '[') return false;
 
          if (!strcmp(buf, "[script info]")) *section = HEADER;
     else if (!strcmp(buf, "[events]"))      *section = EVENTS;
     else if (!strcmp(buf, "[fonts]"))       *section = FONTS;
     else if (!strcmp(buf, "[graphics]"))    *section = GRAPHICS;
-    else if (strstr(buf, "styles]") != 0)   *section = STYLES;
+    else if (!strcmp(buf, "[v4 styles]"))   *section = STYLES;
+    else if (!strcmp(buf, "[v4+ styles]"))  *section = STYLES;
     else
       {
-        log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), buf, line_num);
+        log_msg(warn, _("Unknown ssa section '%s' at line '%u'."), line, line_num);
         *section = UNKNOWN; /* by default */
         return false;
       }
