@@ -60,7 +60,6 @@ uint32_t line_num = 0;
 int main(int argc, char *argv[])
 {
   char opt;
-  char *m;
   char *out_dir = "./";
   ssa_file file;
 
@@ -133,9 +132,6 @@ int main(int argc, char *argv[])
       default :
         break;
     }
-  }
-
-
 
   return 0;
 }
