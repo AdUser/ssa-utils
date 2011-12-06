@@ -44,9 +44,8 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
     curr_line = unknown;
 
-    while(!feof(infile))
+    while (fgets(line, MAXLINE, infile) != NULL)
       {
-        fgets(line, MAXLINE, infile);
         line_num++;
 
         /* unicode handle */
@@ -151,7 +150,9 @@ parse_srt_file(FILE *infile, srt_file * const file)
             memset(text_buf, 0, MAXLINE);
             parsed--;
           }
-     }
+      }
+    if (!feof(infile))
+      _log(log_error, MSG_F_RDFAIL);
 
     return true; /* if we reach this line, no error happens */
   }

@@ -42,11 +42,8 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
 
     if (!infile || !file) return false;
 
-    while (true)
+    while (fgets(line, MAXLINE, infile) != NULL)
       {
-        memset(line, '\0', MAXLINE);
-        fgets(line, MAXLINE, infile);
-        if (feof(infile)) break;
         line_num++;
 
         /* unicode handle */
@@ -87,6 +84,9 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
           }
         microsub_event_append(&file->events, &elist_tail, event, opts.i_sort);
       }
+
+    if (feof(infile) != 0)
+      _log(log_error, MSG_F_RDFAIL);
 
     return true;
   }
