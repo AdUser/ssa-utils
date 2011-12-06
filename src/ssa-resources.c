@@ -23,14 +23,14 @@ void usage(int exit_code)
 {
   fprintf(stderr, "%s v%.2f\n", COMMON_PROG_NAME, VERSION);
   fprintf(stderr, \
-    _("Usage: %s <mode> [<options>] -i <input_file> [-o <output_file>]\n"),
+    _("Usage: %s <mode> -i <input_file> [<options>]\n"),
       PROG_NAME);
 
   fprintf(stderr, _("\
 Modes are: \n\
-  * info            Show brief information about found embedded files.\n\
+  * info            Show brief information about embedded files found in subtitle.\n\
   * import          Embed files into subtitle.\n\
-  * export          Extract embedded files and save in specified directory.\n"));
+  * export          Extract embedded files and save into specified directory.\n"));
   fputc('\n', stderr);
 
   usage_common_opts();
