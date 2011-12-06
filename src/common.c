@@ -526,19 +526,6 @@ _strtok(char *s, char *delim)
     return len; /* i miss something ^^" */
   }
 
-bool
-_strndup(char **copy, char *orig, unsigned int len)
-  {
-    if (!copy || !orig) return false;
-
-    if (*copy) free(*copy);
-
-    if ((*copy = strndup(orig, len)) == NULL)
-      log_msg(error, MSG_M_OOM);
-
-    return true;
-  }
-
 enum chs_type
 unicode_check(char *s, struct unicode_test *aux_tests)
   {

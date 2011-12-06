@@ -49,6 +49,10 @@
   if (((ptr) = tmpfile()) == NULL) \
     log_msg(error, MSG_F_CTMPFAIL, strerror(errno))
 
+#define STRNDUP(ptr, str, len) \
+  if (((ptr) = strndup((str), (len))) == NULL) \
+    log_msg(error, MSG_M_OOM, __FILE__, __LINE__)
+
 #define SEC_MAX     85399 /* 23h:59m:59s */
 #define SEC_IN_HOUR  3600
 #define SEC_IN_MIN     60
@@ -236,7 +240,6 @@ void stack_pop (STACK_ELEM * const, STACK_ELEM **);
 
 /* various functions */
 int _strtok(char *, char *);
-bool _strndup(char **, char *, unsigned int len);
 void msglevel_change(verbosity *, char);
 void log_msg(uint8_t, const char *, ...);
 bool common_checks(struct options * const);

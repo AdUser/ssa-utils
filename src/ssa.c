@@ -264,8 +264,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
           log_msg(warn, _("No styles was defined. Default style assumed."));
           CALLOC(file->styles, 1, sizeof(ssa_style));
           memcpy(file->styles, &ssa_style_template, sizeof(ssa_style));
-          _strndup(&(file->styles->name), "Default", MAXLINE);
-          _strndup(&(file->styles->fontname), SSA_DEFAULT_FONT, MAXLINE);
+          STRNDUP(file->styles->name, "Default", MAXLINE);
+          STRNDUP(file->styles->fontname, SSA_DEFAULT_FONT, MAXLINE);
         }
 
       return true;
@@ -505,11 +505,11 @@ get_ssa_style(char * const line, ssa_style ** style,
           {
             case STYLE_NAME :
                 trim_spaces(token, LINE_START | LINE_END);
-                _strndup(&ptr->name, token, MAXLINE);
+                STRNDUP(ptr->name, token, MAXLINE);
               break;
             case STYLE_FONTNAME :
                 trim_spaces(token, LINE_START | LINE_END);
-                _strndup(&ptr->fontname, token, MAXLINE);
+                STRNDUP(ptr->fontname, token, MAXLINE);
               break;
             case STYLE_FONTSIZE : ptr->fontsize = atof(token);   break;
             case STYLE_BOLD     : ptr->bold = atoi(token);       break;
@@ -683,10 +683,10 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
                 subtime2double(&st, t);
               break;
             case EVENT_STYLE :
-              _strndup(&(event->style), buf, MAXLINE);
+              STRNDUP(event->style, buf, MAXLINE);
               break;
             case EVENT_NAME :
-              _strndup(&(event->name), buf, MAXLINE);
+              STRNDUP(event->name, buf, MAXLINE);
               break;
             case EVENT_MARGINL :
               event->margin_l = atoi(buf);
@@ -698,10 +698,10 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
               event->margin_v = atoi(buf);
               break;
             case EVENT_EFFECT :
-              _strndup(&(event->effect), buf, MAXLINE);
+              STRNDUP(event->effect, buf, MAXLINE);
               break;
             case EVENT_TEXT :
-              _strndup(&(event->text), buf, MAXLINE);
+              STRNDUP(event->text, buf, MAXLINE);
               break;
             default :
               break;
@@ -739,7 +739,7 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
           if ((p = strchr(line, ':')) != NULL)
           {
             for (p += 1; *p != '\0' && isspace(*p); p++);
-            _strndup(&(*h)->filename, p, MAXLINE);
+            STRNDUP((*h)->filename, p, MAXLINE);
           }
           TMPFILE((*h)->data);
           break;

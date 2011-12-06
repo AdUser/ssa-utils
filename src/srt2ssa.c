@@ -352,7 +352,7 @@ int main(int argc, char *argv[])
         else if (opts.o_wrap == merge)
           text_replace(buf, "\n", " ",   MAXLINE, 0);
 
-        _strndup(&((*dst)->text), buf, MAXLINE);
+        STRNDUP((*dst)->text, buf, MAXLINE);
 
         /* events list operations */
         dst = &((*dst)->next);
