@@ -34,7 +34,7 @@ struct unicode_test BOMs[6] =
 
 struct options opts =
 {
-  warn,       /* msglevel    */
+  log_warn,   /* msglevel    */
   false,      /* sort_events */
   false,      /* test        */
   false,      /* strict parse */
@@ -123,7 +123,7 @@ parse_time(char *token, double *d, bool exit)
     subtime t = { 0, 0, 0, 0 };
     bool negative = false;
     int8_t count = -1;
-    verbosity level = (exit == true) ? error : warn;
+    verbosity log_level = (exit == true) ? log_error : log_warn;
     int8_t scan  = 0;
     uint32_t len = 0;
 
@@ -160,7 +160,7 @@ parse_time(char *token, double *d, bool exit)
 
     if (scan != (count + 1))
       {
-        log_msg(level, MSG_W_WRONGTIMEF, token);
+        _log(log_level, MSG_W_WRONGTIMEF, token);
         return false;
       }
 
@@ -170,7 +170,7 @@ parse_time(char *token, double *d, bool exit)
         while (isdigit(*(p + len + 1))) len++;
         if (sscanf(p, ".%3u", &t.msec) != 1)
           {
-            log_msg(level, MSG_W_WRONGTIMEF, token);
+            _log(log_level, MSG_W_WRONGTIMEF, token);
             return false;
           }
           switch (len)
@@ -183,7 +183,7 @@ parse_time(char *token, double *d, bool exit)
 
     if (check_subtime(&t) == false)
     {
-      log_msg(level, MSG_W_WRONGTIMEF, token);
+      _log(log_level, MSG_W_WRONGTIMEF, token);
       return false;
     }
 
@@ -281,7 +281,7 @@ text_replace(char *haystack, char *needle, char *replace,
       count = -1; /* street magic. small negative value... wait, oh shi--! */
     if (len_n == 0)
       {
-        log_msg(warn, _("Search token is empty."));
+        _log(log_warn, _("Search token is empty."));
         return false;
       }
 
@@ -310,7 +310,7 @@ text_replace(char *haystack, char *needle, char *replace,
           {
             if (i > chars_remain)
               {
-                log_msg(warn, MSG_W_TXTNOTFITS, chars_remain, i, _("Replace incompleted."));
+                _log(log_warn, MSG_W_TXTNOTFITS, chars_remain, i, _("Replace incompleted."));
                 return false;
               }
             f = haystack + len_h;          /* [text needl text2\0...] */
@@ -388,7 +388,7 @@ append_string(char *to, char *from, char *sep,
 
     if (to_size < len_t)
       {
-        log_msg(warn, _("Incorrect parameters in append_string() call"));
+        _log(log_warn, _("Incorrect parameters in append_string() call"));
         return false;
       }
 
@@ -399,7 +399,7 @@ append_string(char *to, char *from, char *sep,
       }
     else
       {
-        log_msg(warn, MSG_W_TXTNOTFITS, to_size - len_t,
+        _log(log_warn, MSG_W_TXTNOTFITS, to_size - len_t,
                  len_f + len_s, _("Append failed."));
         return false;
       }
@@ -440,7 +440,7 @@ slist_add(struct slist **list, char *item)
     }
 
     if ((p->value = strdup(item)) == NULL)
-      log_msg(error, MSG_M_OOM);
+      _log(log_error, MSG_M_OOM);
 
     return true;
   }
@@ -474,7 +474,7 @@ stack_push(STACK_ELEM * const st, STACK_ELEM **top, STACK_ELEM val)
     if ((*top - st) < STACK_MAX)
       (*top)++, **top = val;
     else
-      log_msg(debug, _("Stack is full! Increase STACK_MAX and recompile."));
+      _log(log_debug, _("Stack is full! Increase STACK_MAX and recompile."));
   }
 
 void
@@ -483,7 +483,7 @@ stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
     if (*top > st)
       **top = '\0', (*top)--;
     else
-      log_msg(debug, "Try to pop on empty stack.");
+      _log(log_debug, "Try to pop on empty stack.");
   }
 
 /** various functions */
@@ -554,7 +554,7 @@ unicode_check(char *s, struct unicode_test *aux_tests)
         case UTF32BE :
         case UTF16LE :
         case UTF16BE :
-          log_msg(error, MSG_W_WRONGUNI, charset_type_tos(charset_type));
+          _log(log_error, MSG_W_WRONGUNI, charset_type_tos(charset_type));
           break;
         case UTF8    :
           memset(s, ' ', unicode_bom_len(UTF8));
@@ -646,42 +646,42 @@ Output options:\n\
   }
 
 void
-msglevel_change(verbosity *level, char sign)
+msglevel_change(verbosity *log_level, char sign)
   {
 #ifdef DEBUG
-    if (sign == '+' && *level < raw)   (*level)++;
+    if (sign == '+' && *log_level < log_rawread) (*log_level)++;
 #else
-    if (sign == '+' && *level < info)   (*level)++;
+    if (sign == '+' && *log_level < log_info)    (*log_level)++;
 #endif
-    if (sign == '-' && *level > quiet) (*level)--;
+    if (sign == '-' && *log_level > log_quiet)   (*log_level)--;
   }
 
 void
-log_msg(uint8_t level, const char *format, ...)
+_log(uint8_t log_level, const char *format, ...)
   {
     char p;
     char *f = "%c: %s%s\n";
     char *m = _(" Exiting...");
     bool quit = false;
-    char buf[MAXLINE];
+    char buf[MAXLINE] = "";
     va_list ap;
 
-    if (level < warn && level > quiet) quit = true;
+    if (log_level < log_warn && log_level > log_quiet) quit = true;
 
-    switch (level)
+    switch (log_level)
       {
-        case error : p = 'E'; break;
-        case warn  : p = 'W'; break;
-        case info  : p = 'I'; break;
-        case debug : p = 'D'; break;
-        case raw   : p = 'R'; break;
-        case quiet :
-        default    :
+        case log_error   : p = 'E'; break;
+        case log_warn    : p = 'W'; break;
+        case log_info    : p = 'I'; break;
+        case log_debug   : p = 'D'; break;
+        case log_rawread : p = 'R'; break;
+        case log_quiet   :
+        default          :
           p = 'U';
           break;
       }
 
-    if (opts.msglevel >= level)
+    if (opts.msglevel >= log_level)
       {
         va_start(ap, format);
         vsnprintf(buf, MAXLINE, format, ap);
@@ -698,23 +698,23 @@ common_checks(struct options * const opts)
     if (!opts) return false;
 
     if (opts->infile  == NULL)
-      log_msg(error, MSG_F_IFMISSING);
+      _log(log_error, MSG_F_IFMISSING);
 
     if (opts->outfile == NULL)
       {
-        log_msg(warn, MSG_F_OFMISSING);
+        _log(log_warn, MSG_F_OFMISSING);
         opts->outfile = stdout;
       }
 
     if (opts->i_test == true)
       {
-        if (opts->msglevel < warn)
-          opts->msglevel = warn;
-        log_msg(info, MSG_W_TESTONLY);
+        if (opts->msglevel < log_warn)
+          opts->msglevel = log_warn;
+        _log(log_info, MSG_W_TESTONLY);
       }
 
     if (opts->i_sort == true)
-      log_msg(info, MSG_I_EVSORTED);
+      _log(log_info, MSG_I_EVSORTED);
 
     return true;
   }
@@ -731,7 +731,7 @@ set_wrap(enum wrapping_mode *o_wrap, char *mode)
       *o_wrap = keep; /* default */
 
     if (*o_wrap != keep)
-      log_msg(info, _("Wrapping mode set to '%s'"), mode);
+      _log(log_info, _("Wrapping mode set to '%s'"), mode);
 
     return true;
   }
@@ -775,10 +775,10 @@ parse_color(char const * const s)
         else if (strcmp(s, "blue")   == 0) color = BLUE;
         else if (strcmp(s, "yellow") == 0) color = YELLOW;
         else if (strcmp(s, "white")  == 0) color = WHITE;
-        else log_msg(warn, MSG_W_UNKNCOLOR, s);
+        else _log(log_warn, MSG_W_UNKNCOLOR, s);
       }
     else
-      log_msg(warn, MSG_W_HOWTOCOLOR, s);
+      _log(log_warn, MSG_W_HOWTOCOLOR, s);
 
     return color;
   }
@@ -802,7 +802,7 @@ add_tag_param(struct tag * const tag, char type, char *value)
 
     if (i == TAG_DATA_MAX)
       {
-        log_msg(warn, _("Too many parameters in tag or too long values"));
+        _log(log_warn, _("Too many parameters in tag or too long values"));
         return false;
       }
     /* 'p' now should points to '0x04' (EOT) */
@@ -814,7 +814,7 @@ add_tag_param(struct tag * const tag, char type, char *value)
       }
 
     /* if check above fails: */
-    log_msg(warn, MSG_W_TAGOVERBUF, _("parameter"));
+    _log(log_warn, MSG_W_TAGOVERBUF, _("parameter"));
 
     return false;
   }
@@ -926,7 +926,7 @@ parse_html_tag(char const * const s, struct tag * const tag)
             case '\0':
               /* if we meet this - it means, that tag was unclosed, *
                * so, consiger that all chars before - text          */
-              log_msg(warn, MSG_W_TAGUNCL, tag->data, s);
+              _log(log_warn, MSG_W_TAGUNCL, tag->data, s);
               return -(w - s);
               break;
             case '>' :

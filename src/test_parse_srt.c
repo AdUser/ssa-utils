@@ -28,13 +28,13 @@ int main(int argc, char *argv[])
     srt_file file;
 
     memset(&file, 0, sizeof(srt_file));
-    opts.msglevel = info;
+    opts.msglevel = log_info;
 
     if (argc < 1)
       exit(EXIT_FAILURE);
 
     if ((opts.infile = fopen(argv[1], "r")) == NULL)
-       log_msg(error, MSG_F_ORDFAIL, argv[1]);
+       _log(log_error, MSG_F_ORDFAIL, argv[1]);
 
     if (parse_srt_file(infile, &file) == false)
       exit(EXIT_FAILURE);

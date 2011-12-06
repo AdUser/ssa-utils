@@ -83,11 +83,11 @@ dump_pts_list(struct time_pt *list)
     uint8_t i = 1;
     struct time_pt *l = NULL;
 
-    log_msg(debug, "Points:");
-    log_msg(debug, "  # |    time    | shift");
+    _log(log_debug, "Points:");
+    _log(log_debug, "  # |    time    | shift");
 
     for (l = list; l != NULL; l = l->next, i++)
-      log_msg(debug, "% 3u | % 10.3f : % 8.3f", i, l->pos, l->shift);
+      _log(log_debug, "% 3u | % 10.3f : % 8.3f", i, l->pos, l->shift);
 
   }
 
@@ -107,12 +107,12 @@ add_point(struct time_pt **list, char * const s)
 
     /* parse time and shift */
     if ((p = strstr(s, "::")) == NULL)
-      log_msg(error, _("Incorrect option arg: %s"), s);
+      _log(log_error, _("Incorrect option arg: %s"), s);
 
     i = _strtok(s, "::");
 
     if (i >= TIME_MAXLEN)
-      log_msg(error, MSG_W_TXTNOTFITS, "");
+      _log(log_error, MSG_W_TXTNOTFITS, "");
 
     strncpy(buf, s, i);
     buf[TIME_MAXLEN] = '\0'; /* as strncpy can not copy trailing '\0' */
@@ -159,7 +159,7 @@ validate_pts_list(struct time_pt **list, double max_time)
     struct time_pt *l = NULL;
 
     if (*list == NULL)
-      log_msg(error, _("At least one point must be specified."));
+      _log(log_error, _("At least one point must be specified."));
 
     /* add zero-time point as start of time */
     add_point(list, "0::0");
@@ -172,7 +172,7 @@ validate_pts_list(struct time_pt **list, double max_time)
         CALLOC(l->next, 1, sizeof(struct time_pt));
         l->next->pos = max_time;
         l->next->shift = 0.0;
-        log_msg(info, _("Auto added new point at pos %.3fs"), max_time);
+        _log(log_info, _("Auto added new point at pos %.3fs"), max_time);
       }
 
     return true;
@@ -185,7 +185,7 @@ adjust_timing(double * const d, double shift)
     *d += shift;
     if (*d < 0.0)
       {
-        log_msg(warn, MSG_W_TMLESSZERO, t, shift);
+        _log(log_warn, MSG_W_TMLESSZERO, t, shift);
         *d = 0.0;
       }
   }
@@ -267,12 +267,12 @@ int main(int argc, char *argv[])
             break;
           case 'i':
             if ((opts.infile = fopen(optarg, "r")) == NULL)
-              log_msg(error, MSG_F_ORDFAIL, optarg);
+              _log(log_error, MSG_F_ORDFAIL, optarg);
             break;
           case 'o':
             if ((opts.outfile = fopen(optarg, "w")) == NULL)
               {
-                log_msg(warn, MSG_F_OWRFAILSO, optarg);
+                _log(log_warn, MSG_F_OWRFAILSO, optarg);
                 opts.outfile = stdout;
               }
             break;
@@ -318,32 +318,32 @@ int main(int argc, char *argv[])
   /* init */
   init_ssa_file(&file);
   if (!parse_ssa_file(opts.infile, &file))
-    log_msg(error, MSG_U_UNKNOWN);
+    _log(log_error, MSG_U_UNKNOWN);
 
   fclose(opts.infile);
 
   if ((e = file.events) == NULL)
-    log_msg(error, _("There is no events in this file, nothing to do."));
+    _log(log_error, _("There is no events in this file, nothing to do."));
 
   /* set some variables and check options */
   if (mode != points)
     {
       if (shift_start < 0.0)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Period start"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Period start"));
       if (shift_end   < 0.0)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Period end"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Period end"));
       if (shift_end != 0.0 && shift_end < shift_start)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Period duration"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Period duration"));
       if (shift_lenght < 0.0)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Shift offset"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Shift offset"));
       if (shift_end != 0.0 && shift_lenght != 0.0)
-        log_msg(error, MSG_O_NOTTOGETHER, "-l", "-e");
+        _log(log_error, MSG_O_NOTTOGETHER, "-l", "-e");
     }
 
   if (mode == shift)
     {
       if (time_shift == 0.0)
-        log_msg(error, MSG_O_OREQUIRED, "-t");
+        _log(log_error, MSG_O_OREQUIRED, "-t");
 
       if (shift_lenght != 0.0)
         shift_end = shift_start + shift_lenght;
@@ -355,17 +355,17 @@ int main(int argc, char *argv[])
       if (src_fps == 0.0)
         {
           m = _("No option '-f' given. Assuming source framerate = %2.2f");
-          log_msg(warn, m, DEFAULT_FPS);
+          _log(log_warn, m, DEFAULT_FPS);
           src_fps = DEFAULT_FPS;
         }
       if (dst_fps == 0.0)
-        log_msg(error, MSG_O_OREQUIRED, "-F");
+        _log(log_error, MSG_O_OREQUIRED, "-F");
       if (src_fps < 0.0)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Source framerate"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Source framerate"));
       if (dst_fps < 0.0)
-        log_msg(error, MSG_O_NOTNEGATIVE, _("Target framerate"));
+        _log(log_error, MSG_O_NOTNEGATIVE, _("Target framerate"));
       if (src_fps == dst_fps && src_fps != 0.0)
-        log_msg(error, _("Framerates are equal. Nothing to do."));
+        _log(log_error, _("Framerates are equal. Nothing to do."));
 
       /* work */
       multiplier = (double) src_fps / (double) dst_fps;

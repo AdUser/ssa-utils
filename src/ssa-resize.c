@@ -95,27 +95,27 @@ int main(int argc, char *argv[])
         {
         case 'i':
           if ((opts.infile = fopen(optarg, "r")) == NULL)
-            log_msg(error, MSG_F_ORDFAIL, optarg);
+            _log(log_error, MSG_F_ORDFAIL, optarg);
           break;
         case 'o':
           if ((opts.outfile = fopen(optarg, "w")) == NULL)
             {
-              log_msg(warn, MSG_F_OWRFAILSO, optarg);
+              _log(log_warn, MSG_F_OWRFAILSO, optarg);
               opts.outfile = stdout;
             }
           break;
         case 'f':
           if (sscanf(optarg, "%u%*c%u", &src.width, &src.height) != 2)
-            log_msg(error, _("'-f': wrong resolution."));
+            _log(log_error, _("'-f': wrong resolution."));
           break;
         case 't':
           if (sscanf(optarg, "%u%*c%u",
                 &file.res.width, &file.res.height) != 2)
-            log_msg(error, _("'-t': wrong resolution."));
+            _log(log_error, _("'-t': wrong resolution."));
           break;
         case 'p':
           if ((i = sscanf(optarg, "%u%*c%u", &pct_w, &pct_h)) == 0)
-            log_msg(error, MSG_O_OVREQUIRED, "-p");
+            _log(log_error, MSG_O_OVREQUIRED, "-p");
           if (i == 1) /* pct_w also acts as pct_h, if specified only 1 value */
             pct_h = pct_w;
           break;
@@ -132,16 +132,16 @@ int main(int argc, char *argv[])
   if (mode == percents)
     {
       if (pct_w == 0)
-        log_msg(error, MSG_O_OREQUIRED, "-p");
+        _log(log_error, MSG_O_OREQUIRED, "-p");
       else if (pct_w > MAX_PCT || pct_h > MAX_PCT)
-        log_msg(error, MSG_O_OOR, "-p");
+        _log(log_error, MSG_O_OOR, "-p");
     }
   else if (mode == resolution)
     {
       if (src.width == 0)
-        log_msg(error, MSG_O_OREQUIRED, "-f");
+        _log(log_error, MSG_O_OREQUIRED, "-f");
       if (file.res.width == 0)
-        log_msg(error, MSG_O_OREQUIRED, "-t");
+        _log(log_error, MSG_O_OREQUIRED, "-t");
     }
 
   /* init */

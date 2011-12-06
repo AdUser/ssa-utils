@@ -54,7 +54,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
           charset_type = unicode_check(line, uc_t_microsub);
 
         trim_newline(line);
-        log_msg(raw, "%s", line);
+        _log(log_rawread, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 
         CALLOC(event, 1, sizeof(microsub_event));
@@ -62,14 +62,14 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         if (strncmp(line, "{1}{1}", 6) == 0)
           {
             file->framerate = atof(line + 6);
-            log_msg(info, _("Detected framerate: %f"), file->framerate);
+            _log(log_info, _("Detected framerate: %f"), file->framerate);
             free(event);
             continue;
           }
 
         if (sscanf(line, "{%u}{%u}", &event->start, &event->end) != 2)
           {
-            log_msg(warn, _("Can't detect timing in event at line %u. Event will be skipped."), line_num);
+            _log(log_warn, _("Can't detect timing in event at line %u. Event will be skipped."), line_num);
             free(event);
             continue;
           }
@@ -81,7 +81,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
               {         /*            ^- '*p'      */
                 while ((p = strchr(line, '|')) != NULL) *p = '\n';
                 if ((event->text = strndup(line, MAXLINE)) == NULL)
-                  log_msg(error, MSG_M_OOM);
+                  _log(log_error, MSG_M_OOM);
                 break;
               }
           }

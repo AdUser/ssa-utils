@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
 
     if ((opts.infile = fopen(argv[1], "r")) == NULL)
-       log_msg(error, MSG_F_ORDFAIL, argv[1]);
+       _log(log_error, MSG_F_ORDFAIL, argv[1]);
 
     if (parse_ssa_file(opts.infile, &file) == false)
       exit(EXIT_FAILURE);

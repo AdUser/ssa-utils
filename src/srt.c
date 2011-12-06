@@ -57,7 +57,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
         curr_line = unknown;
 
         trim_newline(line);
-        log_msg(raw, "%s", line);
+        _log(log_rawread, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
         s_len = strlen(line);
 
@@ -72,14 +72,14 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
         if (feof(infile) && s_len != 0)
           {
-            log_msg(warn, MSG_F_UNEXPEOF, line_num);
+            _log(log_warn, MSG_F_UNEXPEOF, line_num);
             if (prev_line == text)
               append_string(text_buf, line, "\n", MAXLINE, 0);
             else
               strncpy(text_buf, line, MAXLINE);
           }
 
-        log_msg(debug, "Line type: %i", curr_line);
+        _log(log_debug, "Line type: %i", curr_line);
 
         if (curr_line == id || (curr_line == timing && prev_line == blank))
           {
@@ -88,20 +88,20 @@ parse_srt_file(FILE *infile, srt_file * const file)
 
             if (curr_line != id)
               {
-                log_msg(warn, _("Missing subtitle id at line '%u'."), line_num);
+                _log(log_warn, _("Missing subtitle id at line '%u'."), line_num);
                 event->id = ++parsed;
               }
           }
 
         if (prev_line == timing && curr_line == blank)
           {
-            log_msg(warn, _("Empty subtitle text at line %u. Event will be skipped."), line_num);
+            _log(log_warn, _("Empty subtitle text at line %u. Event will be skipped."), line_num);
             skip_event = true;
           }
 
         if (prev_line == id && curr_line == blank)
           {
-            log_msg(warn, _("Lonely subtitle id without timing or text. :-("));
+            _log(log_warn, _("Lonely subtitle id without timing or text. :-("));
             skip_event = true;
           }
 
@@ -118,7 +118,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
               skip_event = !parse_srt_timing(event, line, &file->flags);
               if (event->start > event->end)
                 {
-                  log_msg(warn, _("Negative duration of event at line '%u'. Event will be skipped."), line_num);
+                  _log(log_warn, _("Negative duration of event at line '%u'. Event will be skipped."), line_num);
                   skip_event = true;
                 }
               /*printf("%f --> %f\n", event->start, event->end);*/
@@ -134,7 +134,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
               if (!skip_event && prev_line != blank)
                 {
                   if ((event->text = strndup(text_buf, MAXLINE)) == NULL)
-                    log_msg(error, MSG_M_OOM);
+                    _log(log_error, MSG_M_OOM);
                   srt_event_append(&file->events, &elist_tail, event, opts.i_sort);
                   memset(text_buf, 0, MAXLINE);
                 }
@@ -194,7 +194,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 
     if (!get_srt_timing(&e->start, token))
       {
-        log_msg(warn, w_token, "start", token, line_num);
+        _log(log_warn, w_token, "start", token, line_num);
         return false;
       }
 
@@ -207,7 +207,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 
     if (!get_srt_timing(&e->end, token))
       {
-        log_msg(warn, w_token, "end", token, line_num);
+        _log(log_warn, w_token, "end", token, line_num);
         return false;
       }
 
@@ -236,7 +236,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
         {
           delim = ",";
           /* TODO: make it "implemented" */
-          log_msg(error, MSG_W_UNIMPL);
+          _log(log_error, MSG_W_UNIMPL);
         }
     }
 

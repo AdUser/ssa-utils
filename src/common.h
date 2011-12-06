@@ -42,16 +42,16 @@
 #define _(x) gettext((x))
 #define CALLOC(ptr, nmemb, size) \
   if (((ptr) = calloc((nmemb), (size))) == NULL) \
-    log_msg(error, MSG_M_OOM, __FILE__, __LINE__)
+    _log(log_error, MSG_M_OOM, __FILE__, __LINE__)
     /* yes, i know about assert() */
 
 #define TMPFILE(ptr) \
   if (((ptr) = tmpfile()) == NULL) \
-    log_msg(error, MSG_F_CTMPFAIL, strerror(errno))
+    _log(log_error, MSG_F_CTMPFAIL, strerror(errno))
 
 #define STRNDUP(ptr, str, len) \
   if (((ptr) = strndup((str), (len))) == NULL) \
-    log_msg(error, MSG_M_OOM, __FILE__, __LINE__)
+    _log(log_error, MSG_M_OOM, __FILE__, __LINE__)
 
 #define SEC_MAX     85399 /* 23h:59m:59s */
 #define SEC_IN_HOUR  3600
@@ -144,12 +144,12 @@ struct tag
 /* enum's */
 typedef enum verbosity
 {
-  quiet,
-  error,
-  warn,
-  info,
-  debug,
-  raw
+  log_quiet,
+  log_error,
+  log_warn,
+  log_info,
+  log_debug,
+  log_rawread
 } verbosity;
 
 enum chs_type
@@ -241,7 +241,7 @@ void stack_pop (STACK_ELEM * const, STACK_ELEM **);
 /* various functions */
 int _strtok(char *, char *);
 void msglevel_change(verbosity *, char);
-void log_msg(uint8_t, const char *, ...);
+void _log(uint8_t, const char *, ...);
 bool common_checks(struct options * const);
 bool set_wrap(enum wrapping_mode *, char *);
 bool font_size_normalize(struct res const * const, float * const);

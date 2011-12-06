@@ -86,12 +86,12 @@ int main(int argc, char *argv[])
             break;
           case 'i':
             if ((opts.infile = fopen(optarg, "r")) == NULL)
-              log_msg(error, MSG_F_ORDFAIL, optarg);
+              _log(log_error, MSG_F_ORDFAIL, optarg);
             break;
           case 'o':
             if ((opts.outfile = fopen(optarg, "w")) == NULL)
               {
-                log_msg(warn, MSG_F_OWRFAILSO, optarg);
+                _log(log_warn, MSG_F_OWRFAILSO, optarg);
                 opts.outfile = stdout;
               }
             break;
@@ -112,12 +112,12 @@ int main(int argc, char *argv[])
   /* init */
   init_ssa_file(&file);
   if (!parse_ssa_file(opts.infile, &file))
-    log_msg(error, MSG_U_UNKNOWN);
+    _log(log_error, MSG_U_UNKNOWN);
 
   fclose(opts.infile);
 
   if (file.fonts == NULL && file.images == NULL)
-    log_msg(error, _("There is embedded files in this file, nothing to do."));
+    _log(log_error, _("There is embedded files in this file, nothing to do."));
 
     switch (mode)
     {

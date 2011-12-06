@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             break;
           case 'i':
             if ((opts.infile = fopen(optarg, "r")) == NULL)
-              log_msg(error, MSG_F_ORDFAIL, optarg);
+              _log(log_error, MSG_F_ORDFAIL, optarg);
             break;
 
           case 'h':
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
   /* init */
   init_ssa_file(&file);
   if (!parse_ssa_file(opts.infile, &file))
-    log_msg(error, MSG_U_UNKNOWN);
+    _log(log_error, MSG_U_UNKNOWN);
 
   fclose(opts.infile);
 

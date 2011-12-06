@@ -91,7 +91,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                     case SRT_T_UNDERLINE :
                       if (file->type == ssa_v4)
                         {
-                          log_msg(warn, MSG_W_NOTALLOWED, "Tag", ttag.data);
+                          _log(log_warn, MSG_W_NOTALLOWED, "Tag", ttag.data);
                           break;
                         }
                     /* break; */
@@ -103,7 +103,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                                     MAXLINE);
                       break;
                     default  :
-                      log_msg(warn, MSG_W_UNRECTAG, ttag.data, string);
+                      _log(log_warn, MSG_W_UNRECTAG, ttag.data, string);
                       break;
                 } /* switch (chr) */
               }
@@ -123,7 +123,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                 else
                 if ((value = get_tag_param_by_name(&ttag, "name")) != NULL)
                   {
-                    log_msg(warn, MSG_W_TAGNOTFACE);
+                    _log(log_warn, MSG_W_TAGNOTFACE);
                     append_string(tags_buf, value, "\\fn", MAXLINE, 0);
                     font_params &= SRT_T_FONT_FACE;
                   }
@@ -175,7 +175,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
               {
                 /* as we don't know, how to handle this tag, *
                  * skip stack operations below               */
-                log_msg(warn, MSG_W_UNRECTAG, ttag.data, string);
+                _log(log_warn, MSG_W_UNRECTAG, ttag.data, string);
                 ttag.type = none; /* skip stack operations */
                 len =  -len; /* to handle as text in block below */
               }
@@ -185,17 +185,17 @@ srt_tags_to_ssa(char *string, ssa_file *file)
               {
                 case opening :
                   if (*top == chr)
-                    log_msg(warn, MSG_W_TAGTWICE, ttag.data, string);
+                    _log(log_warn, MSG_W_TAGTWICE, ttag.data, string);
                   stack_push(stack, &top, chr);
                   break;
                 case closing :
                   if (*top == chr)
                     stack_pop(stack, &top);
-                  else log_msg(warn, MSG_W_TAGUNCL, ttag.data, string);
+                  else _log(log_warn, MSG_W_TAGUNCL, ttag.data, string);
                   /* note: stack remains unchanged in second case! */
                   break;
                 case standalone :
-                  log_msg(info, MSG_W_TAGXMLSRT);
+                  _log(log_info, MSG_W_TAGXMLSRT);
                   /* break; */
                 case none :
                 default :
@@ -215,7 +215,7 @@ srt_tags_to_ssa(char *string, ssa_file *file)
 
     /* check stack for wrong opened / closed / deranged tags */
     if (top != stack)
-      log_msg(warn, MSG_W_TAGPROBLEM, string);
+      _log(log_warn, MSG_W_TAGPROBLEM, string);
 
     /* append remaining tags to resulting string *
      * (usually it is closing tags)              *
@@ -264,17 +264,17 @@ int main(int argc, char *argv[])
               break;
             case 'i' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
-                log_msg(error, MSG_F_ORDFAIL, optarg);
+                _log(log_error, MSG_F_ORDFAIL, optarg);
               break;
             case 'o' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
-                  log_msg(warn, MSG_F_OWRFAILSO, optarg);
+                  _log(log_warn, MSG_F_OWRFAILSO, optarg);
                   opts.outfile = stdout;
                 }
               break;
             case 'e' :
-              log_msg(info, _("Strict mode. No mercy for malformed lines or uncommon extensions!"));
+              _log(log_info, _("Strict mode. No mercy for malformed lines or uncommon extensions!"));
               source.flags |= SRT_E_STRICT;
               break;
             case 'S' :
@@ -308,17 +308,17 @@ int main(int argc, char *argv[])
     common_checks(&opts);
 
     if (target.type == ssa_unknown)
-      log_msg(error, MSG_O_OREQUIRED, "-f");
+      _log(log_error, MSG_O_OREQUIRED, "-f");
 
     if (opts.o_fsize_tune && !target.res.width && !target.res.height)
-      log_msg(error, _("'-F' option requires '-x' and/or '-y'."));
+      _log(log_error, _("'-F' option requires '-x' and/or '-y'."));
 
     if (!parse_srt_file(opts.infile, &source))
-      log_msg(error, MSG_U_UNKNOWN);
+      _log(log_error, MSG_U_UNKNOWN);
 
     if (opts.i_test)
       {
-        log_msg(warn, MSG_W_TESTDONE);
+        _log(log_warn, MSG_W_TESTDONE);
         exit(EXIT_SUCCESS);
       }
 

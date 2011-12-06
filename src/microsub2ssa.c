@@ -76,12 +76,12 @@ int main(int argc, char *argv[])
               break;
             case 'i' :
               if ((opts.infile = fopen(optarg, "r")) == NULL)
-                log_msg(error, MSG_F_ORDFAIL, optarg);
+                _log(log_error, MSG_F_ORDFAIL, optarg);
               break;
             case 'o' :
               if ((opts.outfile = fopen(optarg, "w")) == NULL)
                 {
-                  log_msg(warn, MSG_F_OWRFAILSO, optarg);
+                  _log(log_warn, MSG_F_OWRFAILSO, optarg);
                   opts.outfile = stdout;
                 }
               break;
@@ -116,17 +116,17 @@ int main(int argc, char *argv[])
     common_checks(&opts);
 
     if (target.type == ssa_unknown)
-      log_msg(error, MSG_O_OREQUIRED, "-f");
+      _log(log_error, MSG_O_OREQUIRED, "-f");
 
     if (opts.o_fsize_tune && !target.res.width && !target.res.height)
-      log_msg(error, _("'-F' option requires '-x' and/or '-y'."));
+      _log(log_error, _("'-F' option requires '-x' and/or '-y'."));
 
     if (!parse_microsub_file(opts.infile, &source))
-      log_msg(error, MSG_U_UNKNOWN);
+      _log(log_error, MSG_U_UNKNOWN);
 
     if (opts.i_test)
       {
-        log_msg(warn, MSG_W_TESTDONE);
+        _log(log_warn, MSG_W_TESTDONE);
         exit(EXIT_SUCCESS);
       }
 
