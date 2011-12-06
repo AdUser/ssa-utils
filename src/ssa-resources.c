@@ -51,8 +51,6 @@ Specific options for 'export' mode:\n\
   exit(exit_code);
 }
 
-enum { unset, info, import, export } mode;
-
 extern struct options opts;
 
 uint32_t line_num = 0;
@@ -62,6 +60,7 @@ int main(int argc, char *argv[])
   char opt;
   char *out_dir = "./";
   ssa_file file;
+  enum { unset, info, import, export } mode;
 
   mode = unset;
 
