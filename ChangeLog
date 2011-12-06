@@ -1,3 +1,31 @@
+version 0.06
+  new:
+    + added support for embedded fonts and graphics
+    + added events selector by style in ssa-retime
+    + added options to skip embedded data
+    + added check for of time format in parse_time()
+    + added wrapper around tmpfile()
+  changes:
+    * refactored parameters checks in ssa-retime
+    * changed struct time_pt
+    * changed ssa_file struct
+    * write_ssa_file() now can write only non-empty file sections
+    * make _strndup macros instead of function
+    * rewrited ssa_section_switch()
+    * rewrited events list walking loop
+    * small code refactoring
+  removed:
+    - removed deprecated definitions
+    - removed text fields length limitation in ssa_style
+    - removed text fields length limitation in ssa_event
+    - removed deprecated ssa_txt_param
+  bugfixes:
+    = fixed compiler warnings
+    = fixed dump_pts_list() in ssa-retime.c
+    = fixed indentation
+    = bugfix: install path
+    = bugfix: incorrectly set flags in srt_file
+
 version 0.05
   new:
     + added _strndup() - wrapper around std strndup()
