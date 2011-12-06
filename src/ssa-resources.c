@@ -58,7 +58,7 @@ uint32_t line_num = 0;
 int main(int argc, char *argv[])
 {
   char opt;
-  char *out_dir = "./";
+  char *out_dir = NULL;
   ssa_file file;
   enum { unset, info, import, export } mode;
 
@@ -106,7 +106,19 @@ int main(int argc, char *argv[])
     }
 
   /* args checks */
+  if (opts.outfile == NULL)
+    opts.outfile = stdout; /* hack to supress message in common_checks() */
+
   common_checks(&opts);
+
+  if (mode != import && opts.outfile != stdout)
+    _log(log_warn, _("Option '-o' usefull only in 'import' mode. Ignoring."));
+
+  if (out_dir == NULL && mode == export)
+    {
+      _log(log_warn, _("Output directory not set, will use current."));
+      out_dir = "./";
+    }
 
   /* init */
   init_ssa_file(&file);
