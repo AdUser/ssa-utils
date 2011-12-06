@@ -1064,10 +1064,7 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
 
         rewind(h->data);
         while ((read = fread(buf, sizeof(uint8_t), MAXLINE, h->data)) > 0)
-          if (read == MAXLINE * sizeof(uint8_t))
-            fwrite(buf, sizeof(uint8_t), sizeof(uint8_t) * MAXLINE, outfile);
-          else
-            fwrite(buf, sizeof(uint8_t), sizeof(uint8_t) * read,    outfile);
+          fwrite(buf, sizeof(uint8_t), read, outfile);
 
         if (errno)
           log_msg(error, "%s", strerror(errno));
