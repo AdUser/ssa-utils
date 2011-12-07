@@ -51,6 +51,26 @@ Specific options for 'export' mode:\n\
   exit(exit_code);
 }
 
+bool
+show_info(ssa_media const * const list, char *section)
+  {
+    ssa_media const * h;
+    uint16_t num = 1;
+    size_t file_size = 0;
+
+    fprintf(stdout, "%s:\n", section);
+    fprintf(stdout, "  # | File size | Name\n");
+    for (h = list; h != NULL; h = h->next)
+      {
+        fseek(h->data, 0, SEEK_END);
+        file_size = (ftell(h->data) / 4) * 3;
+        fprintf(stdout, "%3i | %9i | %s\n", num++, file_size, h->filename);
+        rewind(h->data);
+      }
+
+    return true;
+  }
+
 extern struct options opts;
 
 uint32_t line_num = 0;
@@ -133,6 +153,10 @@ int main(int argc, char *argv[])
     switch (mode)
     {
       case info :
+        if (file.fonts != NULL)
+          show_info(file.fonts, "Fonts");
+        if (file.images != NULL)
+          show_info(file.fonts, "Images");
         break;
       case export :
         break;
