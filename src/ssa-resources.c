@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
   fclose(opts.infile);
 
   if (file.fonts == NULL && file.images == NULL)
-    _log(log_error, _("There is embedded files in this file, nothing to do."));
+    _log(log_error, _("There is no embedded files in this file, nothing to do."));
 
     switch (mode)
     {
