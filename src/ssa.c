@@ -717,6 +717,7 @@ bool
 get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t const len)
   {
     char *p = NULL;
+    char buf[82]; /* 80 + \n + \0 */
 
     if (list == NULL || h == NULL || line == NULL)
       return false;
@@ -744,8 +745,10 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t c
           TMPFILE((*h)->data);
           break;
         case MEDIA_UUE_LINE :
-          fputs(line, (*h)->data);
-          fputs("\n", (*h)->data);
+          memcpy(buf, line, 81 * sizeof(char));
+          buf[80] = '\n';
+          buf[81] = '\0';
+          fwrite(buf, 81, 1, (*h)->data);
           break;
         case MEDIA_UUE_TAIL :
           fputs(line, (*h)->data);
