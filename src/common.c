@@ -240,6 +240,7 @@ bool trim_spaces(char *line, int dirs)
   {
     /** dirs: 1 - start, 2 - end, 3 - both */
     char *f, *t;
+    size_t l = 0;
 
     if (!line) return false;
 
@@ -251,9 +252,11 @@ bool trim_spaces(char *line, int dirs)
 
     if (dirs & LINE_END)
     {
-      for (t = line; *t != '\0';) t++;             /* [text...\0.\0] */
-      for (t--; t > line && isblank(*t); t--);     /*     |<-- ^t    */
-      *(++t) = '\0';                               /* [text\0.\0.\0] */
+      l = strlen(line);
+      t = line;
+      t += (l > 0) ? (l - 1) : 0 ;          /* [text...\0.\0] */
+      for (; t > line && isblank(*t); t--); /*     |<-- ^t    */
+      *(t + 1) = '\0';                      /* [text\0.\0.\0] */
     }
 
     return true;
