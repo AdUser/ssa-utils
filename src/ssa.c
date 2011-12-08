@@ -149,7 +149,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
     bool get_styles = true; /* skip or not styles? */
     bool get_fonts  = true; /* ... embedded fonts? */
     bool get_graph  = true; /* ... embedded graphics? */
-    char line[MAXLINE] = "";
+    char line[MAXLINE];
     ssa_event *e = NULL;
     ssa_event **elist_tail  = &file->events;
     ssa_media *f = NULL; /* fonts list handler */
@@ -1129,7 +1129,7 @@ ssa_version_tos(ssa_version version)
 bool
 ssa_section_switch(enum ssa_section *section, char const * const line)
   {
-    char buf[MAXLINE] = "";
+    char buf[MAXLINE];
 
     if (!section || !line)
       return false;
