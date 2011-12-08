@@ -182,11 +182,11 @@ parse_ssa_file(FILE *infile, ssa_file *file)
             case HEADER :
               if (line[0] == ';')
                 continue;
-              _log(log_debug, MSG_W_CURRSECTION, line_num, _("header"));
+              _log(log_debug, MSG_W_CURRSECTION, line_num, "[Script Info]");
               get_ssa_param(line, file);
               break;
             case STYLES :
-              _log(log_debug, MSG_W_CURRSECTION, line_num, _("styles"));
+              _log(log_debug, MSG_W_CURRSECTION, line_num, "[Styles]");
               if      (*line == 'F' || *line == 'f')
                 get_styles = set_style_fields_order(line,
                     file->type, file->style_fields_order);
@@ -194,7 +194,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                 get_ssa_style(line, &file->styles, file->style_fields_order);
               break;
             case EVENTS :
-              _log(log_debug, MSG_W_CURRSECTION, line_num, _("events"));
+              _log(log_debug, MSG_W_CURRSECTION, line_num, "[Events]");
               if      (*line == 'F' || *line == 'f')
                 set_event_fields_order(line,
                     file->type, file->event_fields_order);
@@ -224,13 +224,13 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                 }
               break;
             case FONTS :
-              _log(log_debug, MSG_W_CURRSECTION, line_num, _("fonts"));
+              _log(log_debug, MSG_W_CURRSECTION, line_num, "[Fonts]");
               if (get_fonts == false)
                 continue;
               get_ssa_media(&file->fonts, &f, line);
               break;
             case GRAPHICS :
-              _log(log_debug, MSG_W_CURRSECTION, line_num, _("graphics"));
+              _log(log_debug, MSG_W_CURRSECTION, line_num, "[Graphics]");
               if (get_graph == false)
                 continue;
               get_ssa_media(&file->images, &g, line);
