@@ -241,8 +241,8 @@ bool detect_event_fields_order(char * const, int8_t *);
 bool get_ssa_event (char * const, ssa_event * const, int8_t *);
 
 /** media section */
-int8_t detect_media_line_type(char const * const);
-bool get_ssa_media(ssa_media **, ssa_media **, char const * const);
+int8_t detect_media_line_type(char const * const, size_t);
+bool get_ssa_media(ssa_media **, ssa_media **, char const * const, const size_t);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);

@@ -227,13 +227,13 @@ parse_ssa_file(FILE *infile, ssa_file *file)
               _log(log_debug, MSG_W_CURRSECTION, line_num, "[Fonts]");
               if (get_fonts == false)
                 continue;
-              get_ssa_media(&file->fonts, &f, line);
+              get_ssa_media(&file->fonts, &f, line, len);
               break;
             case GRAPHICS :
               _log(log_debug, MSG_W_CURRSECTION, line_num, "[Graphics]");
               if (get_graph == false)
                 continue;
-              get_ssa_media(&file->images, &g, line);
+              get_ssa_media(&file->images, &g, line, len);
               break;
             case UNKNOWN :
               _log(log_debug, MSG_W_CURRSECTION, line_num, _("unknown"));
@@ -714,14 +714,14 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
   }
 
 bool
-get_ssa_media(ssa_media **list, ssa_media **h, char const * const line)
+get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t const len)
   {
     char *p = NULL;
 
     if (list == NULL || h == NULL || line == NULL)
       return false;
 
-    switch (detect_media_line_type(line))
+    switch (detect_media_line_type(line, len))
       {
         case MEDIA_HEADER :
           if ((*h) != NULL) {
@@ -1194,11 +1194,8 @@ find_ssa_style_by_name(ssa_file *f, char *name)
   }
 
 int8_t
-detect_media_line_type(char const * const line)
+detect_media_line_type(char const * const line, size_t len)
   {
-    ssize_t len = 0;
-
-    len = strlen(line);
     if (len == 80)
       return MEDIA_UUE_LINE;
 
