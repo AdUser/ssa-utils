@@ -243,30 +243,32 @@ trim_newline(char *line, size_t len)
     return l; /* new string length */
 }
 
-bool trim_spaces(char *line, int dirs)
+size_t
+trim_spaces(char *line, int dirs, size_t len)
   {
     /** dirs: 1 - start, 2 - end, 3 - both */
     char *f, *t;
-    size_t l = 0;
+    size_t l = len;
 
-    if (!line) return false;
+    if (l == 0)
+      l = strlen(line);
 
     if (dirs & LINE_START)
       {
         for (t = f = line; isblank(*f); f++);      /* [...text...\0] */
         if (t != f) while ((*t++ = *f++) != '\0'); /* t^ f^ -->   |  */
+        l -= f - t;
       }
 
     if (dirs & LINE_END)
     {
-      l = strlen(line);
       t = line;
-      t += (l > 0) ? (l - 1) : 0 ;          /* [text...\0.\0] */
-      for (; t > line && isblank(*t); t--); /*     |<-- ^t    */
-      *(t + 1) = '\0';                      /* [text\0.\0.\0] */
+      t += (l > 0) ? (l - 1) : 0 ;               /* [text...\0.\0] */
+      for (; t > line && isblank(*t); t--, l--); /*     |<-- ^t    */
+      *(t + 1) = '\0';                           /* [text\0.\0.\0] */
     }
 
-    return true;
+    return l;
   }
 
 /* remember, that 'count = 0' means ALL entries found in string will be replaced */
@@ -571,7 +573,7 @@ unicode_check(char *s, struct unicode_test *aux_tests)
           break;
         case UTF8    :
           memset(s, ' ', unicode_bom_len(UTF8));
-          trim_spaces(s, LINE_START);
+          trim_spaces(s, LINE_START, 0);
         case SINGLE  :
         default      :
           /* allowed */

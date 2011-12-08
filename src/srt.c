@@ -58,8 +58,7 @@ parse_srt_file(FILE *infile, srt_file * const file)
         s_len = strlen(line);
         s_len = trim_newline(line, s_len);
         _log(log_rawread, "%s", line);
-        trim_spaces(line, LINE_START | LINE_END);
-        s_len = strlen(line);
+        s_len = trim_spaces(line, LINE_START | LINE_END, s_len);
 
         if      (s_len == 0)          curr_line = blank;
         else if (strstr(line, "-->")) curr_line = timing;
@@ -192,7 +191,7 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
 
     strncpy(token, p, i);
     token[i] = '\0';
-    trim_spaces(token, LINE_START | LINE_END);
+    trim_spaces(token, LINE_END, 0);
 
     if (!get_srt_timing(&e->start, token))
       {
@@ -219,19 +218,19 @@ parse_srt_timing(srt_event *e, char *s, const uint8_t *flags)
       if      (*flags & SRT_E_HAVE_POSITION)
         {
           delim = " ";
-          trim_spaces(p, LINE_START);
+          trim_spaces(p, LINE_START, 0);
           string_lowercase(p, 0);
           for (i = 0; (i = _strtok(p, delim)) > 0;)
             {
               strncpy(token, p, i);
               token[i] = '\0';
-              trim_spaces(token, LINE_END);
+              trim_spaces(token, LINE_END, 0);
               v = strchr(token, ':'), v += 1;
               xy = (*(token + 1) == '1') ? &e->top_left : &e->bottom_right;
               j = (*token == 'x') ? &xy->x : &xy->y ;
              *j = atoi(v);
               p += i;
-              trim_spaces(p, LINE_START);
+              trim_spaces(p, LINE_START, 0);
             }
         }
       else if (*flags & SRT_E_HAVE_STYLE)
@@ -252,7 +251,7 @@ get_srt_timing(double *d, char *token)
 
     /* saves, if some idiot made timing with ''negative'' values */
     string_skip_chars(token, "-");
-    trim_spaces(token, LINE_START | LINE_END);
+    trim_spaces(token, LINE_START | LINE_END, 0);
 
     if (str2subtime(token, &st))
       {

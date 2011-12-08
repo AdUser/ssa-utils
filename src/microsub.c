@@ -54,7 +54,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         len = strlen(line);
         len = trim_newline(line, len);
         _log(log_rawread, "%s", line);
-        trim_spaces(line, LINE_START | LINE_END);
+        len = trim_spaces(line, LINE_START | LINE_END, len);
 
         CALLOC(event, 1, sizeof(microsub_event));
 

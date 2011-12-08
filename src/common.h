@@ -209,7 +209,7 @@ bool check_subtime(subtime const * const);
 uint16_t char_count(char * const, char);
 bool is_empty_line(char *);
 size_t trim_newline(char *, size_t);
-bool trim_spaces(char *, int);
+size_t trim_spaces(char *, int, size_t);
 bool text_replace(char *, char *, char *, unsigned int, unsigned int);
 bool strip_text(char *, char, char);
 bool string_lowercase(char * const, unsigned int);

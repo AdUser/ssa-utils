@@ -168,8 +168,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         len = strlen(line);
         len = trim_newline(line, len);
         _log(log_rawread, "%s", line);
-        trim_spaces(line, LINE_START | LINE_END);
-        len = strlen(line);
+        len = trim_spaces(line, LINE_START | LINE_END, len);
 
         if (len == 0)
           continue;
@@ -505,11 +504,11 @@ get_ssa_style(char * const line, ssa_style ** style,
         switch (*field)
           {
             case STYLE_NAME :
-                trim_spaces(token, LINE_START | LINE_END);
+                trim_spaces(token, LINE_START | LINE_END, 0);
                 STRNDUP(ptr->name, token, MAXLINE);
               break;
             case STYLE_FONTNAME :
-                trim_spaces(token, LINE_START | LINE_END);
+                trim_spaces(token, LINE_START | LINE_END, 0);
                 STRNDUP(ptr->fontname, token, MAXLINE);
               break;
             case STYLE_FONTSIZE : ptr->fontsize = atof(token);   break;
