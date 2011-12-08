@@ -165,7 +165,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         if (line_num == 1)
           opts.i_chs_type = unicode_check(line, uc_t_ssa);
 
-        trim_newline(line);
+        len = strlen(line);
+        len = trim_newline(line, len);
         _log(log_rawread, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
         len = strlen(line);

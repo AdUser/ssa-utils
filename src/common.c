@@ -226,14 +226,21 @@ check_subtime(subtime const * const time)
             time->sec > 59 || time->msec > 999) ? false : true ;
   }
 
-void trim_newline(char *line)
+/** optional parameter len - strlen() calculated before */
+size_t
+trim_newline(char *line, size_t len)
 {
     char *p = line;
-    size_t l = strlen(line);
+    size_t l = len;
+
+    if (len == 0)
+      l = strlen(line);
 
     p += (l > 0) ? l - 1 : 0;
-    while (*p == '\r' || *p == '\n') p--;
+    while (*p == '\r' || *p == '\n') p--, l--;
     *(p + 1) = '\0';
+
+    return l; /* new string length */
 }
 
 bool trim_spaces(char *line, int dirs)

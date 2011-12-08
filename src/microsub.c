@@ -37,6 +37,7 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
     char line[MAXLINE];
     char *p = line;
     uint8_t i = 0;
+    size_t len = 0;
     microsub_event *event;
     microsub_event **elist_tail = &file->events;
 
@@ -50,7 +51,8 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
         if (line_num == 1)
           charset_type = unicode_check(line, uc_t_microsub);
 
-        trim_newline(line);
+        len = strlen(line);
+        len = trim_newline(line, len);
         _log(log_rawread, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
 

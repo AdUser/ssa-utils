@@ -55,7 +55,8 @@ parse_srt_file(FILE *infile, srt_file * const file)
         prev_line = curr_line;
         curr_line = unknown;
 
-        trim_newline(line);
+        s_len = strlen(line);
+        s_len = trim_newline(line, s_len);
         _log(log_rawread, "%s", line);
         trim_spaces(line, LINE_START | LINE_END);
         s_len = strlen(line);
