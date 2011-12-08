@@ -660,10 +660,9 @@ void
 _log(uint8_t log_level, const char *format, ...)
   {
     char p;
-    char *f = "%c: %s%s\n";
-    char *m = _(" Exiting...");
+    char *f = "%c: %s\n";
     bool quit = false;
-    char buf[MAXLINE] = "";
+    static char buf[MAXLINE];
     va_list ap;
 
     if (log_level < log_warn && log_level > log_quiet) quit = true;
@@ -686,10 +685,14 @@ _log(uint8_t log_level, const char *format, ...)
         va_start(ap, format);
         vsnprintf(buf, MAXLINE, format, ap);
         va_end(ap);
-        fprintf(stderr, f, p, buf, (quit) ? m : "");
+        fprintf(stderr, f, p, buf);
       }
 
-    if (quit) exit(EXIT_FAILURE);
+    if (quit)
+      {
+        fprintf(stderr, "%s\n", _("Exiting..."));
+        exit(EXIT_FAILURE);
+      }
   }
 
 bool
