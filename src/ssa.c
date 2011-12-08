@@ -214,7 +214,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                           e->type = COMMAND;
                         break;
                       default  :
-                        _log(log_warn, _("W: Unknown event type at line '%lu': %s"), line_num, line);
+                        _log(log_warn, _("Unknown event type at line '%lu': %s"), line_num, line);
                         continue; /* main loop */
                         break;
                     }
