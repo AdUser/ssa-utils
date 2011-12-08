@@ -229,8 +229,11 @@ check_subtime(subtime const * const time)
 void trim_newline(char *line)
 {
     char *p = line;
-    while (*p != '\0' && *p != '\r' && *p != '\n') p++;
-    *p = '\0';
+    size_t l = strlen(line);
+
+    p += (l > 0) ? l - 1 : 0;
+    while (*p == '\r' || *p == '\n') p--;
+    *(p + 1) = '\0';
 }
 
 bool trim_spaces(char *line, int dirs)
