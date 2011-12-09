@@ -1084,6 +1084,41 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
     return true;
   }
 
+bool
+export_ssa_media(ssa_media *list, char *path)
+  {
+    ssa_media *h;
+    char filename[MAXLINE];
+    char *buf[UUE_BUF_SIZE];
+    FILE *f = NULL;
+
+    for (h = list; h != NULL; h = h->next)
+      {
+        snprintf(filename, MAXLINE, "%s/%s", path, h->filename);
+        filename[MAXLINE] = '\0';
+        if ((f = fopen(filename, "w"))== NULL)
+          {
+            _log(log_warn, MSG_F_OWRFAIL, filename);
+            continue;
+          }
+
+        while (fread(buf, sizeof(char), UUE_BUF_SIZE, h->data) > 0)
+          {
+            /* TODO: stub: uue_decode_buffer(buf, UUE_BUF_SIZE); */
+            if (!fwrite(buf, sizeof(char), UUE_BUF_SIZE / 4 * 3, f) && errno)
+              {
+                _log(log_warn, MSG_F_WRFAIL);
+                remove(filename);
+                break;
+              }
+          }
+
+        fclose(f);
+      }
+
+    return true;
+  }
+
 /* other */
 
 uint32_t
