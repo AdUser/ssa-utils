@@ -35,6 +35,7 @@
 #define _COMMON_H
 
 #define MAXLINE 3072 * sizeof(char)
+#define UUE_BUF_SIZE (256 * 4)
 #define COMMON_PROG_NAME "ssa-utils"
 #define VERSION 0.06
 
