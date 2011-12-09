@@ -44,6 +44,7 @@ Specific options for 'import' mode:\n\
 
   fprintf(stderr, _("\
 Specific options for 'export' mode:\n\
+  -A                Extract all found resources.\n\
   -F                Extract fonts.\n\
   -G                Extract images.\n\
   -O <dir>          Output directory for extracted files. (default: current dir)\n"));
