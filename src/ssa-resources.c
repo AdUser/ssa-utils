@@ -82,6 +82,11 @@ int main(int argc, char *argv[])
   char *out_dir = NULL;
   ssa_file file;
   enum { unset, info, import, export } mode;
+  struct {
+    bool all       : 1;
+    bool fonts     : 1;
+    bool images    : 1;
+  } extract = { false, false, false };
 
   mode = unset;
 
@@ -96,7 +101,7 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "qvhi:o:" "O:")) != -1)
+  while ((opt = getopt(argc, argv, "qvhi:o:" "AFGO:")) != -1)
     {
       switch(opt)
         {
@@ -114,6 +119,16 @@ int main(int argc, char *argv[])
                 _log(log_warn, MSG_F_OWRFAILSO, optarg);
                 opts.outfile = stdout;
               }
+            break;
+
+          case 'A':
+            extract.all    = true;
+            break;
+          case 'F':
+            extract.fonts  = true;
+            break;
+          case 'G':
+            extract.images = true;
             break;
           case 'O':
             STRNDUP(out_dir, optarg, MAXLINE);
@@ -135,12 +150,6 @@ int main(int argc, char *argv[])
   if (mode != import && opts.outfile != stdout)
     _log(log_warn, _("Option '-o' usefull only in 'import' mode. Ignoring."));
 
-  if (out_dir == NULL && mode == export)
-    {
-      _log(log_warn, _("Output directory not set, will use current."));
-      out_dir = "./";
-    }
-
   /* init */
   init_ssa_file(&file);
   if (!parse_ssa_file(opts.infile, &file))
@@ -148,8 +157,43 @@ int main(int argc, char *argv[])
 
   fclose(opts.infile);
 
-  if (file.fonts == NULL && file.images == NULL)
-    _log(log_error, _("There is no embedded files in this file, nothing to do."));
+  if (mode == export)
+    {
+      if (out_dir == NULL)
+        {
+          _log(log_warn, _("Output directory not set, will use current."));
+          out_dir = "./";
+        }
+
+      if (extract.all    == false && \
+          extract.fonts  == false && \
+          extract.images == false)
+        {
+          _log(log_info, _("No resource type(s) given. Will try to extract all found embedded files."));
+          extract.all = true;
+        }
+
+      if (file.fonts == NULL && file.images == NULL)
+          _log(log_error, _("Input file doesn't contain any embedded files. Nothing to do."));
+
+      if (extract.fonts == true && file.fonts == NULL)
+        {
+          _log(log_warn, _("Input file doesn't contain any fonts. Ignoring '-F'."));
+          extract.fonts   = false;
+        }
+
+      if (extract.images == true && file.images == NULL)
+        {
+          _log(log_warn, _("Input file doesn't contain any images. Ignoring '-G'."));
+          extract.images  = false;
+        }
+
+      if (extract.all == true)
+        {
+          extract.fonts   = (file.fonts   == NULL) ? false : true;
+          extract.images  = (file.images  == NULL) ? false : true;
+        }
+    }
 
     switch (mode)
     {
