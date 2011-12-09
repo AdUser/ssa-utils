@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    switch (mode)
+  switch (mode)
     {
       case info :
         if (file.fonts != NULL)
@@ -204,6 +204,10 @@ int main(int argc, char *argv[])
           show_info(file.fonts, "Images");
         break;
       case export :
+        if (extract.fonts  == true)
+          export_ssa_media(file.fonts,  out_dir);
+        if (extract.images == true)
+          export_ssa_media(file.images, out_dir);
         break;
       case import :
         write_ssa_file(opts.outfile, &file, true);
