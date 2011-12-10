@@ -501,6 +501,56 @@ stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
       _log(log_debug, "Try to pop on empty stack.");
   }
 
+/** uuencode functions */
+
+/*
+ * buf can have length from 1 to 20 4-bytes uue-chunks
+ * if you want more - change out_buf accordingly
+ */
+size_t
+uue_decode_buffer(char *buf, size_t len)
+  {
+    uint32_t t;
+    uint8_t num_buf = len / 4;
+    uint8_t tail = len % 4;
+    uint8_t i;
+    char *s, *d;
+    char out_buf[61];
+
+    if (buf == NULL || len > 80)
+      return 0;
+
+    if (tail != 0)
+      {
+        /* fill incomplete buffer up to 4 bytes with uuencoded '\0' */
+        for (i = 0; tail++ < 4; i++)
+          buf[len + i] = '!';
+        num_buf += 1;
+      }
+
+    for (i = 0, s = buf, d = out_buf; i < num_buf; i++)
+      {
+        t = 0;
+        t |= (*s++ - 33) << 18;
+        t |= (*s++ - 33) << 12;
+        t |= (*s++ - 33) <<  6;
+        t |= (*s++ - 33) <<  0;
+        /* now 's' points to begin of next uue chunk (+4 bytes) */
+        *d++ = (0xFF & (t >> 16));
+        *d++ = (0xFF & (t >>  8));
+        *d++ = (0xFF & (t >>  0));
+        /* the same for output buffer (+3 bytes total) */
+      }
+    out_buf[num_buf * 3] = '\0';
+    memcpy(buf, out_buf, sizeof(char) * (num_buf * 3 + 1));
+
+    if (len == 80)
+      return num_buf * 3;
+
+    /* without this, out file always will be padded by extra '\0' */
+    return (num_buf * 3) - (((t & 0xFFFF) == 0x0) ? 2 : 1);
+  }
+
 /** various functions */
 /* why i use non-standart function:
  * 1. strtok can't correctly handle empty field
