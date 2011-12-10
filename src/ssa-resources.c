@@ -65,6 +65,7 @@ show_info(ssa_media const * const list, char *section)
       {
         fseek(h->data, 0, SEEK_END);
         file_size = (ftell(h->data) / 4) * 3;
+        file_size -= file_size / 81 + 1; /* every 81th byte is '\n' */
         fprintf(stdout, "%3i | %9i | %s\n", num++, file_size, h->filename);
         rewind(h->data);
       }
