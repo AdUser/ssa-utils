@@ -1089,7 +1089,8 @@ export_ssa_media(ssa_media *list, char *path)
   {
     ssa_media *h;
     char filename[MAXLINE];
-    char *buf[UUE_BUF_SIZE];
+    char buf[82];
+    size_t len;
     FILE *f = NULL;
 
     for (h = list; h != NULL; h = h->next)
@@ -1102,10 +1103,12 @@ export_ssa_media(ssa_media *list, char *path)
             continue;
           }
 
-        while (fread(buf, sizeof(char), UUE_BUF_SIZE, h->data) > 0)
+        rewind(h->data);
+        while ((len = fread(buf, sizeof(char), (4 * 20) + 1, h->data)) > 0)
           {
-            /* TODO: stub: uue_decode_buffer(buf, UUE_BUF_SIZE); */
-            if (!fwrite(buf, sizeof(char), UUE_BUF_SIZE / 4 * 3, f) && errno)
+            len -= 1; /* discard '\n' */
+            len = uue_decode_buffer(buf, len);
+            if (fwrite(buf, sizeof(char), len, f) != len && errno)
               {
                 _log(log_warn, MSG_F_WRFAIL);
                 remove(filename);
