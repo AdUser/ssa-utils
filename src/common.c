@@ -551,6 +551,46 @@ uue_decode_buffer(char *buf, size_t len)
     return (num_buf * 3) - (((t & 0xFFFF) == 0x0) ? 2 : 1);
   }
 
+size_t
+uue_encode_buffer(char *buf, size_t len)
+  {
+    uint32_t t;
+    uint8_t num_buf = len / 3;
+    uint8_t tail = len % 3;
+    uint8_t i;
+    char *s, *d;
+    char out_buf[81];
+
+    if (buf == NULL || len > 60)
+      return 0;
+
+    if (tail != 0)
+      {
+        /* fill incomplete buffer up to 4 bytes with uuencoded '\0' */
+        for (i = 0; tail++ < 3; i++)
+          buf[len + i] = '\0';
+        num_buf += 1;
+      }
+
+    for (i = 0, s = buf, d = out_buf; i < num_buf; i++)
+      {
+        t = 0;
+        t |= *s++ << 16;
+        t |= *s++ <<  8;
+        t |= *s++ <<  0;
+        /* now 's' points to begin of next uue chunk (+3 bytes) */
+        *d++ = (0x3F & (t >> 18)) + 33;
+        *d++ = (0x3F & (t >> 12)) + 33;
+        *d++ = (0x3F & (t >>  6)) + 33;
+        *d++ = (0x3F & (t >>  0)) + 33;
+        /* the same for output buffer (+4 bytes total) */
+      }
+    out_buf[num_buf * 4] = '\0';
+    memcpy(buf, out_buf, sizeof(char) * (num_buf * 4 + 1));
+
+    return num_buf * 4;
+  }
+
 /** various functions */
 /* why i use non-standart function:
  * 1. strtok can't correctly handle empty field

@@ -240,6 +240,7 @@ void stack_pop (STACK_ELEM * const, STACK_ELEM **);
 
 /** uuencode functions */
 size_t uue_decode_buffer(char *, size_t);
+size_t uue_encode_buffer(char *, size_t);
 
 /* various functions */
 int _strtok(char *, char *);
