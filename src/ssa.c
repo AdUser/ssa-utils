@@ -1123,15 +1123,14 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
   }
 
 bool
-import_ssa_uue_data(ssa_uue_data **list, char *path)
+import_ssa_uue_data(ssa_uue_data *h, char *path)
   {
-    ssa_uue_data *h;
     char buf[82];
     size_t len;
     char *p = NULL;
     FILE *f = NULL;
 
-    if (list == NULL || path == NULL)
+    if (h == NULL || path == NULL)
       return false;
 
     if ((f = fopen(path, "r")) == NULL)
@@ -1141,18 +1140,6 @@ import_ssa_uue_data(ssa_uue_data **list, char *path)
       }
 
     /* TODO: mime type check here */
-
-    if (*list == NULL)
-      {
-        CALLOC(h, 1, sizeof(ssa_uue_data));
-        *list = h;
-      }
-    else
-      {
-        for (h = *list; h->next != NULL; h = h->next);
-        CALLOC(h->next, 1, sizeof(ssa_uue_data));
-        h = h->next;
-      }
 
     TMPFILE(h->data);
 
@@ -1166,7 +1153,6 @@ import_ssa_uue_data(ssa_uue_data **list, char *path)
         if (fwrite(buf, sizeof(char), len + 1, h->data) != len && errno)
           {
             _log(log_warn, MSG_F_WRFAIL);
-            free(h);
             return false;
           }
       }

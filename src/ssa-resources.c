@@ -73,6 +73,31 @@ show_info(ssa_uue_data const * const list, char *section)
     return true;
   }
 
+bool
+import_filelist(ssa_uue_data **uue_data_list, struct slist *filelist,
+                ssa_uue_data_type type)
+  {
+    ssa_uue_data **h = NULL;
+    struct slist *sl = NULL;
+
+    if (uue_data_list == NULL || filelist == NULL)
+      return false;
+
+    for (sl = filelist, h = uue_data_list; sl != NULL; sl = sl->next)
+      {
+        CALLOC(*h, 1, sizeof(ssa_uue_data));
+        if (import_ssa_uue_data(*h, sl->value) == false)
+          {
+            free(*h);
+            continue;
+          }
+        (*h)->type = type;
+        h = &(*h)->next;
+      }
+
+    return true;
+  }
+
 extern struct options opts;
 
 uint32_t line_num = 0;
@@ -90,7 +115,6 @@ int main(int argc, char *argv[])
   } extract = { false, false, false };
   struct slist *import_fonts = NULL;
   struct slist *import_images = NULL;
-  struct slist *sl;
 
   mode = unset;
 
@@ -222,12 +246,10 @@ int main(int argc, char *argv[])
         break;
       case import :
         if (import_fonts != NULL)
-          for (sl = import_fonts; sl != NULL; sl = sl->next)
-            import_ssa_uue_data(&file.fonts, sl->value);
+          import_filelist(&file.fonts,  import_fonts,  TYPE_FONT);
 
         if (import_images != NULL)
-          for (sl = import_images; sl != NULL; sl = sl->next)
-            import_ssa_uue_data(&file.images, sl->value);
+          import_filelist(&file.images, import_images, TYPE_IMAGE);
 
         write_ssa_file(opts.outfile, &file, true);
         fclose(opts.outfile);
