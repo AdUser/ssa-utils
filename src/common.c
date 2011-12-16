@@ -566,8 +566,8 @@ uue_encode_buffer(uint8_t *buf, size_t len)
 
     if (tail != 0)
       {
-        /* fill incomplete buffer up to 4 bytes with uuencoded '\0' */
-        for (i = 0; tail++ < 3; i++)
+        /* fill incomplete buffer up to 3 bytes with '\0' */
+        for (i = 0; i < (3 - tail); i++)
           buf[len + i] = '\0';
         num_buf += 1;
       }
@@ -588,7 +588,7 @@ uue_encode_buffer(uint8_t *buf, size_t len)
     out_buf[num_buf * 4] = '\0';
     memcpy(buf, out_buf, sizeof(uint8_t) * (num_buf * 4 + 1));
 
-    return num_buf * 4;
+    return (num_buf * 4) - ((tail == 0) ? 0 : (3 - tail));
   }
 
 /** various functions */
