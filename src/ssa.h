@@ -165,15 +165,17 @@ typedef enum ssa_section
     GRAPHICS
   } ssa_section;
 
+typedef enum ssa_uue_data_type
+  {
+    TYPE_UNKN  = 0,
+    TYPE_FONT  = 1,
+    TYPE_IMAGE = 2
+  } ssa_uue_data_type;
+
 typedef struct ssa_uue_data
   {
     struct ssa_uue_data *next;
-    enum
-    {
-      type_unknown,
-      type_font,
-      type_image
-    } type;
+    ssa_uue_data_type type;
     char *filename; /* "Original filename before embedding" */
     FILE *data;
   } ssa_uue_data;

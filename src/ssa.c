@@ -729,9 +729,9 @@ get_ssa_uue_data(ssa_uue_data **list, ssa_uue_data **h, char const * const line,
               *list = *h;
             }
           if (strncmp(line, "fontname", 8) == 0)
-            (*h)->type = type_font;
+            (*h)->type = TYPE_FONT;
           if (strncmp(line, "filename", 8) == 0)
-            (*h)->type = type_image;
+            (*h)->type = TYPE_IMAGE;
           if ((p = strchr(line, ':')) != NULL)
           {
             for (p += 1; *p != '\0' && isspace(*p); p++);
@@ -1052,12 +1052,12 @@ write_ssa_uue_data(FILE * outfile, ssa_uue_data * const list, bool memfree)
       return false;
 
     h = list;
-    data_type = (h->type == type_font) ? "Fonts" : "Graphics";
+    data_type = (h->type == TYPE_FONT) ? "Fonts" : "Graphics";
     fprintf(outfile, "[%s]\n", data_type);
 
     while (h != NULL)
       {
-        data_type = (h->type == type_font) ? "fontname" : "filename";
+        data_type = (h->type == TYPE_FONT) ? "fontname" : "filename";
         fprintf(outfile, "%s: %s\n", data_type, h->filename);
 
         rewind(h->data);
