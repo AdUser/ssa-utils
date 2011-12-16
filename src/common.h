@@ -239,8 +239,8 @@ void stack_push(STACK_ELEM * const, STACK_ELEM **, STACK_ELEM);
 void stack_pop (STACK_ELEM * const, STACK_ELEM **);
 
 /** uuencode functions */
-size_t uue_decode_buffer(char *, size_t);
-size_t uue_encode_buffer(char *, size_t);
+size_t uue_decode_buffer(uint8_t *, size_t);
+size_t uue_encode_buffer(uint8_t *, size_t);
 
 /* various functions */
 int _strtok(char *, char *);

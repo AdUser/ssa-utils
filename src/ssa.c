@@ -1089,7 +1089,7 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
   {
     ssa_uue_data *h;
     char filename[MAXLINE];
-    char buf[82];
+    uint8_t buf[82];
     size_t len;
     FILE *f = NULL;
 
@@ -1104,11 +1104,11 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
           }
 
         rewind(h->data);
-        while ((len = fread(buf, sizeof(char), (4 * 20) + 1, h->data)) > 0)
+        while ((len = fread(buf, sizeof(uint8_t), (4 * 20) + 1, h->data)) > 0)
           {
             len -= 1; /* discard '\n' */
             len = uue_decode_buffer(buf, len);
-            if (fwrite(buf, sizeof(char), len, f) != len && errno)
+            if (fwrite(buf, sizeof(uint8_t), len, f) != len && errno)
               {
                 _log(log_warn, MSG_F_WRFAIL);
                 remove(filename);
@@ -1125,7 +1125,7 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
 bool
 import_ssa_uue_data(ssa_uue_data *h, char *path)
   {
-    char buf[82];
+    uint8_t buf[82];
     size_t len;
     char *p = NULL;
     FILE *f = NULL;

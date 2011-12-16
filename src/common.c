@@ -508,14 +508,14 @@ stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
  * if you want more - change out_buf accordingly
  */
 size_t
-uue_decode_buffer(char *buf, size_t len)
+uue_decode_buffer(uint8_t *buf, size_t len)
   {
     uint32_t t;
     uint8_t num_buf = len / 4;
     uint8_t tail = len % 4;
     uint8_t i;
-    char *s, *d;
-    char out_buf[61];
+    uint8_t *s, *d;
+    uint8_t out_buf[61];
 
     if (buf == NULL || len > 80)
       return 0;
@@ -542,7 +542,7 @@ uue_decode_buffer(char *buf, size_t len)
         /* the same for output buffer (+3 bytes total) */
       }
     out_buf[num_buf * 3] = '\0';
-    memcpy(buf, out_buf, sizeof(char) * (num_buf * 3 + 1));
+    memcpy(buf, out_buf, sizeof(uint8_t) * (num_buf * 3 + 1));
 
     if (len == 80)
       return num_buf * 3;
@@ -552,14 +552,14 @@ uue_decode_buffer(char *buf, size_t len)
   }
 
 size_t
-uue_encode_buffer(char *buf, size_t len)
+uue_encode_buffer(uint8_t *buf, size_t len)
   {
     uint32_t t;
     uint8_t num_buf = len / 3;
     uint8_t tail = len % 3;
     uint8_t i;
-    char *s, *d;
-    char out_buf[81];
+    uint8_t *s, *d;
+    uint8_t out_buf[81];
 
     if (buf == NULL || len > 60)
       return 0;
@@ -586,7 +586,7 @@ uue_encode_buffer(char *buf, size_t len)
         /* the same for output buffer (+4 bytes total) */
       }
     out_buf[num_buf * 4] = '\0';
-    memcpy(buf, out_buf, sizeof(char) * (num_buf * 4 + 1));
+    memcpy(buf, out_buf, sizeof(uint8_t) * (num_buf * 4 + 1));
 
     return num_buf * 4;
   }
