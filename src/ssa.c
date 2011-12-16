@@ -1122,6 +1122,60 @@ export_ssa_media(ssa_media *list, char *path)
     return true;
   }
 
+bool
+import_ssa_media(ssa_media **list, char *path)
+  {
+    ssa_media *h;
+    char buf[82];
+    size_t len;
+    char *p = NULL;
+    FILE *f = NULL;
+
+    if (list == NULL || path == NULL)
+      return false;
+
+    if ((f = fopen(path, "r")) == NULL)
+      {
+        _log(log_warn, MSG_F_ORDFAIL, path);
+        return false;
+      }
+
+    /* TODO: mime type check here */
+
+    if (*list == NULL)
+      {
+        CALLOC(h, 1, sizeof(ssa_media));
+        *list = h;
+      }
+    else
+      {
+        for (h = *list; h->next != NULL; h = h->next);
+        CALLOC(h->next, 1, sizeof(ssa_media));
+        h = h->next;
+      }
+
+    TMPFILE(h->data);
+
+    p = ((p = strrchr(path, '/')) != NULL) ? (p + 1) : path;
+    STRNDUP(h->filename, p, MAXLINE);
+
+    while ((len = fread(buf, sizeof(char), 3 * 20, f)) > 0)
+      {
+        len = uue_encode_buffer(buf, len);
+        buf[len] = '\n';
+        if (fwrite(buf, sizeof(char), len + 1, h->data) != len && errno)
+          {
+            _log(log_warn, MSG_F_WRFAIL);
+            free(h);
+            return false;
+          }
+      }
+
+    fclose(f);
+
+    return true;
+  }
+
 /* other */
 
 uint32_t

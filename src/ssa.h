@@ -260,6 +260,7 @@ bool write_ssa_media (FILE *, ssa_media  * const, bool);
 
 /** converter functions */
 bool export_ssa_media(ssa_media *, char *);
+bool import_ssa_media(ssa_media **, char *);
 
 /** other */
 uint32_t ssa_color(char * const);
