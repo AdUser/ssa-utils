@@ -77,8 +77,8 @@ ssa_file ssa_file_template =
     /** structures */
     (ssa_style *) 0, /* styles list */
     (ssa_event *) 0, /* events list */
-    (ssa_media *) 0, /* fonts list  */
-    (ssa_media *) 0  /* images list */
+    (ssa_uue_data *) 0, /* fonts list  */
+    (ssa_uue_data *) 0  /* images list */
   };
 
 ssa_style ssa_style_template =
@@ -152,8 +152,8 @@ parse_ssa_file(FILE *infile, ssa_file *file)
     char line[MAXLINE];
     ssa_event *e = NULL;
     ssa_event **elist_tail  = &file->events;
-    ssa_media *f = NULL; /* fonts list handler */
-    ssa_media *g = NULL; /* graphics list handler */
+    ssa_uue_data *f = NULL; /* fonts list handler */
+    ssa_uue_data *g = NULL; /* graphics list handler */
 
     ssa_section section = NONE;
 
@@ -223,12 +223,12 @@ parse_ssa_file(FILE *infile, ssa_file *file)
             case FONTS :
               if (get_fonts == false)
                 continue;
-              get_ssa_media(&file->fonts, &f, line, len);
+              get_ssa_uue_data(&file->fonts, &f, line, len);
               break;
             case GRAPHICS :
               if (get_graph == false)
                 continue;
-              get_ssa_media(&file->images, &g, line, len);
+              get_ssa_uue_data(&file->images, &g, line, len);
               break;
             case UNKNOWN :
               _log(log_debug, MSG_W_CURRSECTION, line_num, _("unknown"));
@@ -709,7 +709,7 @@ get_ssa_event(char * const line, ssa_event * const event, int8_t *fieldlist)
   }
 
 bool
-get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t const len)
+get_ssa_uue_data(ssa_uue_data **list, ssa_uue_data **h, char const * const line, size_t const len)
   {
     char *p = NULL;
     char buf[82]; /* 80 + \n + \0 */
@@ -717,15 +717,15 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t c
     if (list == NULL || h == NULL || line == NULL)
       return false;
 
-    switch (detect_media_line_type(line, len))
+    switch (detect_uue_data_line_type(line, len))
       {
-        case MEDIA_HEADER :
+        case UUE_DATA_HDR :
           if ((*h) != NULL) {
               fflush((*h)->data);
-              CALLOC((*h)->next, 1, sizeof(ssa_media));
+              CALLOC((*h)->next, 1, sizeof(ssa_uue_data));
               *h = (*h)->next;
             } else {
-              CALLOC((*h), 1, sizeof(ssa_media));
+              CALLOC((*h), 1, sizeof(ssa_uue_data));
               *list = *h;
             }
           if (strncmp(line, "fontname", 8) == 0)
@@ -739,13 +739,13 @@ get_ssa_media(ssa_media **list, ssa_media **h, char const * const line, size_t c
           }
           TMPFILE((*h)->data);
           break;
-        case MEDIA_UUE_LINE :
+        case UUE_DATA_LINE :
           memcpy(buf, line, 81 * sizeof(char));
           buf[80] = '\n';
           buf[81] = '\0';
           fwrite(buf, 81, 1, (*h)->data);
           break;
-        case MEDIA_UUE_TAIL :
+        case UUE_DATA_TAIL :
           fputs(line, (*h)->data);
           fputs("\n", (*h)->data);
           fflush((*h)->data);
@@ -777,10 +777,10 @@ write_ssa_file(FILE *outfile, ssa_file *f, bool memfree)
       result &= write_ssa_events(outfile, f->events, f->type, memfree);
 
     if (f->fonts)
-      result &= write_ssa_media(outfile, f->fonts, memfree);
+      result &= write_ssa_uue_data(outfile, f->fonts, memfree);
 
     if (f->images)
-      result &= write_ssa_media(outfile, f->images, memfree);
+      result &= write_ssa_uue_data(outfile, f->images, memfree);
 
     return result;
   }
@@ -1040,11 +1040,11 @@ write_ssa_event(FILE *outfile, ssa_event * const event, ssa_version v)
   }
 
 bool
-write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
+write_ssa_uue_data(FILE * outfile, ssa_uue_data * const list, bool memfree)
   {
-    ssa_media *h = NULL;
-    ssa_media *t = NULL;
-    char *media_type = NULL;
+    ssa_uue_data *h = NULL;
+    ssa_uue_data *t = NULL;
+    char *data_type = NULL;
     size_t read = 0;
     uint8_t buf[MAXLINE];
 
@@ -1052,13 +1052,13 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
       return false;
 
     h = list;
-    media_type = (h->type == type_font) ? "Fonts" : "Graphics";
-    fprintf(outfile, "[%s]\n", media_type);
+    data_type = (h->type == type_font) ? "Fonts" : "Graphics";
+    fprintf(outfile, "[%s]\n", data_type);
 
     while (h != NULL)
       {
-        media_type = (h->type == type_font) ? "fontname" : "filename";
-        fprintf(outfile, "%s: %s\n", media_type, h->filename);
+        data_type = (h->type == type_font) ? "fontname" : "filename";
+        fprintf(outfile, "%s: %s\n", data_type, h->filename);
 
         rewind(h->data);
         while ((read = fread(buf, sizeof(uint8_t), MAXLINE, h->data)) > 0)
@@ -1085,9 +1085,9 @@ write_ssa_media(FILE * outfile, ssa_media * const list, bool memfree)
   }
 
 bool
-export_ssa_media(ssa_media *list, char *path)
+export_ssa_uue_data(ssa_uue_data *list, char *path)
   {
-    ssa_media *h;
+    ssa_uue_data *h;
     char filename[MAXLINE];
     char buf[82];
     size_t len;
@@ -1123,9 +1123,9 @@ export_ssa_media(ssa_media *list, char *path)
   }
 
 bool
-import_ssa_media(ssa_media **list, char *path)
+import_ssa_uue_data(ssa_uue_data **list, char *path)
   {
-    ssa_media *h;
+    ssa_uue_data *h;
     char buf[82];
     size_t len;
     char *p = NULL;
@@ -1144,13 +1144,13 @@ import_ssa_media(ssa_media **list, char *path)
 
     if (*list == NULL)
       {
-        CALLOC(h, 1, sizeof(ssa_media));
+        CALLOC(h, 1, sizeof(ssa_uue_data));
         *list = h;
       }
     else
       {
         for (h = *list; h->next != NULL; h = h->next);
-        CALLOC(h->next, 1, sizeof(ssa_media));
+        CALLOC(h->next, 1, sizeof(ssa_uue_data));
         h = h->next;
       }
 
@@ -1284,19 +1284,19 @@ find_ssa_style_by_name(ssa_file *f, char *name)
   }
 
 int8_t
-detect_media_line_type(char const * const line, size_t len)
+detect_uue_data_line_type(char const * const line, size_t len)
   {
     if (len == 80)
-      return MEDIA_UUE_LINE;
+      return UUE_DATA_LINE;
 
     if (len == 0)
-      return MEDIA_UUE_TAIL;
+      return UUE_DATA_TAIL;
 
     if (strncmp(line, "fontname:", 9) == 0)
-      return MEDIA_HEADER;
+      return UUE_DATA_HDR;
 
     if (strncmp(line, "filename:", 9) == 0)
-      return MEDIA_HEADER;
+      return UUE_DATA_HDR;
 
     /* The keywords above MUST be lowercase, but we should     *
      * remember about not-well-coded applications, who think   *
@@ -1306,11 +1306,11 @@ detect_media_line_type(char const * const line, size_t len)
       {
         _log(log_warn, _("Keyword '*name' must be fully lowercase: %u:%s"), \
                       line_num, line);
-        return MEDIA_HEADER;
+        return UUE_DATA_HDR;
       }
 
     if (len > 0 && len < 80)
-      return MEDIA_UUE_TAIL;
+      return UUE_DATA_TAIL;
 
-    return MEDIA_UNKNOWN;
+    return UUE_DATA_UNKN;
   }

@@ -53,9 +53,9 @@ Specific options for 'export' mode:\n\
 }
 
 bool
-show_info(ssa_media const * const list, char *section)
+show_info(ssa_uue_data const * const list, char *section)
   {
-    ssa_media const * h;
+    ssa_uue_data const * h;
     uint16_t num = 1;
     size_t file_size = 0;
 
@@ -216,18 +216,18 @@ int main(int argc, char *argv[])
         break;
       case export :
         if (extract.fonts  == true)
-          export_ssa_media(file.fonts,  out_dir);
+          export_ssa_uue_data(file.fonts,  out_dir);
         if (extract.images == true)
-          export_ssa_media(file.images, out_dir);
+          export_ssa_uue_data(file.images, out_dir);
         break;
       case import :
         if (import_fonts != NULL)
           for (sl = import_fonts; sl != NULL; sl = sl->next)
-            import_ssa_media(&file.fonts, sl->value);
+            import_ssa_uue_data(&file.fonts, sl->value);
 
         if (import_images != NULL)
           for (sl = import_images; sl != NULL; sl = sl->next)
-            import_ssa_media(&file.images, sl->value);
+            import_ssa_uue_data(&file.images, sl->value);
 
         write_ssa_file(opts.outfile, &file, true);
         fclose(opts.outfile);

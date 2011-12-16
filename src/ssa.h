@@ -24,10 +24,10 @@
 
 #define SSA_E_SORTED   0x01
 
-#define MEDIA_UNKNOWN  0x0
-#define MEDIA_HEADER   0x1
-#define MEDIA_UUE_LINE 0x2
-#define MEDIA_UUE_TAIL 0x3
+#define UUE_DATA_UNKN  0x0
+#define UUE_DATA_HDR   0x1
+#define UUE_DATA_LINE  0x2
+#define UUE_DATA_TAIL  0x3
 
 typedef enum ssa_version
   {
@@ -165,9 +165,9 @@ typedef enum ssa_section
     GRAPHICS
   } ssa_section;
 
-typedef struct ssa_media
+typedef struct ssa_uue_data
   {
-    struct ssa_media *next;
+    struct ssa_uue_data *next;
     enum
     {
       type_unknown,
@@ -176,7 +176,7 @@ typedef struct ssa_media
     } type;
     char *filename; /* "Original filename before embedding" */
     FILE *data;
-  } ssa_media;
+  } ssa_uue_data;
 
 typedef struct ssa_file
   {
@@ -216,8 +216,8 @@ typedef struct ssa_file
 
     ssa_style *styles;
     ssa_event *events;
-    ssa_media *fonts;
-    ssa_media *images;
+    ssa_uue_data *fonts;
+    ssa_uue_data *images;
   } ssa_file;
 
   /** function prototypes */
@@ -240,9 +240,9 @@ bool set_event_fields_order(char * const, ssa_version, int8_t *);
 bool detect_event_fields_order(char * const, int8_t *);
 bool get_ssa_event (char * const, ssa_event * const, int8_t *);
 
-/** media section */
-int8_t detect_media_line_type(char const * const, size_t);
-bool get_ssa_media(ssa_media **, ssa_media **, char const * const, const size_t);
+/** uue-encoded data section */
+int8_t detect_uue_data_line_type(char const * const, size_t);
+bool get_ssa_uue_data(ssa_uue_data **, ssa_uue_data **, char const * const, const size_t);
 
 /** write functions */
 bool write_ssa_file(FILE *, ssa_file *, bool);
@@ -256,11 +256,11 @@ bool write_ssa_style (FILE *, ssa_style  * const, ssa_version);
 bool write_ssa_events(FILE *, ssa_event  * const, ssa_version, bool);
 bool write_ssa_event (FILE *, ssa_event  * const, ssa_version);
 
-bool write_ssa_media (FILE *, ssa_media  * const, bool);
+bool write_ssa_uue_data (FILE *, ssa_uue_data  * const, bool);
 
 /** converter functions */
-bool export_ssa_media(ssa_media *, char *);
-bool import_ssa_media(ssa_media **, char *);
+bool export_ssa_uue_data(ssa_uue_data *, char *);
+bool import_ssa_uue_data(ssa_uue_data **, char *);
 
 /** other */
 uint32_t ssa_color(char * const);
