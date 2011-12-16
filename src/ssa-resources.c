@@ -88,6 +88,9 @@ int main(int argc, char *argv[])
     bool fonts     : 1;
     bool images    : 1;
   } extract = { false, false, false };
+  struct slist *import_fonts = NULL;
+  struct slist *import_images = NULL;
+  struct slist *sl;
 
   mode = unset;
 
@@ -102,7 +105,7 @@ int main(int argc, char *argv[])
     }
   else usage(EXIT_FAILURE);
 
-  while ((opt = getopt(argc, argv, "qvhi:o:" "AFGO:")) != -1)
+  while ((opt = getopt(argc, argv, "qvhi:o:" "AFGO: f:g:")) != -1)
     {
       switch(opt)
         {
@@ -133,6 +136,13 @@ int main(int argc, char *argv[])
             break;
           case 'O':
             STRNDUP(out_dir, optarg, MAXLINE);
+            break;
+
+          case 'f':
+            slist_add(&import_fonts, optarg);
+            break;
+          case 'g':
+            slist_add(&import_images, optarg);
             break;
 
           case 'h':
@@ -211,6 +221,14 @@ int main(int argc, char *argv[])
           export_ssa_media(file.images, out_dir);
         break;
       case import :
+        if (import_fonts != NULL)
+          for (sl = import_fonts; sl != NULL; sl = sl->next)
+            import_ssa_media(&file.fonts, sl->value);
+
+        if (import_images != NULL)
+          for (sl = import_images; sl != NULL; sl = sl->next)
+            import_ssa_media(&file.images, sl->value);
+
         write_ssa_file(opts.outfile, &file, true);
         fclose(opts.outfile);
         break;
