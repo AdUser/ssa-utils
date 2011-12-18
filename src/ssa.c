@@ -743,7 +743,11 @@ get_ssa_uue_data(ssa_uue_data **list, ssa_uue_data **h, char const * const line,
           memcpy(buf, line, 81 * sizeof(char));
           buf[80] = '\n';
           buf[81] = '\0';
-          fwrite(buf, 81, 1, (*h)->data);
+          if (fwrite(buf, 81, sizeof(char), (*h)->data) != 81)
+            {
+              _log(log_warn, MSG_F_WRFAIL);
+              return false;
+            }
           break;
         case UUE_DATA_TAIL :
           fputs(line, (*h)->data);
