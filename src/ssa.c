@@ -1099,6 +1099,8 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
 
     for (h = list; h != NULL; h = h->next)
       {
+        if (h->type == TYPE_FONT)
+          del_flags_from_fontname(h);
         snprintf(filename, MAXLINE, "%s/%s", path, h->filename);
         filename[MAXLINE] = '\0';
         if ((f = fopen(filename, "w"))== NULL)
