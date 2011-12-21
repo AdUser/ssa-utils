@@ -1150,6 +1150,9 @@ import_ssa_uue_data(ssa_uue_data *h, char *path)
     p = ((p = strrchr(path, '/')) != NULL) ? (p + 1) : path;
     STRNDUP(h->filename, p, MAXLINE);
 
+    if (h->type == TYPE_FONT)
+      add_flags_to_fontname(h);
+
     while ((len = fread(buf, sizeof(char), 3 * 20, f)) > 0)
       {
         len = uue_encode_buffer(buf, len);

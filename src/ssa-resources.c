@@ -86,12 +86,12 @@ import_filelist(ssa_uue_data **uue_data_list, struct slist *filelist,
     for (sl = filelist, h = uue_data_list; sl != NULL; sl = sl->next)
       {
         CALLOC(*h, 1, sizeof(ssa_uue_data));
+        (*h)->type = type;
         if (import_ssa_uue_data(*h, sl->value) == false)
           {
             free(*h);
             continue;
           }
-        (*h)->type = type;
         h = &(*h)->next;
       }
 
