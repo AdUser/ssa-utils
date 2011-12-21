@@ -172,11 +172,16 @@ typedef enum ssa_uue_data_type
     TYPE_IMAGE = 2
   } ssa_uue_data_type;
 
+#define FONT_BOLD    1 << 1
+#define FONT_ITALIC  1 << 2
+
 typedef struct ssa_uue_data
   {
     struct ssa_uue_data *next;
     ssa_uue_data_type type;
-    char *filename; /* "Original filename before embedding" */
+    uint8_t fontflags; /* optional */
+    uint8_t fontenc;   /* optional */
+    char *filename;    /* "filename before embedding" */
     FILE *data;
   } ssa_uue_data;
 
