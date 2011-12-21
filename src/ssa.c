@@ -1204,6 +1204,56 @@ add_flags_to_fontname(ssa_uue_data * const h)
     return true;
   }
 
+bool
+del_flags_from_fontname(ssa_uue_data * const h)
+  {
+    char *src = NULL;
+    char *und = NULL;
+    char *dst = NULL;
+    char *new = NULL;
+    size_t len = 0;
+    bool   ff = false; /* true, if font flags not more allowed */
+    size_t fe = 0;     /* count of found digits -> font codepage */
+
+    if (h == NULL || (src = h->filename) == NULL)
+      return false;
+
+    if ((und = strrchr(src, '_')) == NULL)
+      return true; /* nothing to do */
+
+    len = strlen(src);
+    CALLOC(new, sizeof(char), len);
+    strncpy(new, src, (und - src));
+    dst = new + (und - src);
+
+    /* expected: 'B', 'I' and/or some digits */
+    for (len = 1, src = und + 1; ; len++, src++)
+      {
+        if (isdigit(*src))
+          {
+            fe *= 10;  /* We have some digits for font codepage! */
+            fe += *src - '0';
+            ff = true; /* After first digit we consider "B"/"I" chars        */
+            continue;  /* as garbage and abort next iterations if they found */
+          }
+        if (len < 3 && ff == false && (*src == 'B' || *src == 'I'))
+          continue; /* only 1st and 2nd chars allowed */
+        if (len < 6 && fe < 256    && (*src == '.' || *src == '\0'))
+          break;
+        /* if none of above - then */
+        goto abort;
+      }
+
+    strncpy(dst, src, strlen(src) + 1);
+    free(h->filename);
+    STRNDUP(h->filename, new, MAXLINE);
+
+    abort:
+    free(new);
+
+    return true;
+  }
+
 /* other */
 
 uint32_t
