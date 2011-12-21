@@ -269,6 +269,9 @@ bool write_ssa_uue_data (FILE *, ssa_uue_data  * const, bool);
 bool export_ssa_uue_data(ssa_uue_data *, char *);
 bool import_ssa_uue_data(ssa_uue_data *, char *);
 
+/* specific string functions */
+bool add_flags_to_fontname  (ssa_uue_data * const);
+
 /** other */
 uint32_t ssa_color(char * const);
 char *ssa_version_tos(ssa_version);
