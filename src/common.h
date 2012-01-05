@@ -29,6 +29,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "config.h"
 #include "msg.h"
 
 #ifndef _COMMON_H
@@ -39,7 +40,12 @@
 #define VERSION 0.06
 
 /* wrappers */
-#define _(x) gettext((x))
+#ifdef WITHOUT_GETTEXT
+  #define _(x) (x)
+#else
+  #define _(x) gettext((x))
+#endif
+
 #define CALLOC(ptr, nmemb, size) \
   if (((ptr) = calloc((nmemb), (size))) == NULL) \
     _log(log_error, MSG_M_OOM, __FILE__, __LINE__)
