@@ -98,7 +98,7 @@ add_point(struct time_pt **list, char * const s)
     char *p = NULL;
     struct time_pt **l = list;
     struct time_pt *t = NULL;
-    char buf[TIME_MAXLEN];
+    char buf[TIME_MAXLEN + 1];
 
     if (s == NULL)
       return false;

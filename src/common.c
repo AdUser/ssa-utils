@@ -510,7 +510,7 @@ stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
 size_t
 uue_decode_buffer(uint8_t *buf, size_t len)
   {
-    uint32_t t;
+    uint32_t t = 0;
     uint8_t num_buf = len / 4;
     uint8_t tail = len % 4;
     uint8_t i;

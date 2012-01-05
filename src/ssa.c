@@ -1092,7 +1092,7 @@ bool
 export_ssa_uue_data(ssa_uue_data *list, char *path)
   {
     ssa_uue_data *h;
-    char filename[MAXLINE];
+    char filename[MAXLINE + 1];
     uint8_t buf[82];
     size_t len;
     FILE *f = NULL;
