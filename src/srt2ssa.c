@@ -328,6 +328,8 @@ int main(int argc, char *argv[])
     CALLOC(target.styles, 1, sizeof(ssa_style));
 
     memcpy(target.styles, &ssa_style_template, sizeof(ssa_style));
+    target.styles->name = "Default";
+    target.styles->fontname = "Sans";
 
     while (src != (srt_event *) 0)
       {
@@ -351,6 +353,11 @@ int main(int argc, char *argv[])
           text_replace(buf, "\n", "\\n", MAXLINE, 0);
         else if (opts.o_wrap == merge)
           text_replace(buf, "\n", " ",   MAXLINE, 0);
+
+        /* FIXME: link against default style, code below is temporary hack */
+        (*dst)->style = "Default";
+        (*dst)->name = "";
+        (*dst)->effect = "";
 
         STRNDUP((*dst)->text, buf, MAXLINE);
 
