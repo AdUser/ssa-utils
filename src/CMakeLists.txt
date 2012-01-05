@@ -1,5 +1,7 @@
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+configure_file(config.h.in config.h)
+
 set(MODULES_SRC "common.c")
 
 # converters
