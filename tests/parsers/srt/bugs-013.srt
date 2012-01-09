@@ -1,0 +1,64 @@
+1
+00:00:00,00 --> 00:00:02,00
+Formatting parsing test
+(ends at 20s)
+
+2
+00:00:03,00 --> 00:00:04,00
+normal <i>italics</i> normal
+
+3
+00:00:04,00 --> 00:00:05,00
+<b>bold</b> <i>italics</i> <u>underline</u>
+
+4
+00:00:05,00 --> 00:00:06,00
+<1>bogus start
+
+5
+00:00:06,00 --> 00:00:07,00
+<i>unclosed italics
+
+6
+00:00:07,00 --> 00:00:08,00
+stray less than: <
+
+7
+00:00:08,00 --> 00:00:09,00
+<b <i>b with lt-i attribute with space
+
+8
+00:00:09,00 --> 00:00:10,00
+<b<i>b with lt-i attribute without space
+
+9
+00:00:10,00 --> 00:00:11,00
+text <00:00:10,50> with <00:00:10,75> embedded timecodes
+
+10
+00:00:11,00 --> 00:00:12,00
+ruby <ruby> example <rt>rt</rt></ruby> text
+
+11
+00:00:12,00 --> 00:00:13,00
+bogus tag <test> with <test 00:00:11,50> empty numeric attribute
+
+12
+00:00:13,00 --> 00:00:14,00
+bogus tag <test> with <test foo> empty text attribute and <test foo=bar> non-empty text attribute
+
+13
+00:00:14,00 --> 00:00:15,00
+bogus closed <test>tag</test> with <test foo>empty text</test> attribute and <test foo=bar>non-empty text attribute</test>
+
+14
+00:00:15,00 --> 00:00:16,00
+test <00:00:15,15> closed timecode </00:00:15,15>
+
+15
+00:00:16,00 --> 00:00:17,00
+test <k 00:00:15,15> closed timecode </k> as attribute
+
+16
+00:00:17,00 --> 00:00:18,00
+<credit>unclosed credit

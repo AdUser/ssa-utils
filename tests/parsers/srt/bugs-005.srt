@@ -1,0 +1,11 @@
+TEST
+00:00:00,00 --> 00:00:04,00
+1/3 If this displays then the user agent supports non-numeric IDs.
+
+TEST
+00:00:05,00 --> 00:00:09,00
+2/3 If this displays then the user agent supports duplicate non-numeric IDs.
+
+A TEST
+00:00:10,00 --> 00:00:14,00
+3/3 If this displays then the user agent supports non-sorted IDs with spaces.

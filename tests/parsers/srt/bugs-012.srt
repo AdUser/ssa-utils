@@ -1,0 +1,39 @@
+1
+00:00:00,00 --> 00:00:02,00
+Formatting test
+
+2
+00:00:03,00 --> 00:00:04,00
+<i>italics</i>
+
+3
+00:00:04,00 --> 00:00:05,00
+<b>bold</b>
+
+4
+00:00:05,00 --> 00:00:06,00
+<u>underline</u>
+
+5
+00:00:06,00 --> 00:00:07,00
+<font>font</fon>
+
+6
+00:00:07,00 --> 00:00:08,00
+<font size=3>font size=3</fon>
+
+7
+00:00:08,00 --> 00:00:09,00
+<font color=#00FF00>font color=#00FF00</fon>
+
+8
+00:00:09,00 --> 00:00:10,00
+<font color="#00FF00">font color="#00FF00"</fon>
+
+9
+00:00:10,00 --> 00:00:11,00
+<font color=green>font color=green</fon>
+
+10
+00:00:11,00 --> 00:00:12,00
+<font color="green">font color="green"</fon>

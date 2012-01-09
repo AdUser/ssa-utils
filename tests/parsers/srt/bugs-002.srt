@@ -1,0 +1,4 @@
+1
+00:00:00,00 --> 00:00:10,00
+This should be on line one.
+This should be on line two (no final LF).

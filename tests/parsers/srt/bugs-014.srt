@@ -1,0 +1,16 @@
+1
+00:00:00.00 --> 00:00:03.00
+Decimal separator for time
+(three test lines)
+
+2
+00:00:03.50 --> 00:00:04.50
+Test line 1 (one second)
+
+2
+00:00:04.75 --> 00:00:06.00
+Test line 2 (1.25 seconds)
+
+3
+00:00:07.05 --> 00:00:10.00
+Test line 3 ends at 10 seconds

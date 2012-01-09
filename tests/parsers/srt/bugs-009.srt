@@ -1,0 +1,24 @@
+1
+00:00:00,00 --> 00:00:03,00
+The subtitles should now count in order:
+- - - -
+
+5
+00:00:06,00 --> 00:00:07,00
+The subtitles should now count in order:
+- - - 4
+
+4
+00:00:05,00 --> 00:00:06,00
+The subtitles should now count in order:
+- - 3 -
+
+3
+00:00:04,00 --> 00:00:05,00
+The subtitles should now count in order:
+- 2 - -
+
+2
+00:00:03,00 --> 00:00:04,00
+The subtitles should now count in order:
+1 - - -

@@ -1,0 +1,999 @@
+1
+00:01:12,410 --> 00:01:28,600  SSA: Dialogue, Layer: 0, Style: Title, Name: , MarginL: 0000, MarginR: 0370, MarginV: 0370, Effect: 
+МАСТЕР МУШИ
+
+2
+00:02:28,780 --> 00:02:33,740  SSA: Dialogue, Layer: 0, Style: Title, Name: , MarginL: 0000, MarginR: 0060, MarginV: 0200, Effect: 
+Несчастье 
+счастливых 
+глаз
+
+3
+00:02:28,780 --> 00:02:33,740  SSA: Dialogue, Layer: 0, Style: Reply, Name: NTP, MarginL: 0300, MarginR: 0000, MarginV: 0300, Effect: !Effect
+Перевод Rei
+rei@zarafshan.ru
+
+4
+00:01:43,260 --> 00:01:46,100  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вещи, которые существуют в моем мире
+
+5
+00:01:46,690 --> 00:01:50,690  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Запах, звук, вкус, и прикосновение...
+
+6
+00:01:51,690 --> 00:01:53,520  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это все...
+
+7
+00:01:54,480 --> 00:01:56,690  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это все, в чем я нуждаюсь...
+
+8
+00:02:03,620 --> 00:02:05,040  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что это?
+
+9
+00:02:05,700 --> 00:02:08,910  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что-то в моих глазах...
+
+10
+00:02:39,990 --> 00:02:41,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Наконец-то,
+
+11
+00:02:41,360 --> 00:02:43,410  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Нашел дорогу.
+
+12
+00:02:55,300 --> 00:03:01,720  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Взгляни, ими покрыт весь потолок...
+
+13
+00:03:02,260 --> 00:03:09,430  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Черными созданиями, похожими на волосы
+
+14
+00:03:10,310 --> 00:03:16,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Каждую ночь они спускаются вниз
+
+15
+00:03:16,860 --> 00:03:23,280  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И щекочут нос, не давая уснуть...
+
+16
+00:03:23,530 --> 00:03:27,280  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ничего себе. Это же история про муши.
+
+17
+00:03:32,330 --> 00:03:35,130  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Где вы услышали эту историю?
+
+18
+00:03:38,050 --> 00:03:39,800  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+От моего отца.
+
+19
+00:03:40,840 --> 00:03:44,550  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы, наверное, хотите услышать и другие истории, господин Мастер Муши?
+
+20
+00:03:45,350 --> 00:03:47,550  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Почему вы решили, что я Мастер Муши?
+
+21
+00:03:48,010 --> 00:03:50,310  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я это знаю.
+
+22
+00:03:53,060 --> 00:03:56,900  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Только не делайте такое удивленное лицо, пойдемте слушать.
+
+23
+00:03:57,190 --> 00:04:00,400  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Давайте снимем комнату где-нибудь поблизости.
+
+24
+00:04:00,400 --> 00:04:01,190  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+25
+00:04:01,190 --> 00:04:02,490  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Хозяин!
+
+26
+00:04:04,200 --> 00:04:05,200  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Слушаю вас!
+
+27
+00:04:05,200 --> 00:04:07,280  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Комнату для этого господина, пожалуйста!
+
+28
+00:04:07,280 --> 00:04:08,660  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Добро пожаловать!
+
+29
+00:04:08,660 --> 00:04:11,500  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Э, но я не собирался здесь останавливаться.
+
+30
+00:04:11,500 --> 00:04:13,210  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Господин, позвольте взять ваш багаж.
+
+31
+00:04:13,210 --> 00:04:15,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Эй, я же сказал...
+
+32
+00:04:15,580 --> 00:04:16,710  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Э, отпустите меня!
+
+33
+00:04:16,710 --> 00:04:18,170  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отдайте мой ящик!
+
+34
+00:04:27,470 --> 00:04:31,970  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Посмотрим.... Какую бы следующую историю вам рассказать?
+
+35
+00:04:32,480 --> 00:04:34,980  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это правда, что ваш отец Мастер Муши?
+
+36
+00:04:34,980 --> 00:04:37,480  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Все ваши истории звучат очень правдоподобно.
+
+37
+00:04:37,940 --> 00:04:38,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Да.
+
+38
+00:04:38,860 --> 00:04:40,020  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Так и есть.
+
+39
+00:04:40,730 --> 00:04:42,400  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Он сейчас не практикует?
+
+40
+00:04:43,240 --> 00:04:44,740  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Он умер.
+
+41
+00:04:45,700 --> 00:04:48,740  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Потому что мои глаза просто бесполезны...
+
+42
+00:04:50,040 --> 00:04:52,240  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы же ничего не видите.
+
+43
+00:04:52,250 --> 00:04:54,410  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Нет, я все вижу очень четко.
+
+44
+00:04:55,750 --> 00:04:57,170  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+О чем вы говорите?
+
+45
+00:04:58,630 --> 00:05:02,420  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вижу все с помощью Ганпуку.
+
+46
+00:05:03,170 --> 00:05:04,590  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы видели Ганпуку?
+
+47
+00:05:04,590 --> 00:05:05,760  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Поразительно!
+
+48
+00:05:05,760 --> 00:05:07,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это очень редкий Муши. Где вы его видели?
+
+49
+00:05:09,600 --> 00:05:13,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ну хорошо. Думаю, что следующая история будет обо мне.
+
+50
+00:05:15,100 --> 00:05:20,520  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но в замен, я хочу попросить вас об одной вещи.
+
+51
+00:05:22,150 --> 00:05:27,200  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы могли бы похоронить мои глаза на горе?
+
+52
+00:05:34,250 --> 00:05:35,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане!
+
+53
+00:05:36,750 --> 00:05:38,120  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане.
+
+54
+00:05:38,180 --> 00:05:39,180  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отец.
+
+55
+00:05:39,630 --> 00:05:42,420  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Добро пожаловать домой. Как твоя работа?
+
+56
+00:05:43,210 --> 00:05:49,590  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Мой отец, который был Мастер Муши, иногда покидал семейный очаг и отправлялся по делам.
+
+57
+00:05:50,220 --> 00:05:55,770  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я очень любила слушать истории о его путешествиях.
+
+58
+00:05:57,140 --> 00:06:00,270  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+На этот раз я принес кое-что поистине удивительное.
+
+59
+00:06:00,980 --> 00:06:05,030  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Есть муши, которые называются Ганпуку. Говорят, что если кто-то  их увидит, его зрение станет намного лучше.
+
+60
+00:06:05,820 --> 00:06:09,280  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+До сих пор его называли Иллюзорный Муши,
+
+61
+00:06:09,780 --> 00:06:13,830  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но я достал глазное яблоко человека, который видел этого муши.
+
+62
+00:06:14,160 --> 00:06:15,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Глазное яблоко?
+
+63
+00:06:16,540 --> 00:06:19,120  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Не волнуйся, этот человек уже умер.
+
+64
+00:06:20,290 --> 00:06:26,420  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Зрение этого человека улучшалось до самой смерти с тех пор, как он увидел Ганпуку.
+
+65
+00:06:26,840 --> 00:06:31,180  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И это глазное яблоко сохранилось после его смерти даже без признаков разложения.
+
+66
+00:06:32,390 --> 00:06:35,260  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это может помочь мне в поисках Ганпуку.
+
+67
+00:06:36,220 --> 00:06:42,020  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане, даже если потребуется целая жизнь, я вылечу твои глаза, и ты сможешь видеть.
+
+68
+00:06:43,400 --> 00:06:45,900  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Обещаю, я не сдамся.
+
+69
+00:06:57,160 --> 00:06:58,200  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отец?
+
+70
+00:07:00,080 --> 00:07:00,710  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что случилось?
+
+71
+00:07:00,710 --> 00:07:02,080  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Не открывай!
+
+72
+00:07:04,040 --> 00:07:06,210  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что это было?
+
+73
+00:07:06,210 --> 00:07:07,050  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это муши!
+
+74
+00:07:07,050 --> 00:07:08,800  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Он прятался в глазном яблоке
+
+75
+00:07:08,800 --> 00:07:10,920  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Может быть это Ганпуку.
+
+76
+00:07:12,390 --> 00:07:18,560  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отец искал этого муши по всей горе, но никак не мог найти.
+
+77
+00:07:19,480 --> 00:07:23,060  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+После этого случая прошел месяц.
+
+78
+00:07:26,150 --> 00:07:27,150  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+79
+00:07:32,450 --> 00:07:33,950  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что это?
+
+80
+00:07:34,870 --> 00:07:37,370  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что-то попало в глаза?
+
+81
+00:07:38,790 --> 00:07:44,210  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Мне кажется, я что-то вижу?
+
+82
+00:07:46,670 --> 00:07:47,540  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ой!
+
+83
+00:07:51,050 --> 00:07:54,050  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что-то проникло в мои глаза.
+
+84
+00:07:59,770 --> 00:08:00,600  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+85
+00:08:13,910 --> 00:08:14,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отец?
+
+86
+00:08:16,620 --> 00:08:19,120  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Отец! Это ты?
+
+87
+00:08:19,540 --> 00:08:20,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+88
+00:08:21,580 --> 00:08:22,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане.
+
+89
+00:08:25,210 --> 00:08:26,790  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане!
+
+90
+00:08:29,050 --> 00:08:33,880  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+В первый раз я поняла, что это такое - видеть.
+
+91
+00:08:35,340 --> 00:08:39,850  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это  было чем-то таким, что я даже не могла себе представить.
+
+92
+00:08:41,350 --> 00:08:47,480  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И это было поистине великолепно, намного лучше чем я представляла.
+
+93
+00:08:48,980 --> 00:08:50,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Темно синий,
+
+94
+00:08:50,940 --> 00:08:52,070  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Фиолетовый,
+
+95
+00:08:52,740 --> 00:08:54,070  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Розовый,
+
+96
+00:08:54,900 --> 00:08:56,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Оранжевый.
+
+97
+00:08:57,370 --> 00:08:58,620  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А это гуси.
+
+98
+00:08:58,620 --> 00:09:01,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ничего себе, они интересно выстроились в линию!
+
+99
+00:09:02,330 --> 00:09:04,370  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Саки-чан и Фуза-чан.
+
+100
+00:09:04,370 --> 00:09:06,750  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А почему твои глаза стали видеть?
+
+101
+00:09:06,750 --> 00:09:09,130  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я увидела что-то похожее на огненный цветок.
+
+102
+00:09:10,300 --> 00:09:15,760  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Мои глаза могли видеть дальше,  чем у любого из моих друзей.
+
+103
+00:09:17,590 --> 00:09:18,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ты в зарослях травы!
+
+104
+00:09:18,930 --> 00:09:20,390  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вижу тебя, Ё-чан!
+
+105
+00:09:24,560 --> 00:09:25,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А потом...
+
+106
+00:09:29,770 --> 00:09:31,270  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вас нашла!
+
+107
+00:09:31,520 --> 00:09:34,320  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ты слишком быстро нас находишь, это не честно.
+
+108
+00:09:34,320 --> 00:09:36,110  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+С тобой не интересно играть.
+
+109
+00:09:36,990 --> 00:09:42,120  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+По прошествии некоторого времени я уже могла видеть такие вещи, которые невозможно  увидеть.
+
+110
+00:09:49,630 --> 00:09:51,920  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Через стену дома я видела холм.
+
+111
+00:09:54,460 --> 00:09:57,090  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+За холмом горы...
+
+112
+00:09:58,550 --> 00:10:01,390  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А за горами океан.
+
+113
+00:10:02,060 --> 00:10:05,890  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если я хотела, я видела это не выходя из комнаты.
+
+114
+00:10:07,810 --> 00:10:13,650  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я была очарована пейзажами, которые люди, вроде меня, никогда не видели.
+
+115
+00:10:15,440 --> 00:10:21,030  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но, потом у меня начинала кружится голова, и я даже не могла ходить.
+
+116
+00:10:22,660 --> 00:10:28,000  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Только закрыв глаза я могла спокойно жить в мире тьмы.
+
+117
+00:10:29,000 --> 00:10:32,920  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Поэтому, скоро я вообще перестала открывать глаза.
+
+118
+00:10:37,260 --> 00:10:43,760  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Через какое-то время, я поняла, что могу видеть вещи совсем другого характера.
+
+119
+00:10:48,770 --> 00:10:49,980  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Осторожно!
+
+120
+00:10:50,770 --> 00:10:51,480  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что?
+
+121
+00:10:52,900 --> 00:10:54,480  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ничего...
+
+122
+00:10:58,030 --> 00:10:59,110  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ой!
+
+123
+00:11:00,530 --> 00:11:02,450  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+У вас все хорошо?
+
+124
+00:11:02,450 --> 00:11:05,240  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Надо же, какой внезапный порыв ветра...
+
+125
+00:11:07,250 --> 00:11:09,120  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я же видела это раньше...
+
+126
+00:11:10,620 --> 00:11:16,340  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вскоре после этого я начала видеть прошлое и будущее людей, живущих рядом.
+
+127
+00:11:16,920 --> 00:11:22,260  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ко мне стали приходить, чтобы я предсказала будущее.
+
+128
+00:11:23,850 --> 00:11:27,720  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Все что я видела, обязательно сбывалось.
+
+129
+00:11:28,270 --> 00:11:34,770  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Пошел слух о моих всевидящих глазах, и люди стали приходить из близлежащих деревень.
+
+130
+00:11:36,480 --> 00:11:41,610  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Следующим летом вы упадете в реку и погибнете.
+
+131
+00:11:42,320 --> 00:11:46,160  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Пожалуйста, не подходите близко к реке.
+
+132
+00:11:47,700 --> 00:11:51,370  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но даже если я предупреждала,
+
+133
+00:11:51,370 --> 00:11:54,710  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я никогда не могла изменить того, что уже увидела.
+
+134
+00:11:55,170 --> 00:12:02,220  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вскоре ко мне стали приходить с просьбой узнать, какие преступления совершили люди.
+
+135
+00:12:03,300 --> 00:12:10,220  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Меня все очень ценили, но у меня не осталось никого, кого можно было бы назвать другом.
+
+136
+00:12:14,150 --> 00:12:15,900  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я никому не могу помочь.
+
+137
+00:12:15,900 --> 00:12:20,230  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Очень тяжело иметь такие глаза...
+
+138
+00:12:20,740 --> 00:12:24,910  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я все вижу, но я не могу ничего изменить...
+
+139
+00:12:27,740 --> 00:12:31,500  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я перестала принимать людей.
+
+140
+00:12:32,460 --> 00:12:35,370  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И в конечном итоге...
+
+141
+00:12:37,790 --> 00:12:38,750  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+142
+00:12:39,340 --> 00:12:40,840  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что это?
+
+143
+00:12:41,300 --> 00:12:44,550  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я могу видеть сквозь веки?
+
+144
+00:12:45,050 --> 00:12:47,550  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане, я ухожу.
+
+145
+00:12:50,430 --> 00:12:51,270  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Амане?
+
+146
+00:12:52,140 --> 00:12:53,600  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что случилось?
+
+147
+00:12:53,600 --> 00:12:59,230  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Внезапно я увидела весь окружающий мир и ваше будущее.
+
+148
+00:12:59,730 --> 00:13:01,480  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И у меня закружилась голова.
+
+149
+00:13:01,780 --> 00:13:03,440  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Очень странно.
+
+150
+00:13:03,950 --> 00:13:07,490  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Не волнуйтесь, я привыкну.
+
+151
+00:13:08,120 --> 00:13:09,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вернусь через три дня.
+
+152
+00:13:09,870 --> 00:13:11,330  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Будь осторожна.
+
+153
+00:13:14,410 --> 00:13:18,170  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но мой отец не пришел домой.
+
+154
+00:13:20,630 --> 00:13:26,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я день за днем поднималась на гору и своими глазами искала отца.
+
+155
+00:13:28,930 --> 00:13:30,220  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И наконец,
+
+156
+00:13:30,220 --> 00:13:31,890  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Однажды,
+
+157
+00:13:32,930 --> 00:13:36,730  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я нашла отца у подножья горы.
+
+158
+00:13:39,310 --> 00:13:42,900  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я уехала из деревни после похорон...
+
+159
+00:13:43,860 --> 00:13:50,320  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+В надежде хоть как-то зарабатывать на жизнь, я играла на  биве и рассказывала отцовские истории.
+
+160
+00:13:46,300 --> 00:13:50,590  SSA: Dialogue, Layer: 0, Style: Note, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0440, Effect: 
+Бива - струнный инструмент с толстым грифом наподобие лютни.
+
+161
+00:13:52,040 --> 00:13:56,330  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Позже, когда я пришла на могилу отца,
+
+162
+00:13:56,870 --> 00:14:01,380  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я не чувствовала никакого желания вернутся туда, куда уже никогда не вернется мой отец.
+
+163
+00:14:02,670 --> 00:14:07,930  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я начала путешествовать, зарабатывая игрой на биве и рассказывая разные истории.
+
+164
+00:14:13,350 --> 00:14:18,890  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+От такой жизни мои веки становились все прозрачнее и прозрачнее...
+
+165
+00:14:19,350 --> 00:14:22,270  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Потому что я постоянно смотрела...
+
+166
+00:14:22,770 --> 00:14:26,650  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я смотрела целый день без отдыха.
+
+167
+00:14:27,450 --> 00:14:31,410  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но тогда было ещё кое-что, что я не видела...
+
+168
+00:14:32,280 --> 00:14:42,380  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Потому что теперь я могу видеть даже своё собственное будущее.
+
+169
+00:14:43,500 --> 00:14:45,630  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я знала, что вы придете.
+
+170
+00:14:46,210 --> 00:14:49,260  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я знала, что попрошу вас это сделать.
+
+171
+00:14:50,050 --> 00:14:53,640  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Все это я предвидела.
+
+172
+00:14:54,470 --> 00:15:01,350  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Значит, вы хотите, что бы я похоронил ваши глаза на горе?
+
+173
+00:15:02,190 --> 00:15:07,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если бы я просила о чем то другом, я бы уже сама это сделала.
+
+174
+00:15:08,190 --> 00:15:12,950  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Эти глаза уже дали мне однажды счастье.
+
+175
+00:15:13,410 --> 00:15:17,240  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И независимо от того, насколько ужасны они сейчас, я жила с ними.
+
+176
+00:15:17,950 --> 00:15:23,000  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но скоро эти глаза больше не будут моими.
+
+177
+00:15:23,710 --> 00:15:26,960  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я видела, что Ганпуку выходят из моих глаз,
+
+178
+00:15:26,960 --> 00:15:33,010  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Уходят в землю и ждут другой пары глаз.
+
+179
+00:15:34,050 --> 00:15:38,220  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Поэтому, что бы такое не случилось вновь,
+
+180
+00:15:38,810 --> 00:15:42,230  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я хочу, что бы вы закопали их глубоко в землю.
+
+181
+00:15:42,810 --> 00:15:45,940  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы говорите, что можете все это предвидеть?
+
+182
+00:15:48,690 --> 00:15:50,320  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Тогда мне будет легче.
+
+183
+00:15:50,320 --> 00:15:53,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если вы просите вылечить ваши глаза.
+
+184
+00:15:54,070 --> 00:15:56,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+То скорее всего, это не возможно.
+
+185
+00:15:57,080 --> 00:16:01,080  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я уже сказала, что не могу изменить то, что вижу.
+
+186
+00:16:01,540 --> 00:16:09,340  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Эти глаза видят то, что предрешено в таком месте, куда мы не можем попасть.
+
+187
+00:16:22,190 --> 00:16:23,600  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Послушайте,
+
+188
+00:16:24,480 --> 00:16:28,610  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я не могу позволить этому случится.
+
+189
+00:16:29,150 --> 00:16:31,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я буду стараться помочь вам.
+
+190
+00:16:32,150 --> 00:16:35,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Даже если вы напишете письмо своему другу, вы не получите в ответ ничего хорошего.
+
+191
+00:16:37,700 --> 00:16:38,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это так?
+
+192
+00:16:40,200 --> 00:16:42,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Почему вы так хотите помочь мне?
+
+193
+00:16:43,160 --> 00:16:45,750  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Это потому, что вы потеряли левый глаз?
+
+194
+00:16:46,290 --> 00:16:48,290  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если у вас такие глаза, вы должны сами видеть, почему.
+
+195
+00:16:48,840 --> 00:16:52,510  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+В вашем детстве тьма, и я ничего не могу увидеть.
+
+196
+00:16:54,930 --> 00:16:58,390  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я помню себя приблизительно с десяти лет.
+
+197
+00:16:59,060 --> 00:17:03,770  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я куда-то шел.
+
+198
+00:17:05,980 --> 00:17:07,350  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И ничего не было видно.
+
+199
+00:17:08,520 --> 00:17:12,440  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я шел руководствуясь только чувствами, пока, наконец-то не взошла луна.
+
+200
+00:17:13,530 --> 00:17:19,160  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Раз за разом всходила эта неправдоподобно огромная луна...
+
+201
+00:17:20,660 --> 00:17:27,420  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я шел очень долго, пока наконец-то не дошел туда, где вместо луны взошло солнце.
+
+202
+00:17:29,500 --> 00:17:34,260  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я помню, как я обрадовался тогда солнечному свету.
+
+203
+00:17:35,130 --> 00:17:39,850  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Разве вы не боитесь навсегда потерять его?
+
+204
+00:17:42,390 --> 00:17:43,850  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Боюсь.
+
+205
+00:17:44,480 --> 00:17:48,350  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но мир, в котором есть свет тоже страшен.
+
+206
+00:17:49,150 --> 00:17:54,110  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Видеть все на свете, но не в силах что-либо изменить,
+
+207
+00:17:54,610 --> 00:17:57,780  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Или быть свободным в темноте,
+
+208
+00:17:58,660 --> 00:18:01,620  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Какой выбор вы бы сделали?
+
+209
+00:18:01,990 --> 00:18:10,830  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Думаю, что жить в темноте не так плохо, если помнить солнечный свет.
+
+210
+00:18:29,230 --> 00:18:29,940  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что случилось?
+
+211
+00:18:31,560 --> 00:18:33,070  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Все хорошо.
+
+212
+00:18:33,070 --> 00:18:35,690  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Просто привиделось...
+
+213
+00:18:36,150 --> 00:18:38,360  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Как далеко в будущее вы  сейчас видите?
+
+214
+00:18:39,700 --> 00:18:43,780  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вижу до того времени, когда мои глаза умрут.
+
+215
+00:18:49,120 --> 00:18:54,090  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+В течение долгого времени она не могла видеть через веки.
+
+216
+00:18:54,840 --> 00:18:57,210  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И видела только чужое будущее.
+
+217
+00:18:57,220 --> 00:19:03,100  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Теперь, раз она может видеть через веки своё будущее,
+
+218
+00:19:03,680 --> 00:19:08,350  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Значит, её глазные яблоки становятся для неё чужими.
+
+219
+00:19:09,440 --> 00:19:12,100  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если муши вошел в тело человека,
+
+220
+00:19:12,770 --> 00:19:17,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И тело, куда он вошел, умерло, а глаза остались живы.
+
+221
+00:19:18,820 --> 00:19:21,320  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+То в теле, которое живет, после попадания муши этот орган умирает.
+
+222
+00:19:21,320 --> 00:19:22,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И муши покидают это тело.
+
+223
+00:19:23,580 --> 00:19:26,580  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если это так, то время на исходе.
+
+224
+00:19:27,870 --> 00:19:30,330  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И до сих пор никакого ответа.
+
+225
+00:19:44,050 --> 00:19:48,390  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Уже ясно, что изменить ничего нельзя.
+
+226
+00:19:56,730 --> 00:19:57,780  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+227
+00:19:57,780 --> 00:20:00,530  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я не вижу сквозь потолок.
+
+228
+00:20:03,370 --> 00:20:04,530  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Что происходит?
+
+229
+00:20:06,700 --> 00:20:09,040  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вижу как обычный человек?
+
+230
+00:20:11,790 --> 00:20:12,710  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+А?
+
+231
+00:20:13,380 --> 00:20:17,540  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но мои глаза двигаются самостоятельно...
+
+232
+00:20:30,810 --> 00:20:32,770  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Держитесь, сейчас  я дам вам обезболивающее.
+
+233
+00:20:38,270 --> 00:20:44,950  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Слезы льются даже без глаз.
+
+234
+00:21:02,550 --> 00:21:06,050  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Как далеко в будущее вы сейчас видите?
+
+235
+00:21:07,680 --> 00:21:11,770  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я вижу до того времени, когда мои глаза умрут.
+
+236
+00:21:12,890 --> 00:21:15,520  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+После того, как они умрут,
+
+237
+00:21:15,520 --> 00:21:17,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Они будут оставаться там, где похоронены.
+
+238
+00:21:19,020 --> 00:21:24,860  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Но потом они выйдут из земли и какое-нибудь животное приблизится к ним.
+
+239
+00:21:25,490 --> 00:21:29,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Красивый цветок отразится  в звериных  глазах...
+
+240
+00:21:30,290 --> 00:21:33,870  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И  медленно всосется в глазные яблоки.
+
+241
+00:21:34,500 --> 00:21:40,170  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+И  наступит темнота.
+
+242
+00:21:43,130 --> 00:21:46,840  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Должно быть, уже получен ответ на ваше письмо.
+
+243
+00:21:55,690 --> 00:21:57,270  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Вы возвращаетесь в деревню?
+
+244
+00:21:59,400 --> 00:22:01,690  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Пока не знаю.
+
+245
+00:22:03,030 --> 00:22:07,200  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Сейчас, я хочу побродить в одиночестве.
+
+246
+00:22:07,200 --> 00:22:10,570  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я просто счастлива, что не вижу будущего.
+
+247
+00:22:11,120 --> 00:22:12,660  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Ну, ладно,
+
+248
+00:22:12,660 --> 00:22:14,790  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Если вы увидите меня где-нибудь, скажите "Привет".
+
+249
+00:22:16,870 --> 00:22:20,170  SSA: Dialogue, Layer: 0, Style: Default, Name: , MarginL: 0000, MarginR: 0000, MarginV: 0000, Effect: 
+Я хочу научится ещё лучше играть на биве.
+
