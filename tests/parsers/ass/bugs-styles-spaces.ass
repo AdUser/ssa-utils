@@ -1,0 +1,26 @@
+[Script Info]
+Title: Default test file
+ScriptType: v4.00+
+; styles testing - spaces
+; line #      | defect
+; Style00     | well-formatted line (sample)
+; Style01     | extra space before colon  // expected: skip line
+; Style02     | missing space after colon
+; Style03     | extra spaces near after fields separators
+; Style03     | extra spaces near before fields separators
+; Style05     | extra spaces in fields
+;
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Style00,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,0.00,1,2,2,2,10,10,10,0
+Style : Style01,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,0.00,1,2,2,2,10,10,10,0
+Style:Style02,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,0.00,1,2,2,2,10,10,10,0
+Style: Style03, Sans, 20, &H00FFFFFF, &H0000FFFF, &H00000000, &H00000000, 0, 0, 0, 0, 100, 100, 0.00, 0.00, 1, 2, 2, 2, 10, 10, 10, 0
+Style: Style04 ,Sans ,20 ,&H00FFFFFF ,&H0000FFFF ,&H00000000 ,&H00000000 ,0 ,0 ,0 ,0 ,100 ,100 ,0.00 ,0.00 ,1 ,2 ,2 ,2 ,10 ,10 ,10 ,0
+Style: Style 05,Sans Serif,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,0.00,1,2,2,2,10,10,10,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0000,0000,0000,,Sample line
+

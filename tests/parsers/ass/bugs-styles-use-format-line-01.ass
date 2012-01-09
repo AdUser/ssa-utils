@@ -1,0 +1,20 @@
+[Script Info]
+Title: Default test file
+ScriptType: v4.00+
+; styles testing - use of "Format" line
+; Style00 -- >
+; - skipped: OutlineColour
+; - skipped: ScaleY
+; - skipped: MarginR
+; - swapped: MarginV && MarginL (10 / 20)
+; - swapped: SecondaryColour && Name ()
+; "Format" line edited accordingly
+
+[V4+ Styles]
+Format: SecondaryColour, Fontname, Fontsize, PrimaryColour, Name, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginV, MarginL, Encoding
+Style: &H0000FFFF,Sans,20,&H00FFFFFF,Default,&H00000000,0,0,0,0,100,0,0,1,2,2,2,10,20,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0000,0000,0000,,Sample line
+

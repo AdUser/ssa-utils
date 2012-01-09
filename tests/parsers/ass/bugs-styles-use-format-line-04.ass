@@ -1,0 +1,19 @@
+[Script Info]
+Title: Default test file
+ScriptType: v4.00+
+; styles testing - use of "Format" line
+; line #      | defect
+; Style00     | well-formed line (sample)
+; Style01     | extra fields in style not declared in "Format"
+; Style02     | missing field values // expected: use of default value + warning
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV
+Style: Style00,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10
+Style: Style01,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style02,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0.00:01.00,Default,,0000,0000,0000,,Sample line
+

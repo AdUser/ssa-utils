@@ -1,0 +1,37 @@
+[Script Info]
+Title: Default test file
+ScriptType: v4.00+
+; styles testing - values
+; line #      | defect
+; Style00     | well-formatted line (sample)
+; Style01     | space inside value
+; Style02     | missing value
+; Style03     | negative value in case of expected positive
+; Style04     | malformed value
+; Style05     | malformed value
+; Style06     | mixed value notations
+; Style07     | positive values in case of expected  negative or zero
+; Style08     | used float instead of int
+; Style09     | used int instead of float
+; Style10     | use default values (style name present)
+; Style11     | this style must be ignored
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Style00,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style 01,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style02,,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style03,Sans,-20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style04,Sans,20,H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style05,Sans,20,&H00FFFFFF,&HFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style06,Sans,20,&H00FFFFFF,&H0000FFFF,8454016,&H00000000,0,0,0,0,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style07,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,1,1,1,1,100,100,0.00,2.25,1,2,2,2,10,10,10,0
+Style: Style08,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100.0,100.00,0.00,2.2500,1.0,2,2,2,10,10,10,0
+Style: Style09,Sans,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,0
+Style: Style10,,,,,,,,,,,,,,,,,,,,,,
+Style: ,,,,,,,,,,,,,,,,,,,,,,
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0000,0000,0000,,Sample line
+
