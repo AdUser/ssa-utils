@@ -517,7 +517,7 @@ uue_decode_buffer(uint8_t *buf, size_t len)
     uint8_t *s, *d;
     uint8_t out_buf[61];
 
-    if (buf == NULL || len > 80)
+    if (buf == NULL || !(len <= 80 && len > 0))
       return 0;
 
     if (tail != 0)
@@ -561,7 +561,7 @@ uue_encode_buffer(uint8_t *buf, size_t len)
     uint8_t *s, *d;
     uint8_t out_buf[81];
 
-    if (buf == NULL || len > 60)
+    if (buf == NULL || !(len <= 60 && len > 0))
       return 0;
 
     if (tail != 0)
