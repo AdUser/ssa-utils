@@ -1,20 +1,12 @@
-#include "../../src/common.h"
-#include <assert.h>
-#include <signal.h>
-
-static void handler(int sig, siginfo_t *siginfo, void *context)
-{ exit(EXIT_FAILURE); }
+#include "../tests.h"
 
 int main()
 {
-  struct sigaction act;
   STACK_ELEM stack[STACK_MAX];
   STACK_ELEM *top = stack;
   void *tmp;
 
-  memset (&act, '\0', sizeof(act));
-  act.sa_sigaction = &handler;
-  sigaction(SIGABRT, &act, NULL);
+  SIGCATCH_INIT
 
   assert(sizeof(STACK_ELEM) == STACK_ELEM_SIZE);
 
@@ -39,8 +31,6 @@ int main()
 
   stack_pop(stack, &top);
   assert(*top == '\0');
-
-  assert(true == false);
 
   return 0;
 }
