@@ -490,7 +490,7 @@ slist_match(struct slist *list, char *item)
   {
     struct slist *i = NULL;
 
-    if (list == NULL)
+    if (list == NULL || item == NULL)
       return false;
 
     for (i = list; i != NULL; i = i->next)
