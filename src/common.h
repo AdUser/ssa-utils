@@ -224,7 +224,10 @@ bool append_string(char *, char *, char *, unsigned int, unsigned int);
 bool append_char(char *, char, unsigned int);
 
 /* strings list functions */
-bool slist_add(struct slist **, char *);
+#define SLIST_ADD_FIRST  0x01
+#define SLIST_ADD_LAST   0x02
+#define SLIST_ADD_UNIQ   0x04
+bool slist_add(struct slist **, char *, int);
 bool slist_match(struct slist *, char *);
 
 /* unicode-related functions */

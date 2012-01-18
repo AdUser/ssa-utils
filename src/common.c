@@ -440,24 +440,49 @@ append_char(char *to, char c, unsigned int len)
 
 /** strings list functions */
 bool
-slist_add(struct slist **list, char *item)
+slist_add(struct slist **list, char *item, int flags)
   {
     struct slist *p = NULL;
+    struct slist *new = NULL;
+
+    if (list == NULL || item == NULL || \
+        !((flags & SLIST_ADD_FIRST) ^ (flags & SLIST_ADD_LAST)))
+      return false;
+
+    if (flags & SLIST_ADD_UNIQ)
+      {
+        for (p = *list; p != NULL; p = p->next)
+          if (strncmp(p->value, item, MAXLINE) == 0)
+            return true;
+      }
+
+    CALLOC(new, 1, sizeof(struct slist));
+    STRNDUP(new->value, item, MAXLINE);
 
     if (*list == NULL)
-    {
-      CALLOC(*list, 1, sizeof(struct slist));
-      p = *list;
-    } else {
-      for (p = *list; p->next != NULL; p = p->next);
-      CALLOC(p->next, 1, sizeof(struct slist));
-      p = p->next;
-    }
+      {
+        *list = new;
+        return true;
+      }
 
-    if ((p->value = strdup(item)) == NULL)
-      _log(log_error, MSG_M_OOM);
+    if (flags & SLIST_ADD_FIRST)
+      {
+        new->next = *list;
+        *list = new;
+        return true;
+      }
 
-    return true;
+    if (flags & SLIST_ADD_LAST)
+      {
+        for (p = *list; p->next != NULL; p = p->next);
+        p->next = new;
+        return true;
+      }
+
+    free(new->value);
+    free(new);
+
+    return false;
   }
 
 bool

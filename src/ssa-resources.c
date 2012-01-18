@@ -163,10 +163,10 @@ int main(int argc, char *argv[])
             break;
 
           case 'f':
-            slist_add(&import_fonts, optarg);
+            slist_add(&import_fonts, optarg, SLIST_ADD_LAST | SLIST_ADD_UNIQ);
             break;
           case 'g':
-            slist_add(&import_images, optarg);
+            slist_add(&import_images, optarg, SLIST_ADD_LAST | SLIST_ADD_UNIQ);
             break;
 
           case 'h':
