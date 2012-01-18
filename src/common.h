@@ -232,6 +232,10 @@ bool append_char(char *, char, unsigned int);
 #define SLIST_ADD_LAST   0x02
 #define SLIST_ADD_UNIQ   0x04
 bool slist_add(struct slist **, char *, int);
+#define SLIST_DEL_FIRST      0x01
+#define SLIST_DEL_LAST       0x02
+#define SLIST_DEL_ALL_MATCH  0x04
+bool slist_del(struct slist **, char *, int);
 bool slist_match(struct slist *, char *);
 struct slist *slist_find(struct slist *, char *);
 

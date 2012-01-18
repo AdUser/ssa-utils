@@ -486,6 +486,54 @@ slist_add(struct slist **list, char *item, int flags)
   }
 
 bool
+slist_del(struct slist **list, char *item, int flags)
+  {
+    struct slist *p = NULL;
+
+    if (list == NULL || item == NULL)
+      return false;
+
+    if (*list == NULL)
+      return true;
+
+    if (flags & SLIST_DEL_FIRST)
+      {
+        p = (*list)->next;
+        FREE((*list)->value);
+        FREE(*list);
+        list = &p;
+        return true;
+      }
+
+    if (flags & SLIST_DEL_LAST)
+      {
+        if ((*list)->next == NULL)
+          {
+            FREE((*list)->value);
+            FREE(*list);
+            return true;
+          }
+        else
+          {
+            for (p = *list; p->next->next != NULL; p = p->next);
+            FREE(p->next->value);
+            FREE(p->next);
+            return true;
+          }
+      }
+
+    if (flags & SLIST_DEL_ALL_MATCH)
+      {
+        for (p = *list; p != NULL; p = p->next)
+          if (strncmp(p->value, item, MAXLINE) == 0)
+            slist_del(&p, item, SLIST_DEL_FIRST);
+        return true;
+      }
+
+    return false;
+  }
+
+bool
 slist_match(struct slist *list, char *item)
   {
     struct slist *i = NULL;
