@@ -62,14 +62,14 @@ parse_microsub_file(FILE *infile, microsub_file * const file)
           {
             file->framerate = atof(line + 6);
             _log(log_info, _("Detected framerate: %f"), file->framerate);
-            free(event);
+            FREE(event);
             continue;
           }
 
         if (sscanf(line, "{%u}{%u}", &event->start, &event->end) != 2)
           {
             _log(log_warn, _("Can't detect timing in event at line %u. Event will be skipped."), line_num);
-            free(event);
+            FREE(event);
             continue;
           }
 

@@ -145,7 +145,7 @@ add_point(struct time_pt **list, char * const s)
       return true;
     }
 
-    free(t);
+    FREE(t);
 
     return false;
   }

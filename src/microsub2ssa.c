@@ -160,8 +160,8 @@ int main(int argc, char *argv[])
 
         dst = &((*dst)->next);
         source.events = src->next;
-        free(src->text);
-        free(src);
+        FREE(src->text);
+        FREE(src);
         src = source.events;
       }
 

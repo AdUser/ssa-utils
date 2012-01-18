@@ -479,8 +479,8 @@ slist_add(struct slist **list, char *item, int flags)
         return true;
       }
 
-    free(new->value);
-    free(new);
+    FREE(new->value);
+    FREE(new);
 
     return false;
   }

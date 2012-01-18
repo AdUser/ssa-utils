@@ -217,7 +217,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
                     }
                   if (get_ssa_event(line, e, file->event_fields_order) != false)
                     ssa_event_append(&file->events, &elist_tail, e, opts.i_sort);
-                  else free(e);
+                  else FREE(e);
                 }
               break;
             case FONTS :
@@ -803,7 +803,7 @@ write_ssa_txt_param(FILE *outfile, char *name,\
       fprintf(outfile, ";%s:\n", name);
 
     if (memfree && data)
-      free(data);
+      FREE(data);
 
     return true;
   }
@@ -826,7 +826,7 @@ write_ssa_header(FILE *outfile, ssa_file * const f, bool memfree)
       {
         fprintf(outfile, "%s\n", p->value);
         l = p, p = p->next;
-        if (memfree) free(l->value), free(l);
+        if (memfree) FREE(l->value), FREE(l);
       }
 
     if (f->sync != 0)
@@ -897,7 +897,7 @@ write_ssa_styles(FILE * outfile, ssa_style  * const style, ssa_version v, bool m
         write_ssa_style(outfile, ptr, v);
         prev = ptr;
         ptr = ptr->next;
-        if (memfree) free(prev);
+        if (memfree) FREE(prev);
       }
 
     fputc('\n', outfile);
@@ -998,7 +998,7 @@ write_ssa_events(FILE * outfile, ssa_event * const events, ssa_version v, bool m
         write_ssa_event(outfile, ptr, v);
         prev = ptr;
         ptr = ptr->next;
-        if (memfree) free(prev->text), free(prev);
+        if (memfree) FREE(prev->text), FREE(prev);
       }
 
     fputc('\n', outfile);
@@ -1077,9 +1077,9 @@ write_ssa_uue_data(FILE * outfile, ssa_uue_data * const list, bool memfree)
         h = h->next;
         if (memfree == true)
           {
-            free(t->filename);
+            FREE(t->filename);
             fclose(t->data);
-            free(t);
+            FREE(t);
           }
       }
 
@@ -1199,9 +1199,9 @@ add_flags_to_fontname(ssa_uue_data * const h)
                (h->fontflags & FONT_ITALIC) ? "I" : "", \
                 h->fontenc, ext); /* "_" + "B" + "I" + "0-255" + ".ext" <= 10 */
 
-    free(h->filename);
+    FREE(h->filename);
     STRNDUP(h->filename, new, MAXLINE);
-    free(new);
+    FREE(new);
 
     return true;
   }
@@ -1247,11 +1247,11 @@ del_flags_from_fontname(ssa_uue_data * const h)
       }
 
     strncpy(dst, src, strlen(src) + 1);
-    free(h->filename);
+    FREE(h->filename);
     STRNDUP(h->filename, new, MAXLINE);
 
     abort:
-    free(new);
+    FREE(new);
 
     return true;
   }

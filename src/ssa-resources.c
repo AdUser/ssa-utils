@@ -89,7 +89,7 @@ import_filelist(ssa_uue_data **uue_data_list, struct slist *filelist,
         (*h)->type = type;
         if (import_ssa_uue_data(*h, sl->value) == false)
           {
-            free(*h);
+            FREE(*h);
             continue;
           }
         h = &(*h)->next;
