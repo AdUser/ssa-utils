@@ -500,6 +500,21 @@ slist_match(struct slist *list, char *item)
     return false;
   }
 
+struct slist *
+slist_find(struct slist *list, char *item)
+  {
+    struct slist *p;
+
+    if (!list || !item)
+      return NULL;
+
+    for (p = list; p != NULL; p = p->next)
+      if (strncmp(p->value, item, MAXLINE) == 0)
+        return p;
+
+    return NULL;
+  }
+
 /** stack functions */
 
 void

@@ -233,6 +233,7 @@ bool append_char(char *, char, unsigned int);
 #define SLIST_ADD_UNIQ   0x04
 bool slist_add(struct slist **, char *, int);
 bool slist_match(struct slist *, char *);
+struct slist *slist_find(struct slist *, char *);
 
 /* unicode-related functions */
 enum chs_type unicode_check(char *, struct unicode_test *);
