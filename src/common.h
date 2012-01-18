@@ -51,6 +51,10 @@
     _log(log_error, MSG_M_OOM, __FILE__, __LINE__)
     /* yes, i know about assert() */
 
+#define FREE(ptr) \
+  free((ptr)); \
+  (ptr) = NULL
+
 #define TMPFILE(ptr) \
   if (((ptr) = tmpfile()) == NULL) \
     _log(log_error, MSG_F_CTMPFAIL, strerror(errno))
