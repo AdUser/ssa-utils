@@ -483,22 +483,28 @@ stack_init(STACK_ELEM *st)
     memset(st, 0, STACK_ELEM_SIZE * STACK_MAX);
   }
 
-void
+bool
 stack_push(STACK_ELEM * const st, STACK_ELEM **top, STACK_ELEM val)
   {
-    if ((*top - st) < STACK_MAX)
-      (*top)++, **top = val;
-    else
-      _log(log_debug, _("Stack is full! Increase STACK_MAX and recompile."));
+    if ((*top - st) >= STACK_MAX)
+      return false;
+
+    (*top)++;
+    **top = val;
+
+    return true;
   }
 
-void
+bool
 stack_pop(STACK_ELEM * const st, STACK_ELEM **top)
   {
-    if (*top > st)
-      **top = '\0', (*top)--;
-    else
-      _log(log_debug, "Try to pop on empty stack.");
+    if (*top <= st)
+      return false;
+
+    **top = '\0';
+    (*top)--;
+
+    return true;
   }
 
 /** uuencode functions */

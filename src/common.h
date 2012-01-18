@@ -241,8 +241,8 @@ void usage_convert_output(void);
 
 /* stack functions */
 void stack_init(STACK_ELEM *);
-void stack_push(STACK_ELEM * const, STACK_ELEM **, STACK_ELEM);
-void stack_pop (STACK_ELEM * const, STACK_ELEM **);
+bool stack_push(STACK_ELEM * const, STACK_ELEM **, STACK_ELEM);
+bool stack_pop (STACK_ELEM * const, STACK_ELEM **);
 
 /** uuencode functions */
 size_t uue_decode_buffer(uint8_t *, size_t);

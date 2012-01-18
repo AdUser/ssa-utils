@@ -186,11 +186,15 @@ srt_tags_to_ssa(char *string, ssa_file *file)
                 case opening :
                   if (*top == chr)
                     _log(log_warn, MSG_W_TAGTWICE, ttag.data, string);
-                  stack_push(stack, &top, chr);
+                  if (stack_push(stack, &top, chr) == false)
+                    _log(log_debug, _("Stack is full! Increase STACK_MAX and recompile."));
                   break;
                 case closing :
                   if (*top == chr)
-                    stack_pop(stack, &top);
+                    {
+                      if (stack_pop(stack, &top) == false)
+                        _log(log_debug, "Try to pop on empty stack.");
+                    }
                   else _log(log_warn, MSG_W_TAGUNCL, ttag.data, string);
                   /* note: stack remains unchanged in second case! */
                   break;
