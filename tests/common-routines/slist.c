@@ -3,7 +3,6 @@
 int main()
 {
   struct slist *list = NULL;
-  struct slist *p = NULL;
 
   SIGCATCH_INIT
 
@@ -14,6 +13,7 @@ int main()
   /* simple add */
   assert(slist_add(&list, "test", SLIST_ADD_LAST) == true);
   assert(strcmp(list->value, "test") == 0);
+  assert(slist_find(list, "test") == list);
 
   /* uniq add */
   assert(slist_add(&list, "test", SLIST_ADD_UNIQ | SLIST_ADD_FIRST) == true);
@@ -25,20 +25,30 @@ int main()
   assert(list->next != NULL);
   assert(strcmp(list->next->value, "test") == 0);
   assert(list->next->next == NULL);
+  assert(slist_find(list, "test") == list);
   FREE(list->next->value);
   FREE(list->next);
 
+  assert(slist_del(&list, "test", SLIST_DEL_ALL_MATCH) == true);
+  assert(list == NULL);
+
   /* test order of items */
+  slist_add(&list, "test", 0); /* no flags */
   assert(slist_add(&list, "after",  SLIST_ADD_LAST)  == true);
   assert(slist_add(&list, "before", SLIST_ADD_FIRST) == true);
+  assert(slist_find(list, "before") == list);
+  assert(slist_find(list, "test")   == list->next);
+  assert(slist_find(list, "after")  == list->next->next);
 
-  p = list;
-  assert(strcmp(p->value, "before") == 0);
-  assert((p = p->next) != NULL);
-  assert(strcmp(p->value, "test")   == 0);
-  assert((p = p->next) != NULL);
-  assert(strcmp(p->value, "after")  == 0);
-  assert((p = p->next) == NULL);
+  assert(slist_del(&list, "test", 0) == true);
+  assert(slist_find(list, "before") == list);
+  assert(slist_find(list, "after")  == list->next);
+
+  assert(slist_del(&list, "", SLIST_DEL_FIRST) == true);
+  assert(slist_find(list, "after") == list);
+  assert(slist_add(&list, "test", SLIST_ADD_FIRST) == true);
+  assert(slist_del(&list, "", SLIST_DEL_LAST) == true);
+  assert(slist_find(list, "after") == NULL);
 
   return 0;
 }
