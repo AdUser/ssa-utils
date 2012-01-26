@@ -527,12 +527,18 @@ slist_del(struct slist **list, char *item, int flags)
             slist_del(list, item, SLIST_FIRST);
             list_changed = true;
           }
-        for (p = *list; p != NULL; p = p->next)
-          if (strncmp(p->value, item, MAXLINE) == 0)
-            {
-              slist_del(&p, item, SLIST_FIRST);
-              list_changed = true;
-            }
+        for (t = p = *list; p != NULL; )
+          {
+            if (strncmp(p->value, item, MAXLINE) == 0)
+              {
+                t->next = p->next;
+                slist_del(&p, item, SLIST_FIRST);
+                list_changed = true;
+                continue;
+              }
+            t = p;
+            p = p->next;
+          }
         return (flags & SLIST_MOD_CRTNLY) ? list_changed : true;
       }
 
@@ -558,10 +564,10 @@ slist_del(struct slist **list, char *item, int flags)
     /* delete first item */
     if (flags & SLIST_FIRST)
       {
-        p = (*list)->next;
-        FREE((*list)->value);
-        FREE(*list);
-        list = &p;
+        t = *list;
+        *list = (*list)->next;
+        FREE(t->value);
+        FREE(t);
         return true;
       }
 
