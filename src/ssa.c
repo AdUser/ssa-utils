@@ -325,14 +325,14 @@ get_ssa_param(char * const line, ssa_file * const h)
              strncmp(line, "Script Updated By", p_len) == 0 || \
              strncmp(line, "Original Translation", p_len) == 0)
       {
-        slist_add(&(h->txt_params), line, SLIST_ADD_LAST);
+        slist_add(&(h->txt_params), line, SLIST_LAST);
       }
     else if (opts.i_strict == true)
       _log(log_warn, MSG_W_SKIPSTRICT, line, line_num);
     else if (opts.i_strict == false)
       {
         _log(log_warn, MSG_W_UNCOMMON, _("parameter"), line_num, line);
-        slist_add(&(h->txt_params), line, SLIST_ADD_LAST);
+        slist_add(&(h->txt_params), line, SLIST_LAST);
       }
 
     return true;

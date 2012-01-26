@@ -228,13 +228,25 @@ bool append_string(char *, char *, char *, unsigned int, unsigned int);
 bool append_char(char *, char, unsigned int);
 
 /* strings list functions */
-#define SLIST_ADD_FIRST  0x01
-#define SLIST_ADD_LAST   0x02
-#define SLIST_ADD_UNIQ   0x04
+
+/* position | valid for | flag means
+** 87654321 | add | del |
+** ^^^^^^^^-|  x  |  x  | first item
+**   ||||`--|  x  |  x  | last item
+**   |||`---|     |  x  | 'match' modifier
+**   ||`----|  x  |     | 'uniq' modifier
+**   |`-----|     |  x  | 'all' modifier
+**   `------|  x  |  x  | 'certainly' modifier (fail if nothing was done)
+*/
+#define SLIST_FIRST      0x1 << 0
+#define SLIST_LAST       0x1 << 1
+#define SLIST_POS        SLIST_FIRST | SLIST_LAST
+#define SLIST_MOD_MATCH  0x1 << 2
+#define SLIST_MOD_UNIQ   0x1 << 3
+#define SLIST_MOD_ALL    0x1 << 4
+#define SLIST_MOD_CRTNLY 0x1 << 5
+
 bool slist_add(struct slist **, char *, int);
-#define SLIST_DEL_FIRST      0x01
-#define SLIST_DEL_LAST       0x02
-#define SLIST_DEL_ALL_MATCH  0x04
 bool slist_del(struct slist **, char *, int);
 struct slist *slist_find(struct slist *, char *);
 

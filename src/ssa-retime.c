@@ -278,7 +278,7 @@ int main(int argc, char *argv[])
             break;
 
           case 'S':
-            slist_add(&affected_styles, optarg, SLIST_ADD_LAST | SLIST_ADD_UNIQ);
+            slist_add(&affected_styles, optarg, SLIST_LAST | SLIST_MOD_UNIQ);
             break;
 
           case 'f':

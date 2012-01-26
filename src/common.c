@@ -445,34 +445,43 @@ slist_add(struct slist **list, char *item, int flags)
     struct slist *p = NULL;
     struct slist *new = NULL;
 
-    if (list == NULL || item == NULL || \
-        !((flags & SLIST_ADD_FIRST) ^ (flags & SLIST_ADD_LAST)))
+    if (list == NULL || item == NULL || flags == 0x0)
       return false;
 
-    if (flags & SLIST_ADD_UNIQ)
+    /* FIRST and LAST position flags can't be specified together */
+    if ((flags & SLIST_FIRST) && (flags & SLIST_LAST))
+      return false;
+
+    /* check for invalid flags */
+    if ((flags & ~(SLIST_POS | SLIST_MOD_UNIQ | SLIST_MOD_CRTNLY)) != 0x0)
+      return false;
+
+    if (flags & SLIST_MOD_UNIQ)
       {
         for (p = *list; p != NULL; p = p->next)
           if (strncmp(p->value, item, MAXLINE) == 0)
-            return true;
+            return (flags & SLIST_MOD_CRTNLY) ? false : true;
+        /* NOTE: if nothing found, execution we go next */
       }
 
     CALLOC(new, 1, sizeof(struct slist));
     STRNDUP(new->value, item, MAXLINE);
 
+    /* forget about position flags, we have empty list! */
     if (*list == NULL)
       {
         *list = new;
         return true;
       }
 
-    if (flags & SLIST_ADD_FIRST)
+    if (flags & SLIST_FIRST)
       {
         new->next = *list;
         *list = new;
         return true;
       }
 
-    if (flags & SLIST_ADD_LAST)
+    if (flags & SLIST_LAST)
       {
         for (p = *list; p->next != NULL; p = p->next);
         p->next = new;
@@ -489,14 +498,65 @@ bool
 slist_del(struct slist **list, char *item, int flags)
   {
     struct slist *p = NULL;
+    struct slist *t = NULL;
+    bool list_changed = false;
 
-    if (list == NULL || item == NULL)
+    if (list == NULL || item == NULL || flags == 0x0)
       return false;
 
+    /* list is empty, nothing to do */
     if (*list == NULL)
-      return true;
+      return (flags & SLIST_MOD_CRTNLY) ? false : true;
 
-    if (flags & SLIST_DEL_FIRST)
+    /* delete all items from list */
+    if ((flags & SLIST_MOD_ALL) && !(flags & SLIST_MOD_MATCH))
+      {
+        while (*list != NULL)
+          {
+            slist_del(list, item, SLIST_FIRST);
+            list_changed = true;
+          }
+        return (flags & SLIST_MOD_CRTNLY) ? list_changed : true;
+      }
+
+    /* delete all *matching* items from list */
+    if ((flags & SLIST_MOD_ALL) && (flags & SLIST_MOD_MATCH))
+      {
+        while (*list != NULL && strncmp((*list)->value, item, MAXLINE) == 0)
+          {
+            slist_del(list, item, SLIST_FIRST);
+            list_changed = true;
+          }
+        for (p = *list; p != NULL; p = p->next)
+          if (strncmp(p->value, item, MAXLINE) == 0)
+            {
+              slist_del(&p, item, SLIST_FIRST);
+              list_changed = true;
+            }
+        return (flags & SLIST_MOD_CRTNLY) ? list_changed : true;
+      }
+
+    /* delete first *matching* item */
+    if ((flags & SLIST_FIRST) && (flags & SLIST_MOD_MATCH))
+      {
+        if ((t = slist_find(*list, item)) == NULL)
+          return (flags & SLIST_MOD_CRTNLY) ? false : true;
+
+        if (t == *list)
+          {
+            slist_del(list, item, SLIST_FIRST);
+            return true;
+          }
+
+        /* else */
+        for (p = *list; p->next != t; p = p->next);
+
+        slist_del(&p->next, item, SLIST_FIRST);
+        return true;
+      }
+
+    /* delete first item */
+    if (flags & SLIST_FIRST)
       {
         p = (*list)->next;
         FREE((*list)->value);
@@ -505,7 +565,31 @@ slist_del(struct slist **list, char *item, int flags)
         return true;
       }
 
-    if (flags & SLIST_DEL_LAST)
+    /* delete last *matching* item */
+    if ((flags & SLIST_LAST) && (flags & SLIST_MOD_MATCH))
+      {
+        for (p = *list; p != NULL; p = p->next)
+          if (strncmp(p->value, item, MAXLINE) == 0)
+            t = p;
+
+        if (t == NULL)
+          return (flags & SLIST_MOD_CRTNLY) ? false : true;
+
+        if (t == *list)
+          {
+            slist_del(list, item, SLIST_FIRST);
+            return true;
+          }
+
+        /* else */
+        for (p = *list; p->next != t; p = p->next);
+
+        slist_del(&p->next, item, SLIST_FIRST);
+        return true;
+      }
+
+    /* delete last item */
+    if (flags & SLIST_LAST)
       {
         if ((*list)->next == NULL)
           {
@@ -522,14 +606,7 @@ slist_del(struct slist **list, char *item, int flags)
           }
       }
 
-    if (flags & SLIST_DEL_ALL_MATCH)
-      {
-        for (p = *list; p != NULL; p = p->next)
-          if (strncmp(p->value, item, MAXLINE) == 0)
-            slist_del(&p, item, SLIST_DEL_FIRST);
-        return true;
-      }
-
+    /* unhandled case */
     return false;
   }
 
