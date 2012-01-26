@@ -388,7 +388,7 @@ int main(int argc, char *argv[])
     if (mode != points)
     {
       if ((affected_styles != NULL) && \
-          (slist_match(affected_styles, e->style) == false))
+          (slist_find(affected_styles, e->style) == NULL))
         continue;
 
       if ((e->start <= shift_start) || \

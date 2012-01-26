@@ -533,21 +533,6 @@ slist_del(struct slist **list, char *item, int flags)
     return false;
   }
 
-bool
-slist_match(struct slist *list, char *item)
-  {
-    struct slist *i = NULL;
-
-    if (list == NULL || item == NULL)
-      return false;
-
-    for (i = list; i != NULL; i = i->next)
-      if (strcmp(i->value, item) == 0)
-        return true;
-
-    return false;
-  }
-
 struct slist *
 slist_find(struct slist *list, char *item)
   {
