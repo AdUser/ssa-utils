@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
         if (file.fonts != NULL)
           show_info(file.fonts, "Fonts");
         if (file.images != NULL)
-          show_info(file.fonts, "Images");
+          show_info(file.images, "Images");
         break;
       case export :
         if (extract.fonts  == true)
