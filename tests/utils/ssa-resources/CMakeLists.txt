@@ -1,9 +1,9 @@
+set_property(DIRECTORY "." PROPERTY TEST_INCLUDE_FILE "tests_prepare.cmake")
 
-set(SRC_DIR "../../../src")
 set(CMD "${SRC_DIR}/ssa-resources")
-set(CMP "../../compare")
 
-add_test(NAME "tests/utils/ssa-resources/01-1"
-         COMMAND "${CMD}" "import" "-i" "01/src.ass" "-o" "01/test.ass" "-f" "01/test.ttf")
-add_test(NAME "tests/utils/ssa-resources/01-2"
-         COMMAND "${CMP}" "01/test.ass" "01/dst.ass")
+add_test(NAME "utils/ssa-resources/01"
+         COMMAND "${CMAKE_COMMAND}" "-E" "compare_files" "01/output.ass" "01/expected.ass")
+
+add_test(NAME "utils/ssa-resources/02"
+         COMMAND "${CMAKE_COMMAND}" "-E" "compare_files" "02/output.ass" "02/expected.ass")
