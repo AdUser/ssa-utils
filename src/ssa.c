@@ -173,7 +173,7 @@ parse_ssa_file(FILE *infile, ssa_file *file)
         if (len == 0)
           continue;
 
-        if (len != 80 && !(section == FONTS || section == GRAPHICS))
+        if (line[0] == '[' && line[len - 1] == ']')
           if (ssa_section_switch(&section, line) == true)
             continue;
 
