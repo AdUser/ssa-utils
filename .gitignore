@@ -1,12 +1,17 @@
+DartConfiguration.tcl
+CMakeCache.txt
+Makefile
+
+CMakeFiles/
 .objs/
 samples/
 
-CMakeCache.txt
-CMakeFiles/
 src/CMakeFiles/
-Makefile
+src/config.h
 src/Makefile
+
 po/Makefile
+po/ssa-utils.pot
 
 ssa-utils.cbp
 ssa-utils.depend
