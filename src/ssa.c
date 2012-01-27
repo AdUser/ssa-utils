@@ -743,7 +743,7 @@ get_ssa_uue_data(ssa_uue_data **list, ssa_uue_data **h, char const * const line,
           memcpy(buf, line, 81 * sizeof(char));
           buf[80] = '\n';
           buf[81] = '\0';
-          if (fwrite(buf, 81, sizeof(char), (*h)->data) != 81)
+          if (!fwrite(buf, sizeof(char) * 81, 1, (*h)->data))
             {
               _log(log_warn, MSG_F_WRFAIL);
               return false;
