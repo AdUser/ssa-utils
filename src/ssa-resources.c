@@ -21,7 +21,7 @@
 
 void usage(int exit_code)
 {
-  fprintf(stderr, "%s v%.2f\n", COMMON_PROG_NAME, VERSION);
+  fprintf(stderr, "%s v%s\n", COMMON_PROG_NAME, VERSION);
   fprintf(stderr, \
     _("Usage: %s <mode> -i <input_file> [<options>]\n"),
       PROG_NAME);

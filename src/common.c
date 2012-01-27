@@ -877,7 +877,7 @@ void
 usage_convert(char *prog)
   {
     fprintf(stderr, _("\
-%s v%.2f\n\
+%s v%s\n\
 Usage: %s [<options>] -i <input_file> [-o <output_file>]\n"),
    COMMON_PROG_NAME, VERSION, prog);
   }

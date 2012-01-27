@@ -1,1 +1,3 @@
 #cmakedefine WITHOUT_GETTEXT
+#cmakedefine RELEASE
+#cmakedefine VERSION "${VERSION}"
