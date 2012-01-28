@@ -736,6 +736,8 @@ get_ssa_uue_data(ssa_uue_data **list, ssa_uue_data **h, char const * const line,
           {
             for (p += 1; *p != '\0' && isspace(*p); p++);
             STRNDUP((*h)->filename, p, MAXLINE);
+            if ((*h)->type == TYPE_FONT)
+              get_flags_from_fontname(*h);
           }
           TMPFILE((*h)->data);
           break;
