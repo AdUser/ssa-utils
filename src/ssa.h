@@ -271,7 +271,7 @@ bool import_ssa_uue_data(ssa_uue_data *, char *);
 
 /* specific string functions */
 bool add_flags_to_fontname  (ssa_uue_data * const);
-bool del_flags_from_fontname(ssa_uue_data * const);
+bool get_flags_from_fontname(ssa_uue_data * const);
 
 /** other */
 uint32_t ssa_color(char * const);

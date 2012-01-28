@@ -1103,7 +1103,7 @@ export_ssa_uue_data(ssa_uue_data *list, char *path)
     for (h = list; h != NULL; h = h->next)
       {
         if (h->type == TYPE_FONT)
-          del_flags_from_fontname(h);
+          get_flags_from_fontname(h);
         snprintf(filename, MAXLINE, "%s/%s", path, h->filename);
         filename[MAXLINE] = '\0';
         if ((f = fopen(filename, "w"))== NULL)
@@ -1210,52 +1210,59 @@ add_flags_to_fontname(ssa_uue_data * const h)
   }
 
 bool
-del_flags_from_fontname(ssa_uue_data * const h)
+get_flags_from_fontname(ssa_uue_data * const h)
   {
-    char *src = NULL;
-    char *und = NULL;
+    char *src = NULL; /* last '_' position, if found */
     char *dst = NULL;
     char *new = NULL;
-    size_t len = 0;
+    int count = 0;
     bool   ff = false; /* true, if font flags not more allowed */
-    size_t fe = 0;     /* count of found digits -> font codepage */
 
     if (h == NULL || (src = h->filename) == NULL)
       return false;
 
-    if ((und = strrchr(src, '_')) == NULL)
+    if ((src = strrchr(h->filename, '_')) == NULL)
       return true; /* nothing to do */
 
-    len = strlen(src);
-    CALLOC(new, sizeof(char), len);
-    strncpy(new, src, (und - src));
-    dst = new + (und - src);
+    CALLOC(new, sizeof(char), strlen(h->filename));
+    strncpy(new, h->filename, (src - h->filename));
+    dst = new + (src - h->filename);
 
-    /* expected: 'B', 'I' and/or some digits */
-    for (len = 1, src = und + 1; ; len++, src++)
+    /* expected: 'B', 'I' and/or some digits *
+     * flags lenght may be from 1 to 5 chars */
+    for (count = 1, src++; ; count++, src++)
       {
         if (isdigit(*src))
-          {
-            fe *= 10;  /* We have some digits for font codepage! */
-            fe += *src - '0';
+          { /* We have some digits for font codepage! */
+            h->fontenc *= 10;
+            h->fontenc += *src - '0';
             ff = true; /* After first digit we consider "B"/"I" chars        */
             continue;  /* as garbage and abort next iterations if they found */
           }
-        if (len < 3 && ff == false && (*src == 'B' || *src == 'I'))
-          continue; /* only 1st and 2nd chars allowed */
-        if (len < 6 && fe < 256    && (*src == '.' || *src == '\0'))
-          break;
-        /* if none of above - then */
-        goto abort;
+
+        /* 1st and 2nd chars may be letters: 'B' for bold */
+        if (count < 3 && ff == false && (*src == 'B' || *src == 'b'))
+          { h->fontflags |= FONT_BOLD; continue; }
+
+        /* ... and 'I' for italic */
+        if (count < 3 && ff == false && (*src == 'I' || *src == 'i'))
+          { h->fontflags |= FONT_ITALIC; continue; }
+
+        if (count < 6 && h->fontenc < 256 && (*src == '.' || *src == '\0'))
+          break; /* check flags len and font codepage for reasonable values */
+
+        /* if none of conditions above - then there, is not       *
+         * valid font flags, use old filename and unset all flags */
+        FREE(new);
+        h->fontenc = 0, h->fontflags = 0x0;
+        return false;
       }
 
+    /* copy the rest of filename. this is usually ".ttf" */
     strncpy(dst, src, strlen(src) + 1);
+
     FREE(h->filename);
-    STRNDUP(h->filename, new, MAXLINE);
-
-    abort:
-    FREE(new);
-
+    h->filename = new;
     return true;
   }
 
