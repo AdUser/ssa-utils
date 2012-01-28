@@ -1,4 +1,4 @@
-set_property(DIRECTORY "." PROPERTY TEST_INCLUDE_FILE "tests_prepare.cmake")
+set_property(DIRECTORY "." PROPERTY TEST_INCLUDE_FILE "CTestLists.txt")
 
 set(CMD "${SRC_DIR}/ssa-resources")
 
