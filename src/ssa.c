@@ -1053,7 +1053,7 @@ write_ssa_uue_data(FILE * outfile, ssa_uue_data * const list, bool memfree)
   {
     ssa_uue_data *h = NULL;
     ssa_uue_data *t = NULL;
-    char *data_type = NULL;
+    char *p = NULL;
     size_t read = 0;
     uint8_t buf[MAXLINE];
 
@@ -1061,13 +1061,19 @@ write_ssa_uue_data(FILE * outfile, ssa_uue_data * const list, bool memfree)
       return false;
 
     h = list;
-    data_type = (h->type == TYPE_FONT) ? "Fonts" : "Graphics";
-    fprintf(outfile, "[%s]\n", data_type);
+    p = (h->type == TYPE_FONT) ? "Fonts" : "Graphics";
+    fprintf(outfile, "[%s]\n", p);
 
     while (h != NULL)
       {
-        data_type = (h->type == TYPE_FONT) ? "fontname" : "filename";
-        fprintf(outfile, "%s: %s\n", data_type, h->filename);
+        if (h->type == TYPE_FONT)
+          {
+            p = get_fontname_with_flags(h);
+            fprintf(outfile, "%s: %s\n", "fontname", p);
+            FREE(t);
+          } else {
+            fprintf(outfile, "%s: %s\n", "filename", h->filename);
+          }
 
         rewind(h->data);
         while ((read = fread(buf, sizeof(uint8_t), MAXLINE, h->data)) > 0)
