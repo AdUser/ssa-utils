@@ -1,4 +1,5 @@
 ENABLE_TESTING()
 
 ADD_SUBDIRECTORY("common-routines")
+ADD_SUBDIRECTORY("modules/ssa")
 ADD_SUBDIRECTORY("utils")

@@ -1157,9 +1157,6 @@ import_ssa_uue_data(ssa_uue_data *h, char *path)
     p = ((p = strrchr(path, '/')) != NULL) ? (p + 1) : path;
     STRNDUP(h->filename, p, MAXLINE);
 
-    if (h->type == TYPE_FONT)
-      add_flags_to_fontname(h);
-
     while ((len = fread(buf, sizeof(char), 3 * 20, f)) > 0)
       {
         len = uue_encode_buffer(buf, len);
@@ -1176,39 +1173,39 @@ import_ssa_uue_data(ssa_uue_data *h, char *path)
     return true;
   }
 
-bool
-add_flags_to_fontname(ssa_uue_data * const h)
+char *
+get_fontname_with_flags(ssa_uue_data * const h)
   {
-    char *p = NULL;
+    char *src = NULL;
+    char *dst = NULL;
     char *new = NULL;
-    char ext[4];
     size_t len;
 
-    if (h == NULL || (p = h->filename) == NULL)
+    if (h == NULL || h->filename == NULL)
       return false;
 
-    len = strlen(p);
-    if (len < 5 || p[len - 4] != '.')
-      return true; /* nothing to do */
+    if ((src = strrchr(h->filename, '.')) == NULL ||
+        h->type != TYPE_FONT)
+      {
+        STRNDUP(new, h->filename, MAXLINE);
+        return new; /* nothing to do */
+      }
+
+    len = strlen(h->filename);
 
     /* add some information about font in filename    *
      * currently: bold attr, italic attr and codepage */
-    CALLOC(new, sizeof(char), len + 20);
-    strncpy(new, p, len - 4);
-    strncpy(ext, p + (len - 3), 3);
-    p = new + len - 4;
-    ext[3] = '\0';
-    string_lowercase(ext, 3);
-    snprintf(p, 20, "_%s%s%u.%s", \
+    CALLOC(new, sizeof(char), strlen(h->filename) + 1 + 6);
+    /* 6 = '_' + 'B' + 'I' + '0-255' */
+
+    strncpy(new, h->filename, len);
+    dst = new + (src - h->filename);
+    snprintf(dst, 7 + strlen(src), "_%s%s%u%s", \
                (h->fontflags & FONT_BOLD)   ? "B" : "", \
                (h->fontflags & FONT_ITALIC) ? "I" : "", \
-                h->fontenc, ext); /* "_" + "B" + "I" + "0-255" + ".ext" <= 10 */
+                h->fontenc, src);
 
-    FREE(h->filename);
-    STRNDUP(h->filename, new, MAXLINE);
-    FREE(new);
-
-    return true;
+    return new;
   }
 
 bool
